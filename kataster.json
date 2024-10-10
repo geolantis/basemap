@@ -19,7 +19,7 @@
       "source": "gst_bev-source",
       "source-layer": "gst_bev",
       "minzoom": 13,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {"visibility": "visible"},
       "paint": {
         "fill-outline-color": "black",
@@ -33,7 +33,7 @@
       "source": "gst_bev-source",
       "source-layer": "gst_bev",
       "minzoom": 13,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {"visibility": "visible"},
       "paint": {"line-width": {"stops": [[13, 0.6], [15, 0.8]]}}
     },
@@ -43,7 +43,7 @@
       "source": "gst_bev-source",
       "source-layer": "nsl_bev",
       "minzoom": 15,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "paint": {
         "line-color": [
           "case",
@@ -62,7 +62,7 @@
       "source": "gst_bev-source",
       "source-layer": "grenzen_l",
       "minzoom": 6,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {},
       "paint": {"line-color": "rgba(0, 101, 249, 1)", "line-width": 2}
     },
@@ -95,7 +95,7 @@
       "source": "gst_bev-source",
       "source-layer": "nsy_bev",
       "minzoom": 15,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {
         "icon-image": "{sym_character}",
         "icon-size": {"stops": [[15, 0.25], [16, 0.3], [17, 0.4], [18, 0.5]]},
@@ -110,7 +110,7 @@
       "source": "gst_bev-source",
       "source-layer": "ssb_bev",
       "minzoom": 16,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {
         "icon-image": "{sym_character}",
         "icon-rotate": ["get", "rot_nr"],
@@ -131,7 +131,7 @@
       "source": "gst_bev-source",
       "source-layer": "sgg_bev",
       "minzoom": 17,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {
         "icon-image": "{sym_character}",
         "icon-size": {"stops": [[6, 0.25], [16, 0.3], [17, 0.4], [18, 0.5]]},
@@ -146,7 +146,7 @@
       "source": "gst_bev-source",
       "source-layer": "fpt_bev",
       "minzoom": 15,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {
         "icon-image": "{sym_character}",
         "icon-offset": [0, 20],
@@ -161,7 +161,7 @@
       "source": "gst_bev-source",
       "source-layer": "gst_bev",
       "minzoom": 15.5,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {
         "visibility": "visible",
         "text-field": "{gnr}",
@@ -180,7 +180,7 @@
       "source": "gst_bev-source",
       "source-layer": "sgg_bev",
       "minzoom": 18,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {
         "text-font": ["Roboto-Thin"],
         "text-field": "{pnr}",
@@ -199,7 +199,7 @@
       "source": "gst_bev-source",
       "source-layer": "fpt_bev",
       "minzoom": 16.9,
-      "maxzoom": 19,
+      "maxzoom": 24,
       "layout": {
         "text-font": ["Roboto-Bold"],
         "text-field": "{pnr}",
