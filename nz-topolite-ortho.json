@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "name": "topolite",
+  "name": "topolite-ortho",
   "metadata": {"maputnik:renderer": "mbgljs"},
   "terrain": {"source": "LINZ-Terrain", "exaggeration": 1.2},
   "sources": {
@@ -2322,5 +2322,5 @@
       }
     }
   ],
-  "id": "st_topolite-ortho"
+  "id": "st_topolite"
 }
