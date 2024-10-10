@@ -1,7 +1,7 @@
 {
   "version": 8,
   "name": "basemap-ktn-vektor",
-  "metadata": { "maputnik:renderer": "mbgljs" },
+  "metadata": {"maputnik:renderer": "mbgljs"},
   "center": [13.8853, 46.7568],
   "zoom": 8.5,
   "bearing": 55,
@@ -47,10 +47,10 @@
       "source": "basemap-source",
       "minzoom": 0,
       "maxzoom": 24,
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "raster-brightness-min": 0,
-        "raster-opacity": 0.9,
+        "raster-opacity": 1,
         "raster-saturation": 0,
         "raster-resampling": "linear"
       }
@@ -62,7 +62,7 @@
       "source-layer": "wep",
       "minzoom": 0,
       "maxzoom": 11,
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "fill-antialias": false,
         "fill-outline-color": "black",
@@ -74,7 +74,7 @@
       "id": "bml",
       "type": "raster",
       "source": "bml",
-      "paint": { "raster-opacity": 0.66 }
+      "paint": {"raster-opacity": 1}
     },
     {
       "id": "NUTZ_f",
@@ -83,9 +83,9 @@
       "source-layer": "nutzung_f",
       "minzoom": 11,
       "maxzoom": 24,
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
-        "fill-opacity": 0.1,
+        "fill-opacity": 0.2,
         "fill-antialias": false,
         "fill-color": [
           "case",
@@ -119,18 +119,12 @@
       "minzoom": 8,
       "maxzoom": 15,
       "filter": ["all", ["==", "nutz_art", 1]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
-        "fill-opacity": {
-          "stops": [
-            [8, 1],
-            [12, 0.8],
-            [15, 0.5]
-          ]
-        },
+        "fill-opacity": {"stops": [[8, 0.1], [12, 0.1], [15, 0.1]]},
         "fill-color": {
           "stops": [
-            [10, "rgba(200, 200, 195, 1)"],
+            [10, "rgba(200, 200, 195, 0.5)"],
             [14, "rgba(242, 242, 240, 1)"]
           ]
         },
@@ -144,7 +138,7 @@
       "source": "osgdiktn",
       "source-layer": "isolinien10m",
       "minzoom": 13,
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "rgba(88, 87, 87, 1)",
         "line-width": 0.5,
@@ -196,15 +190,10 @@
         ["==", "ele", 3700],
         ["==", "ele", 3800]
       ],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "rgba(61, 61, 61, 1)",
-        "line-width": {
-          "stops": [
-            [10, 0.5],
-            [15, 0.75]
-          ]
-        },
+        "line-width": {"stops": [[10, 0.5], [15, 0.75]]},
         "line-opacity": 0.5
       }
     },
@@ -217,14 +206,7 @@
       "filter": ["all", ["==", "namecat", 6]],
       "paint": {
         "line-color": "rgba(171, 208, 255, 1)",
-        "line-width": {
-          "stops": [
-            [10, 1],
-            [13, 2],
-            [15, 3],
-            [17, 4]
-          ]
-        }
+        "line-width": {"stops": [[10, 1], [13, 2], [15, 3], [17, 4]]}
       }
     },
     {
@@ -236,12 +218,7 @@
       "filter": ["all", ["==", "namecat", 7]],
       "paint": {
         "line-color": "rgba(171, 208, 255, 1)",
-        "line-width": {
-          "stops": [
-            [15, 1],
-            [17, 2.5]
-          ]
-        }
+        "line-width": {"stops": [[15, 1], [17, 2.5]]}
       }
     },
     {
@@ -251,7 +228,7 @@
       "source-layer": "gewaesser_f",
       "minzoom": 9,
       "filter": ["all", ["!=", "name", 1]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "fill-color": "rgba(110, 170, 245, 0.83)",
         "fill-translate-anchor": "map",
@@ -265,8 +242,8 @@
       "source": "osgdiktn",
       "source-layer": "gewaesser_f",
       "filter": ["all", ["==", "namecat", 1]],
-      "layout": { "visibility": "visible" },
-      "paint": { "fill-color": "rgba(171, 208, 255, 1)" }
+      "layout": {"visibility": "visible"},
+      "paint": {"fill-color": "rgba(171, 208, 255, 1)"}
     },
     {
       "id": "GEBAEUDE_landcover",
@@ -274,7 +251,7 @@
       "source": "osgdiktn",
       "source-layer": "landuse",
       "layout": {},
-      "paint": { "line-width": 0.25, "line-color": "rgba(115, 115, 115, 1)" }
+      "paint": {"line-width": 0.25, "line-color": "rgba(115, 115, 115, 1)"}
     },
     {
       "id": "GEBAEUDE_F_fill",
@@ -282,7 +259,7 @@
       "source": "osgdiktn",
       "source-layer": "gebaeude_3d",
       "minzoom": 13,
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "fill-color": "hsla(360, 63.1%, 86.4%, 1.0)",
         "fill-antialias": false,
@@ -295,15 +272,10 @@
       "source": "osgdiktn",
       "source-layer": "gebaeude_3d",
       "minzoom": 13,
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "hsla(0, 29.8%, 78.6%, 1.0)",
-        "line-width": {
-          "stops": [
-            [14, 0.2],
-            [20, 3]
-          ]
-        }
+        "line-width": {"stops": [[14, 0.2], [20, 3]]}
       }
     },
     {
@@ -312,7 +284,7 @@
       "source": "osgdiktn",
       "source-layer": "gip_l",
       "filter": ["any", ["==", "drawclass", 11010], ["==", "drawclass", 11020]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#F5A27A",
         "line-width": {
@@ -340,7 +312,7 @@
       "source-layer": "gip_l",
       "minzoom": 10,
       "filter": ["all", ["==", "drawclass", 11020], ["==", "br_typ", 5023]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "rgba(250, 231, 211, 1)",
         "line-width": {
@@ -368,7 +340,7 @@
       "source-layer": "gip_l",
       "minzoom": 13,
       "filter": ["all", ["==", "drawclass", 11020], ["==", "br_typ", 5023]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "rgba(250, 231, 211, 1)",
         "line-width": {
@@ -398,7 +370,7 @@
       "minzoom": 11,
       "maxzoom": 24,
       "filter": ["any", ["==", "drawclass", 11210]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-gap-width": 0,
         "line-width": {
@@ -426,7 +398,7 @@
       "minzoom": 12,
       "maxzoom": 24,
       "filter": ["any", ["==", "drawclass", 11220], ["==", "drawclass", 11210]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-gap-width": 0,
         "line-width": {
@@ -451,7 +423,7 @@
       "source-layer": "gip_l",
       "minzoom": 9,
       "filter": ["any", ["==", "drawclass", 11120]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-width": {
           "stops": [
@@ -476,7 +448,7 @@
       "source": "osgdiktn",
       "source-layer": "gip_l",
       "filter": ["all", ["==", "drawclass", 11110]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#CDAA66",
         "line-width": {
@@ -504,7 +476,7 @@
       "source-layer": "gip_l",
       "minzoom": 10,
       "filter": ["all", ["==", "drawclass", 11110], ["==", "br_typ", 5023]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "rgba(248, 248, 228, 1)",
         "line-width": {
@@ -532,7 +504,7 @@
       "source-layer": "gip_l",
       "minzoom": 13,
       "filter": ["all", ["==", "drawclass", 11110], ["==", "br_typ", 5023]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "rgba(248, 248, 228, 1)",
         "line-width": {
@@ -561,7 +533,7 @@
       "source-layer": "gip_l",
       "minzoom": 13,
       "filter": ["any", ["==", "drawclass", 12010]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#B9B9B9",
         "line-width": {
@@ -590,7 +562,7 @@
       "source-layer": "gip_l",
       "minzoom": 13,
       "filter": ["any", ["==", "drawclass", 12010]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#ffffff",
         "line-dasharray": [2, 1],
@@ -614,7 +586,7 @@
       "source-layer": "gip_l",
       "minzoom": 13,
       "filter": ["any", ["==", "drawclass", 12010]],
-      "layout": { "visibility": "none" },
+      "layout": {"visibility": "none"},
       "paint": {
         "line-color": "#B2B2B2",
         "line-width": {
@@ -637,16 +609,10 @@
       "source-layer": "gip_l",
       "minzoom": 15,
       "filter": ["any", ["==", "drawclass", 12020]],
-      "layout": { "line-cap": "round", "visibility": "visible" },
+      "layout": {"line-cap": "round", "visibility": "visible"},
       "paint": {
         "line-width": {
-          "stops": [
-            [15, 1.5],
-            [16, 2],
-            [17, 2.5],
-            [18, 3],
-            [19, 3.5]
-          ]
+          "stops": [[15, 1.5], [16, 2], [17, 2.5], [18, 3], [19, 3.5]]
         },
         "line-color": "rgba(92, 92, 92, 1)",
         "line-dasharray": [4, 2]
@@ -667,16 +633,10 @@
         ["==", "drawclass", 12140],
         ["==", "drawclass", 12160]
       ],
-      "layout": { "line-cap": "round", "visibility": "visible" },
+      "layout": {"line-cap": "round", "visibility": "visible"},
       "paint": {
         "line-width": {
-          "stops": [
-            [15, 1.7],
-            [16, 3],
-            [17, 3.5],
-            [18, 4],
-            [19, 4.5]
-          ]
+          "stops": [[15, 1.7], [16, 3], [17, 3.5], [18, 4], [19, 4.5]]
         },
         "line-color": "#9C9C9C",
         "line-dasharray": [0.5, 2]
@@ -690,7 +650,7 @@
       "minzoom": 11,
       "maxzoom": 24,
       "filter": ["any", ["==", "drawclass", 11210]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-width": {
           "stops": [
@@ -718,7 +678,7 @@
       "minzoom": 11,
       "maxzoom": 24,
       "filter": ["any", ["==", "drawclass", 11220]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-width": {
           "stops": [
@@ -754,7 +714,7 @@
         ["==", "drawclass", 11011],
         ["==", "drawclass", 11031]
       ],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-width": {
           "stops": [
@@ -782,7 +742,7 @@
       "source-layer": "gip_l",
       "minzoom": 9,
       "filter": ["any", ["==", "drawclass", 11120]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-width": {
           "stops": [
@@ -810,15 +770,15 @@
       "source-layer": "gip_l",
       "minzoom": 10,
       "filter": ["all", ["==", "drawclass", 11110], ["!=", "br_typ", 5023]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#FFFF73",
         "line-width": {
           "stops": [
             [8, 4.1],
             [9, 4.2],
-            [10, 4.8],
-            [11, 4.5],
+            [10, 2.8],
+            [11, 2.5],
             [12, 5],
             [13, 5.5],
             [14, 6],
@@ -839,7 +799,7 @@
       "source-layer": "gip_l",
       "maxzoom": 10,
       "filter": ["all", ["==", "drawclass", 11110]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#FFFF73",
         "line-width": {
@@ -867,7 +827,7 @@
       "source-layer": "gip_l",
       "maxzoom": 24,
       "filter": ["all", ["==", "drawclass", 11030]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#F5A27A",
         "line-width": {
@@ -894,7 +854,7 @@
       "source": "osgdiktn",
       "source-layer": "gip_l",
       "filter": ["all", ["==", "drawclass", 11030]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#FFEBAF",
         "line-width": {
@@ -926,12 +886,7 @@
       "paint": {
         "line-color": "black",
         "line-width": {
-          "stops": [
-            [15, 11.5],
-            [16, 13.5],
-            [17, 15.5],
-            [18, 19.5]
-          ]
+          "stops": [[15, 11.5], [16, 13.5], [17, 15.5], [18, 19.5]]
         }
       }
     },
@@ -942,7 +897,7 @@
       "source-layer": "gip_l",
       "minzoom": 10,
       "filter": ["all", ["==", "drawclass", 11020], ["!=", "br_typ", 5023]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#FFD37F",
         "line-width": {
@@ -970,7 +925,7 @@
       "source-layer": "gip_l",
       "minzoom": 10,
       "filter": ["all", ["==", "drawclass", 11010], ["!=", "br_typ", 5023]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#FFD37F",
         "line-width": {
@@ -999,7 +954,7 @@
       "minzoom": 0,
       "maxzoom": 10,
       "filter": ["any", ["==", "drawclass", 11010], ["==", "drawclass", 11020]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#FFD37F",
         "line-width": {
@@ -1026,7 +981,7 @@
       "source": "osgdiktn",
       "source-layer": "gip_l",
       "filter": ["any", ["==", "drawclass", 13010], ["==", "drawclass", 13020]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#897044",
         "line-width": {
@@ -1055,7 +1010,7 @@
       "source-layer": "gip_l",
       "minzoom": 13,
       "filter": ["any", ["==", "drawclass", 13010], ["==", "drawclass", 13020]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#ffffff",
         "line-dasharray": [4, 4],
@@ -1109,13 +1064,7 @@
       "filter": ["all", ["==", "drawclass", 11120], ["==", "br_typ", 5002]],
       "paint": {
         "line-width": {
-          "stops": [
-            [15, 12],
-            [16, 13],
-            [17, 15],
-            [18, 17],
-            [19, 19]
-          ]
+          "stops": [[15, 12], [16, 13], [17, 15], [18, 17], [19, 19]]
         },
         "line-color": "rgba(53, 53, 53, 1)"
       }
@@ -1127,7 +1076,7 @@
       "source-layer": "gip_l",
       "minzoom": 15,
       "filter": ["all", ["==", "drawclass", 11120], ["==", "br_typ", 5002]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-width": {
           "stops": [
@@ -1145,11 +1094,7 @@
           ]
         },
         "line-color": {
-          "stops": [
-            [9, "#E6E6E6"],
-            [10, "#FFFFFF"],
-            [19, "#FFFFFF"]
-          ]
+          "stops": [[9, "#E6E6E6"], [10, "#FFFFFF"], [19, "#FFFFFF"]]
         }
       }
     },
@@ -1164,13 +1109,7 @@
       "paint": {
         "line-color": "black",
         "line-width": {
-          "stops": [
-            [15, 7.5],
-            [16, 9],
-            [17, 11],
-            [18, 13],
-            [19, 15]
-          ]
+          "stops": [[15, 7.5], [16, 9], [17, 11], [18, 13], [19, 15]]
         }
       }
     },
@@ -1181,7 +1120,7 @@
       "source-layer": "gip_l",
       "minzoom": 15,
       "filter": ["all", ["==", "br_typ", 5002], ["==", "drawclass", 11110]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-color": "#FFFF73",
         "line-width": {
@@ -1210,7 +1149,7 @@
       "minzoom": 12,
       "maxzoom": 24,
       "filter": ["all", ["==", "drawclass", 11220], ["==", "lev", 1]],
-      "layout": { "visibility": "visible" },
+      "layout": {"visibility": "visible"},
       "paint": {
         "line-width": {
           "stops": [
@@ -1235,7 +1174,7 @@
       "minzoom": 11,
       "maxzoom": 24,
       "filter": ["any", ["==", "drawclass", 15010]],
-      "layout": { "visibility": "visible", "line-cap": "butt" },
+      "layout": {"visibility": "visible", "line-cap": "butt"},
       "paint": {
         "line-width": {
           "stops": [
@@ -1262,7 +1201,7 @@
       "minzoom": 12,
       "maxzoom": 24,
       "filter": ["any", ["==", "drawclass", 13070]],
-      "layout": { "visibility": "visible", "line-cap": "butt" },
+      "layout": {"visibility": "visible", "line-cap": "butt"},
       "paint": {
         "line-width": {
           "stops": [
@@ -1311,14 +1250,7 @@
       "source-layer": "grenzen_lan",
       "paint": {
         "line-color": "#efe8f4",
-        "line-width": {
-          "stops": [
-            [8, 6],
-            [9, 4],
-            [10, 3],
-            [14, 6]
-          ]
-        }
+        "line-width": {"stops": [[8, 6], [9, 4], [10, 3], [14, 6]]}
       }
     },
     {
@@ -1328,14 +1260,7 @@
       "source-layer": "grenzen_lan",
       "paint": {
         "line-color": "#a68db4",
-        "line-width": {
-          "stops": [
-            [8, 3],
-            [9, 1.5],
-            [10, 1],
-            [14, 2]
-          ]
-        }
+        "line-width": {"stops": [[8, 3], [9, 1.5], [10, 1], [14, 2]]}
       }
     },
     {
@@ -1347,7 +1272,7 @@
       "paint": {
         "fill-extrusion-height": ["get", "height"],
         "fill-extrusion-color": "hsla(360, 63.1%, 86.4%, 1.0)",
-        "fill-extrusion-opacity": 0.3
+        "fill-extrusion-opacity": 0.8
       }
     },
     {
@@ -1408,13 +1333,7 @@
           "kapelle"
         ],
         "icon-size": {
-          "stops": [
-            [14, 0.4],
-            [15, 0.5],
-            [16, 0.6],
-            [17, 0.7],
-            [18, 0.8]
-          ]
+          "stops": [[14, 0.4], [15, 0.5], [16, 0.6], [17, 0.7], [18, 0.8]]
         },
         "icon-allow-overlap": true,
         "icon-ignore-placement": true,
@@ -1431,13 +1350,7 @@
         "icon-image": "flugplatz",
         "icon-allow-overlap": true,
         "icon-ignore-placement": true,
-        "icon-size": {
-          "stops": [
-            [12, 0.6],
-            [15, 0.8],
-            [17, 1.1]
-          ]
-        }
+        "icon-size": {"stops": [[12, 0.6], [15, 0.8], [17, 1.1]]}
       }
     },
     {
@@ -1519,12 +1432,7 @@
       "layout": {
         "text-font": ["RobotoCondensed-BoldItalic"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [16, 12],
-            [17, 13]
-          ]
-        },
+        "text-size": {"stops": [[16, 12], [17, 13]]},
         "visibility": "visible",
         "symbol-placement": "line"
       },
@@ -1544,12 +1452,7 @@
       "layout": {
         "text-font": ["RobotoCondensed-BoldItalic"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [13, 12],
-            [15, 13]
-          ]
-        },
+        "text-size": {"stops": [[13, 12], [15, 13]]},
         "visibility": "visible",
         "symbol-placement": "line"
       },
@@ -1569,12 +1472,7 @@
       "layout": {
         "text-font": ["RobotoCondensed-BoldItalic"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [13, 13],
-            [16, 14]
-          ]
-        },
+        "text-size": {"stops": [[13, 13], [16, 14]]},
         "visibility": "visible",
         "symbol-placement": "point",
         "symbol-avoid-edges": false,
@@ -1596,12 +1494,7 @@
       "layout": {
         "text-font": ["RobotoCondensed-BoldItalic"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [13, 13],
-            [16, 14]
-          ]
-        },
+        "text-size": {"stops": [[13, 13], [16, 14]]},
         "visibility": "visible",
         "symbol-placement": "point",
         "symbol-avoid-edges": false,
@@ -1623,12 +1516,7 @@
       "layout": {
         "text-font": ["RobotoCondensed-BoldItalic"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [11, 13],
-            [13, 14]
-          ]
-        },
+        "text-size": {"stops": [[11, 13], [13, 14]]},
         "visibility": "visible",
         "symbol-placement": "point",
         "symbol-avoid-edges": false,
@@ -1650,13 +1538,7 @@
       "layout": {
         "text-font": ["RobotoCondensed-BoldItalic"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [9, 13],
-            [11, 14],
-            [13, 15]
-          ]
-        },
+        "text-size": {"stops": [[9, 13], [11, 14], [13, 15]]},
         "visibility": "visible",
         "symbol-placement": "line",
         "symbol-spacing": 500,
@@ -1678,13 +1560,7 @@
       "layout": {
         "text-font": ["RobotoCondensed-BoldItalic"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [9, 13],
-            [11, 14],
-            [13, 15]
-          ]
-        },
+        "text-size": {"stops": [[9, 13], [11, 14], [13, 15]]},
         "visibility": "visible",
         "symbol-placement": "point",
         "symbol-avoid-edges": false,
@@ -1721,13 +1597,7 @@
       "layout": {
         "text-font": ["Roboto-Regular"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [14, 13],
-            [15, 14],
-            [17, 16]
-          ]
-        },
+        "text-size": {"stops": [[14, 13], [15, 14], [17, 16]]},
         "visibility": "visible"
       },
       "paint": {
@@ -1746,14 +1616,7 @@
       "layout": {
         "text-font": ["Roboto-Regular"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [13, 12.5],
-            [14, 13],
-            [15, 14],
-            [17, 16]
-          ]
-        },
+        "text-size": {"stops": [[13, 12.5], [14, 13], [15, 14], [17, 16]]},
         "visibility": "visible"
       },
       "paint": {
@@ -1773,13 +1636,7 @@
         "text-font": ["Roboto-Bold"],
         "text-field": "{feat_name}",
         "text-size": {
-          "stops": [
-            [12, 13],
-            [13, 15],
-            [14, 15.5],
-            [16, 16],
-            [17, 20]
-          ]
+          "stops": [[12, 13], [13, 15], [14, 15.5], [16, 16], [17, 20]]
         },
         "visibility": "visible"
       },
@@ -1800,14 +1657,7 @@
         "text-font": ["Roboto-Bold"],
         "text-field": "{feat_name}",
         "text-size": {
-          "stops": [
-            [11, 13],
-            [12, 14],
-            [13, 15],
-            [14, 16],
-            [15, 17],
-            [17, 20]
-          ]
+          "stops": [[11, 13], [12, 14], [13, 15], [14, 16], [15, 17], [17, 20]]
         },
         "visibility": "visible"
       },
@@ -1828,13 +1678,7 @@
         "text-font": ["Roboto-Bold"],
         "text-field": "{feat_name}",
         "text-size": {
-          "stops": [
-            [11, 13.5],
-            [12, 15],
-            [13, 16],
-            [15, 18],
-            [17, 20]
-          ]
+          "stops": [[11, 13.5], [12, 15], [13, 16], [15, 18], [17, 20]]
         },
         "visibility": "visible"
       },
@@ -1875,13 +1719,7 @@
         "text-field": "{feat_name}",
         "visibility": "visible",
         "text-size": {
-          "stops": [
-            [11, 13],
-            [12, 14],
-            [14, 15],
-            [15, 16],
-            [17, 18]
-          ]
+          "stops": [[11, 13], [12, 14], [14, 15], [15, 16], [17, 18]]
         }
       },
       "paint": {
@@ -1916,14 +1754,7 @@
         "text-field": "{feat_name}",
         "visibility": "visible",
         "text-size": {
-          "stops": [
-            [10, 13],
-            [12, 15],
-            [13, 16],
-            [14, 17],
-            [15, 18],
-            [17, 20]
-          ]
+          "stops": [[10, 13], [12, 15], [13, 16], [14, 17], [15, 18], [17, 20]]
         }
       },
       "paint": {
@@ -2070,15 +1901,9 @@
         "text-pitch-alignment": "auto",
         "text-rotation-alignment": "auto",
         "text-anchor": "center",
-        "text-size": {
-          "stops": [
-            [15, 12],
-            [16, 13],
-            [17, 14]
-          ]
-        }
+        "text-size": {"stops": [[15, 12], [16, 13], [17, 14]]}
       },
-      "paint": { "text-halo-width": 0.5, "text-halo-color": "#FFFFFF" }
+      "paint": {"text-halo-width": 0.5, "text-halo-color": "#FFFFFF"}
     },
     {
       "id": "TXT_Gipl_wichtigNebVerb",
@@ -2101,17 +1926,10 @@
         "text-pitch-alignment": "auto",
         "text-rotation-alignment": "auto",
         "text-anchor": "center",
-        "text-size": {
-          "stops": [
-            [12, 11],
-            [15, 13],
-            [16, 14],
-            [17, 15]
-          ]
-        },
+        "text-size": {"stops": [[12, 11], [15, 13], [16, 14], [17, 15]]},
         "text-optional": false
       },
-      "paint": { "text-halo-width": 0.5, "text-halo-color": "#FFFFFF" }
+      "paint": {"text-halo-width": 0.5, "text-halo-color": "#FFFFFF"}
     },
     {
       "id": "TXT_Gipl_Hauptverbindung_blName",
@@ -2135,14 +1953,7 @@
         "text-pitch-alignment": "auto",
         "text-rotation-alignment": "auto",
         "text-anchor": "center",
-        "text-size": {
-          "stops": [
-            [11, 11],
-            [14, 13],
-            [15, 14],
-            [17, 16]
-          ]
-        }
+        "text-size": {"stops": [[11, 11], [14, 13], [15, 14], [17, 16]]}
       },
       "paint": {
         "text-halo-width": 0.5,
@@ -2172,14 +1983,7 @@
         "text-pitch-alignment": "auto",
         "text-rotation-alignment": "auto",
         "text-anchor": "center",
-        "text-size": {
-          "stops": [
-            [11, 11],
-            [14, 13],
-            [15, 14],
-            [17, 16]
-          ]
-        },
+        "text-size": {"stops": [[11, 11], [14, 13], [15, 14], [17, 16]]},
         "text-max-width": 10,
         "text-letter-spacing": 0
       },
@@ -2211,14 +2015,7 @@
         "text-pitch-alignment": "auto",
         "text-rotation-alignment": "auto",
         "text-anchor": "center",
-        "text-size": {
-          "stops": [
-            [11, 11],
-            [14, 13],
-            [15, 14],
-            [17, 16]
-          ]
-        }
+        "text-size": {"stops": [[11, 11], [14, 13], [15, 14], [17, 16]]}
       },
       "paint": {
         "text-halo-width": 0.5,
@@ -2247,14 +2044,7 @@
         "text-pitch-alignment": "auto",
         "text-rotation-alignment": "auto",
         "text-anchor": "center",
-        "text-size": {
-          "stops": [
-            [11, 11],
-            [14, 13],
-            [15, 14],
-            [17, 16]
-          ]
-        }
+        "text-size": {"stops": [[11, 11], [14, 13], [15, 14], [17, 16]]}
       },
       "paint": {
         "text-halo-width": 0.5,
@@ -2271,13 +2061,7 @@
       "layout": {
         "text-font": ["Roboto-Regular"],
         "text-field": "{feat_name}",
-        "text-size": {
-          "stops": [
-            [16, 10],
-            [17, 11],
-            [18, 12]
-          ]
-        }
+        "text-size": {"stops": [[16, 10], [17, 11], [18, 12]]}
       },
       "paint": {
         "text-color": "rgba(113, 15, 15, 1)",
