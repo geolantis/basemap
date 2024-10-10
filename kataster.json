@@ -1,0 +1,255 @@
+{
+  "version": 8,
+  "name": "Grundstuecke_Kataster",
+  "metadata": { "maputnik:renderer": "mbgljs" },
+  "center": [13.8853, 46.7568],
+  "zoom": 10,
+  "sources": {
+    "gst_bev-source": {
+      "type": "vector",
+      "url": "https://gis.ktn.gv.at/osgdi/tilesets/gst_bev.json"
+    }
+  },
+  "sprite": "https://gis.ktn.gv.at/osgdi/sprites/dkm_sprite",
+  "glyphs": "https://gis.ktn.gv.at/osgdi/glyphs/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "gst_bev_fill",
+      "type": "fill",
+      "source": "gst_bev-source",
+      "source-layer": "gst_bev",
+      "minzoom": 13,
+      "maxzoom": 24,
+      "layout": { "visibility": "visible" },
+      "paint": {
+        "fill-outline-color": "black",
+        "fill-color": "rgba(255, 255, 255, 1)",
+        "fill-opacity": 0
+      }
+    },
+    {
+      "id": "gst_bev_line",
+      "type": "line",
+      "source": "gst_bev-source",
+      "source-layer": "gst_bev",
+      "minzoom": 13,
+      "maxzoom": 24,
+      "layout": { "visibility": "visible" },
+      "paint": {
+        "line-width": {
+          "stops": [
+            [13, 0.6],
+            [15, 0.8]
+          ]
+        }
+      }
+    },
+    {
+      "id": "nsl_bev",
+      "type": "line",
+      "source": "gst_bev-source",
+      "source-layer": "nsl_bev",
+      "minzoom": 15,
+      "maxzoom": 24,
+      "paint": {
+        "line-color": [
+          "case",
+          ["==", 4, ["number", ["get", "nsl"]]],
+          "#0070ff",
+          ["==", 1, ["number", ["get", "nsl"]]],
+          "#55ff00",
+          "#ff0000"
+        ],
+        "line-width": 0.8
+      }
+    },
+    {
+      "id": "gem_gen",
+      "type": "line",
+      "source": "gst_bev-source",
+      "source-layer": "grenzen_l",
+      "minzoom": 6,
+      "maxzoom": 24,
+      "layout": {},
+      "paint": { "line-color": "rgba(0, 101, 249, 1)", "line-width": 2 }
+    },
+    {
+      "id": "gem_gen_label",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "gem_gen",
+      "minzoom": 12,
+      "maxzoom": 19,
+      "layout": {
+        "text-font": ["Roboto-Bold"],
+        "text-field": "{gemnam}",
+        "text-size": 14,
+        "symbol-placement": "point",
+        "symbol-z-order": "auto",
+        "symbol-avoid-edges": false,
+        "text-justify": "auto",
+        "text-anchor": "center"
+      },
+      "paint": {
+        "text-color": "rgba(0, 101, 249, 1)",
+        "text-halo-color": "rgba(77, 206, 247, 1)",
+        "text-halo-width": 0.5
+      }
+    },
+    {
+      "id": "nsy_bev",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "nsy_bev",
+      "minzoom": 15,
+      "maxzoom": 24,
+      "layout": {
+        "icon-image": "{sym_character}",
+        "icon-size": {
+          "stops": [
+            [15, 0.25],
+            [16, 0.3],
+            [17, 0.4],
+            [18, 0.5]
+          ]
+        },
+        "icon-offset": [0, 20],
+        "visibility": "visible",
+        "text-allow-overlap": true
+      }
+    },
+    {
+      "id": "ssb_bev",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "ssb_bev",
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "icon-image": "{sym_character}",
+        "icon-rotate": ["get", "rot_nr"],
+        "text-justify": "center",
+        "icon-rotation-alignment": "map",
+        "icon-text-fit": "none",
+        "icon-anchor": "center",
+        "icon-size": {
+          "stops": [
+            [6, 0.25],
+            [16, 0.3],
+            [17, 0.4],
+            [18, 0.5]
+          ]
+        },
+        "icon-offset": [0, 20],
+        "text-allow-overlap": true,
+        "visibility": "visible",
+        "icon-allow-overlap": true
+      }
+    },
+    {
+      "id": "ssg_bev",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "sgg_bev",
+      "minzoom": 17,
+      "maxzoom": 24,
+      "layout": {
+        "icon-image": "{sym_character}",
+        "icon-size": {
+          "stops": [
+            [6, 0.25],
+            [16, 0.3],
+            [17, 0.4],
+            [18, 0.5]
+          ]
+        },
+        "text-allow-overlap": true,
+        "visibility": "none",
+        "icon-offset": [0, 20]
+      }
+    },
+    {
+      "id": "fpt_bev",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "fpt_bev",
+      "minzoom": 15,
+      "maxzoom": 24,
+      "layout": {
+        "icon-image": "{sym_character}",
+        "icon-offset": [0, 20],
+        "icon-size": {
+          "stops": [
+            [15, 0.3],
+            [16, 0.4],
+            [17, 0.5],
+            [18, 0.6]
+          ]
+        },
+        "text-allow-overlap": true,
+        "icon-allow-overlap": true
+      }
+    },
+    {
+      "id": "gst_bev_label",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "gst_bev",
+      "minzoom": 15.5,
+      "maxzoom": 24,
+      "layout": {
+        "visibility": "visible",
+        "text-field": "{gnr}",
+        "text-font": ["Roboto-Regular"],
+        "text-size": 11,
+        "text-allow-overlap": true
+      },
+      "paint": {
+        "text-halo-color": "rgba(251, 247, 247, 1)",
+        "text-halo-width": 2
+      }
+    },
+    {
+      "id": "sgg_bev_label",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "sgg_bev",
+      "minzoom": 18,
+      "maxzoom": 24,
+      "layout": {
+        "text-font": ["Roboto-Thin"],
+        "text-field": "{pnr}",
+        "text-size": 10,
+        "text-anchor": "bottom-left",
+        "visibility": "none"
+      },
+      "paint": {
+        "text-halo-color": "rgba(255, 255, 255, 1)",
+        "text-halo-width": 1
+      }
+    },
+    {
+      "id": "fpt_bev_label",
+      "type": "symbol",
+      "source": "gst_bev-source",
+      "source-layer": "fpt_bev",
+      "minzoom": 16.9,
+      "maxzoom": 24,
+      "layout": {
+        "text-font": ["Roboto-Bold"],
+        "text-field": "{pnr}",
+        "text-size": 12,
+        "text-anchor": "bottom-left",
+        "text-justify": "auto",
+        "visibility": "visible",
+        "text-offset": [0.5, -0.5]
+      },
+      "paint": {
+        "text-color": "rgba(129, 60, 0, 1)",
+        "text-halo-color": "rgba(249, 249, 12, 1)",
+        "text-halo-width": 1
+      }
+    }
+  ],
+  "id": "g5z2cq4x7"
+}
