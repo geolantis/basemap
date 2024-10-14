@@ -349,7 +349,7 @@
       "minzoom": 10,
       "filter": ["all", ["==", "class", "aerodrome"]],
       "layout": {"visibility": "visible"},
-      "paint": {"fill-color": "rgba(224, 224, 224, 0.7)"}
+      "paint": {"fill-color": "rgba(224, 224, 224, 0.7)", "fill-opacity": 0.1}
     },
     {
       "id": "Aeroway-Airstrip-Sealed",
@@ -361,7 +361,8 @@
       "layout": {"visibility": "visible"},
       "paint": {
         "fill-color": "rgba(209, 209, 209, 0.5)",
-        "fill-antialias": false
+        "fill-antialias": false,
+        "fill-opacity": 0.1
       }
     },
     {
@@ -1145,7 +1146,8 @@
           ]
         },
         "line-gap-width": 0,
-        "line-color": "rgba(255, 254, 252, 1)"
+        "line-color": "rgba(255, 254, 252, 1)",
+        "line-opacity": 0.1
       }
     },
     {
@@ -1174,7 +1176,8 @@
           ]
         },
         "line-gap-width": 0,
-        "line-color": "rgba(255, 254, 252, 1)"
+        "line-color": "rgba(255, 254, 252, 1)",
+        "line-opacity": 0.1
       }
     },
     {
