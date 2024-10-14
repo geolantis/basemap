@@ -1241,7 +1241,8 @@
           ]
         },
         "line-gap-width": 0,
-        "line-color": {"stops": [[10, "#fff"], [17, "#fff"], [19, "#fff"]]}
+        "line-color": {"stops": [[10, "#fff"], [17, "#fff"], [19, "#fff"]]},
+        "line-opacity": 0.1
       }
     },
     {
