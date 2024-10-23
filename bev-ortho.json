@@ -2,6 +2,8 @@
   "version": 8,
   "name": "Österreichischer Kataster",
   "metadata": {"maputnik:renderer": "mlgljs"},
+  "center": [13.8853, 46.7568],
+  "zoom": 8.5,
   "sources": {
     "kataster": {
       "type": "vector",
