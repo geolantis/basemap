@@ -15,9 +15,8 @@
         "https://mapsneu.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg"
       ],
       "minzoom": 0,
-      "maxzoom": 19,
-      "scheme": "xyz",
-      "tileSize": 256
+      "maxzoom": 24,
+      "scheme": "xyz"
     }
   },
   "sprite": "https://kataster.bev.gv.at/styles/sprite",
