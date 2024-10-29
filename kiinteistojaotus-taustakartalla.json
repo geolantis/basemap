@@ -1,9 +1,9 @@
 {
   "version": 8,
   "name": "kiinteisto-avoin",
-  "center": [24.91769,60.169455],
+  "metadata": {"maputnik:renderer": "mlgljs"},
+  "center": [24.91769, 60.169455],
   "zoom": 15,
-  "glyphs": "https://beta-karttakuva.maanmittauslaitos.fi/glyphs/{fontstack}/{range}.pbf",
   "sources": {
     "rasteritaustakartta": {
       "type": "raster",
@@ -17,45 +17,33 @@
       "url": "https://avoin-karttakuva.maanmittauslaitos.fi/kiinteisto-avoin/v3/kiinteistojaotus/WGS84_Pseudo-Mercator/tilejson.json?api-key=98b6b001-9397-4604-9f43-db9e7c94ccab"
     }
   },
+  "glyphs": "https://beta-karttakuva.maanmittauslaitos.fi/glyphs/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
       "type": "background",
-      "paint": {
-        "background-color": "white"
-      }
+      "paint": {"background-color": "white"}
     },
-    {
-      "id": "taustakartta",
-      "type": "raster",
-      "source": "rasteritaustakartta"
-    },
+    {"id": "taustakartta", "type": "raster", "source": "rasteritaustakartta"},
     {
       "id": "PalstanSijaintitiedot",
       "type": "fill",
       "source": "kiinteisto-avoin",
       "source-layer": "PalstanSijaintitiedot",
       "minzoom": 9,
-      "paint": {
-        "fill-color": "rgba(255,255,255,0.05)"
-      }
+      "paint": {"fill-color": "rgba(255,255,255,0.05)"}
     },
     {
       "id": "KiinteistorajanSijaintitiedot",
       "type": "line",
       "source": "kiinteisto-avoin",
       "source-layer": "KiinteistorajanSijaintitiedot",
-      "filter": [
-        "==",
-        [
-          "geometry-type"
-        ],
-        "LineString"
-      ],
       "minzoom": 9,
+      "filter": ["==", ["geometry-type"], "LineString"],
       "paint": {
-        "line-color": "rgba(255,0,0,1)",
-        "line-width": 1
+        "line-color": "rgba(179, 176, 176, 1)",
+        "line-width": 1,
+        "line-opacity": 0.8
       }
     },
     {
@@ -64,17 +52,12 @@
       "source": "kiinteisto-avoin",
       "source-layer": "RajamerkinSijaintitiedot",
       "minzoom": 11,
-      "filter": [
-        "==",
-        [
-          "geometry-type"
-        ],
-        "Point"
-      ],
+      "filter": ["==", ["geometry-type"], "Point"],
       "paint": {
         "circle-stroke-color": "rgba(255,255,255,1)",
-        "circle-color": "rgba(255,0,0,1)",
-        "circle-radius": 3
+        "circle-color": "rgba(107, 107, 107, 1)",
+        "circle-radius": 3,
+        "circle-opacity": 0.8
       }
     },
     {
@@ -85,9 +68,7 @@
       "minzoom": 12,
       "layout": {
         "text-field": "{kiinteistotunnuksenEsitysmuoto}",
-        "text-font": [
-          "Liberation Sans NLSFI"
-        ],
+        "text-font": ["Liberation Sans NLSFI"],
         "symbol-placement": "point",
         "text-size": 16
       },
@@ -106,9 +87,7 @@
       "minzoom": 12,
       "layout": {
         "text-field": "{numero}",
-        "text-font": [
-          "Liberation Sans NLSFI"
-        ],
+        "text-font": ["Liberation Sans NLSFI"],
         "symbol-placement": "point",
         "text-size": 12
       },
