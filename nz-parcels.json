@@ -1,0 +1,242 @@
+{
+  "version": 8,
+  "name": "topolite",
+  "metadata": {"maputnik:renderer": "mbgljs"},
+  "light": {"color": "rgba(181, 29, 29, 1)"},
+  "terrain": {"source": "LINZ-Terrain", "exaggeration": 1.2},
+  "sources": {
+    "LINZ Basemaps": {
+      "type": "vector",
+      "attribution": "© 2022 Toitū Te Whenua - CC BY 4.0",
+      "url": "https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/tile.json?api=c01j9kgtq3hq9yb59c22gnr6k64"
+    },
+    "LINZ-Texture-Relief": {
+      "tiles": [
+        "https://basemaps.linz.govt.nz/v1/tiles/texturereliefshade/EPSG:3857/{z}/{x}/{y}.webp?api=c01j9kgtq3hq9yb59c22gnr6k64"
+      ],
+      "type": "raster",
+      "minzoom": 0,
+      "maxzoom": 28,
+      "tileSize": 256
+    },
+    "LINZ-Terrain": {
+      "type": "raster-dem",
+      "tileSize": 256,
+      "maxzoom": 28,
+      "tiles": [
+        "https://basemaps.linz.govt.nz/v1/tiles/elevation/WebMercatorQuad/{z}/{x}/{y}.png?api=c01j9kgtq3hq9yb59c22gnr6k64&pipeline=terrain-rgb"
+      ]
+    },
+    "#LINZAerial": {
+      "type": "raster",
+      "tiles": [
+        "https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/{z}/{x}/{y}.webp?api=c01j9kgtq3hq9yb59c22gnr6k64"
+      ],
+      "minzoom": 0,
+      "maxzoom": 24,
+      "scheme": "xyz"
+    }
+  },
+  "sprite": "https://basemaps.linz.govt.nz/v1/sprites/topographic",
+  "glyphs": "https://basemaps.linz.govt.nz/v1/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "Landuse-Landfill",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "landuse",
+      "minzoom": 12,
+      "filter": ["all", ["==", "class", "landfill"]],
+      "paint": {
+        "fill-color": "rgba(143, 104, 55, 0.45)",
+        "fill-antialias": true
+      }
+    },
+    {
+      "id": "Landuse-Pond",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "landuse",
+      "minzoom": 10,
+      "filter": [
+        "all",
+        ["==", "class", "wetland"],
+        ["==", "wetland_feature", "pond"]
+      ],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "fill-color": "rgba(184, 220, 242, 1)",
+        "fill-outline-color": {
+          "stops": [
+            [6, "rgba(184, 220, 242, 1)"],
+            [13, "rgba(0, 140, 204, 0.3)"],
+            [19, "rgba(0, 140, 204, 1)"]
+          ]
+        }
+      }
+    },
+    {
+      "id": "Landuse-Reservoir-Covered",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "landuse",
+      "minzoom": 10,
+      "filter": [
+        "all",
+        ["==", "class", "reservoir"],
+        ["==", "lid_type", "covered"]
+      ],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "fill-color": "rgba(148, 148, 148, 1)",
+        "fill-outline-color": "rgba(18, 18, 18, 1)"
+      }
+    },
+    {
+      "id": "Landuse-Reservoir-Empty",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "landuse",
+      "minzoom": 10,
+      "filter": [
+        "all",
+        ["==", "class", "reservoir"],
+        ["!=", "lid_type", "covered"]
+      ],
+      "paint": {
+        "fill-color": "rgba(184, 220, 242, 1)",
+        "fill-outline-color": "rgba(18, 18, 18, 1)"
+      }
+    },
+    {
+      "id": "Poi-FishFarm",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "filter": ["all", ["==", "class", "fish_farm"]],
+      "layout": {"visibility": "visible"},
+      "paint": {"fill-color": "rgb(112,172,242)"}
+    },
+    {
+      "id": "Poi-SportsField",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "filter": ["all", ["==", "class", "sports_field"]],
+      "paint": {"fill-color": "rgba(121, 195, 128, 0.2)"}
+    },
+    {
+      "id": "Poi-Storage-Tank-Empty",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "minzoom": 0,
+      "filter": [
+        "all",
+        ["==", "class", "storage_tank"],
+        ["!has", "store_item"]
+      ],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "fill-color": {
+          "stops": [
+            [6, "rgba(240, 240, 240, 0.85)"],
+            [10, "rgba(240, 240, 240, 0.85)"]
+          ]
+        },
+        "fill-opacity": {"stops": [[14, 1], [20, 0.2]]},
+        "fill-antialias": true,
+        "fill-outline-color": "rgba(67, 67, 67, 1)"
+      }
+    },
+    {
+      "id": "Poi-Siphon",
+      "type": "fill",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "minzoom": 12,
+      "filter": ["all", ["==", "class", "siphon"]]
+    },
+    {
+      "id": "Poi-Tank-Pt-Fill-Empty",
+      "type": "circle",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "minzoom": 10,
+      "filter": [
+        "all",
+        ["==", "class", "storage_tank_pt"],
+        ["!has", "store_item"]
+      ],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "circle-opacity": {"stops": [[14, 1], [20, 0.2]]},
+        "circle-radius": {"stops": [[12, 1.5], [15, 3.5]]},
+        "circle-color": "rgba(255, 255, 255, 1)",
+        "circle-pitch-alignment": "map"
+      }
+    },
+    {
+      "id": "Poi-Dredge-Tailing",
+      "type": "line",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "minzoom": 12,
+      "filter": ["all", ["==", "class", "dredge_tailing"]],
+      "paint": {
+        "line-opacity": 0.9,
+        "line-width": 10,
+        "line-pattern": "dredge_tailing_pnt",
+        "line-color": "rgba(55, 55, 55, 1)"
+      }
+    },
+    {
+      "id": "Poi-Slipway-Symbol-Dash",
+      "type": "line",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "filter": ["all", ["==", "class", "slipway"]],
+      "paint": {
+        "line-width": {"stops": [[12, 1], [16, 4]]},
+        "line-color": "rgba(64, 64, 64, 1)"
+      }
+    },
+    {
+      "id": "Poi-Slipway-Symbol-Line",
+      "type": "line",
+      "source": "LINZ Basemaps",
+      "source-layer": "poi",
+      "filter": ["all", ["==", "class", "slipway"]],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-width": {"stops": [[12, 4], [16, 18]]},
+        "line-color": "rgba(64, 64, 64, 1)",
+        "line-dasharray": [0.15, 0.4]
+      }
+    },
+    {
+      "id": "Parcels-Ln",
+      "type": "line",
+      "source": "LINZ Basemaps",
+      "source-layer": "parcel_boundaries",
+      "minzoom": 15,
+      "filter": [
+        "none",
+        ["==", "parcel_intent", "Road"],
+        ["==", "parcel_intent", "Hydro"]
+      ],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-width": {"stops": [[8, 0.2], [16, 0.75], [24, 1.5]]},
+        "line-color": {
+          "stops": [
+            [8, "rgba(203, 203, 203, 1)"],
+            [16, "rgba(204, 204, 204, 1)"],
+            [24, "rgba(170, 170, 170, 1)"]
+          ]
+        }
+      }
+    }
+  ],
+  "id": "st_topolite"
+}
