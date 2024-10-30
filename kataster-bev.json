@@ -12,13 +12,7 @@
   "sprite": "https://kataster.bev.gv.at/styles/sprite",
   "glyphs": "https://kataster.bev.gv.at/styles/fonts/{fontstack}/{range}.pbf",
   "layers": [
-    {
-      "id": "Nutzungen - Flächen",
-      "type": "fill",
-      "source": "kataster",
-      "source-layer": "nfl",
-      "paint": {"fill-color": "rgba(0, 0, 0, 0.1)", "fill-opacity": 0.1}
-    },
+    
     {
       "id": "Grundstücke - Flächen",
       "type": "fill",
@@ -26,6 +20,13 @@
       "source-layer": "gst",
       "minzoom": 14,
       "paint": {"fill-color": "rgba(255, 255, 255, 0.4)", "fill-opacity": 0.1}
+    },
+    {
+      "id": "Nutzungen - Flächen",
+      "type": "fill",
+      "source": "kataster",
+      "source-layer": "nfl",
+      "paint": {"fill-color": "rgba(0, 0, 0, 0.1)", "fill-opacity": 0.1}
     },
     {
       "id": "Nutzungen - der Rest",
