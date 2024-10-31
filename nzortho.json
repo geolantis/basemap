@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "name": "nz-ortho",
+  "metadata": {"maputnik:renderer": "mbgljs"},
+  "terrain": {"source": "LINZ-Terrain", "exaggeration": 1.2},
+  "sources": {
+    "LINZ Basemaps": {
+      "type": "vector",
+      "attribution": "© 2022 Toitū Te Whenua - CC BY 4.0",
+      "url": "https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/tile.json?api=c01j9kgtq3hq9yb59c22gnr6k64"
+    },
+    "LINZ-Texture-Relief": {
+      "tiles": [
+        "https://basemaps.linz.govt.nz/v1/tiles/texturereliefshade/EPSG:3857/{z}/{x}/{y}.webp?api=c01j9kgtq3hq9yb59c22gnr6k64"
+      ],
+      "type": "raster",
+      "minzoom": 0,
+      "maxzoom": 28,
+      "tileSize": 256
+    },
+    "LINZ-Terrain": {
+      "type": "raster-dem",
+      "tileSize": 256,
+      "maxzoom": 28,
+      "tiles": [
+        "https://basemaps.linz.govt.nz/v1/tiles/elevation/WebMercatorQuad/{z}/{x}/{y}.png?api=c01j9kgtq3hq9yb59c22gnr6k64&pipeline=terrain-rgb"
+      ]
+    },
+    "#LINZAerial": {
+      "type": "raster",
+      "tiles": [
+        "https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/{z}/{x}/{y}.webp?api=c01j9kgtq3hq9yb59c22gnr6k64"
+      ],
+      "minzoom": 0,
+      "maxzoom": 24,
+      "scheme": "xyz"
+    }
+  },
+  "sprite": "https://basemaps.linz.govt.nz/v1/sprites/topographic",
+  "glyphs": "https://basemaps.linz.govt.nz/v1/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "#LINZAerial",
+      "type": "raster",
+      "source": "#LINZAerial",
+      "paint": {"raster-opacity": 1, "raster-fade-duration": 100}
+    }
+  ],
+  "id": "st_topolite"
+}
