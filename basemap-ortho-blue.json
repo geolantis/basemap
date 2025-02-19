@@ -274,7 +274,7 @@
       "minzoom": 13,
       "layout": {"visibility": "visible"},
       "paint": {
-        "line-color": "rgba(72, 161, 226, 1)",
+        "line-color": "rgba(72, 226, 200, 1)",
         "line-width": {"stops": [[14, 0.2], [20, 3]]}
       }
     },
@@ -1272,7 +1272,7 @@
       "minzoom": 14,
       "paint": {
         "fill-extrusion-height": ["get", "height"],
-        "fill-extrusion-color": "rgba(153, 227, 243, 1)",
+        "fill-extrusion-color": "rgba(255, 137, 247, 0.67)",
         "fill-extrusion-opacity": 0.8
       }
     },
