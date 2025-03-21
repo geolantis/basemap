@@ -790,7 +790,7 @@
             [19, 15]
           ]
         },
-        "line-opacity": 0.6
+        "line-opacity": 0.2
       }
     },
     {
@@ -1272,7 +1272,7 @@
       "minzoom": 14,
       "paint": {
         "fill-extrusion-height": ["get", "height"],
-        "fill-extrusion-color": "rgba(255, 137, 247, 0.67)",
+        "fill-extrusion-color": "rgba(41, 144, 231, 0.67)",
         "fill-extrusion-opacity": 0.8
       }
     },
