@@ -53,9 +53,9 @@
       { "level": 19, "resolution": 0.14929107082380849, "scale": 564.248588000000041 }
     ]
   },
-  "maxzoom": 19,
+  "maxzoom": 24,
   "minLOD": 0,
-  "maxLOD": 16,
+  "maxLOD": 20,
   "resourceInfo": {
     "styleVersion": 8,
     "cacheInfo": { "storageInfo": { "packetSize": 128, "storageFormat": "esriMapCacheStorageModeExploded" } },
