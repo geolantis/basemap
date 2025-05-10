@@ -20,7 +20,7 @@
         49.5752
       ],
       "minzoom": 0,
-      "maxzoom": 26,
+      "maxzoom": 16,
       "scheme": "xyz",
       "url": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/bm.json"
     }
