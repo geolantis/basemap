@@ -446,7 +446,7 @@
       },
       "source": "agrargis",
       "source-layer": "invekos_schlaege_bio_polygon",
-      "filter": [
+      
       "filter": [
   "any",
   ["==", "kz_bio_oepul_jn", "J"],
