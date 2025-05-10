@@ -7,7 +7,7 @@
       "type": "vector",
       "bounds": [8.8587, 45.7823, 17.1608, 49.5752],
       "minzoom": 0,
-      "maxzoom": 19,
+      "maxzoom": 25,
       "scheme": "xyz",
       "url": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemapv-bmapv-3857.json"
     }
