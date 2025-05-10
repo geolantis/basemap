@@ -434,27 +434,29 @@
       }
     },
     {
-      "id": "invekos_schlaege_polygon-bio",
-      "type": "fill",
-      "metadata": {
-        "label": "ÖPUL Bio-Schläge MFA 2024",
-        "warning": "Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist daher bei der Ausbringung von Betriebsmitteln auf Nachbarfeldstücken besondere Sorgfalt walten zu lassen",
-        "urlSort": 16,
-        "displaySort": 1,
-        "group": "one",
-        "category": "BIO"
-      },
-      "source": "agrargis",
-      "source-layer": "invekos_schlaege_bio_polygon",
-      
-      "filter": [
-  "any",
-  ["==", "kz_bio_oepul_jn", "J"],
-  ["!has", "kz_bio_oepul_jn"]
-],
-      "layout": {"visibility": "none"},
-      "paint": {"fill-color": "red", "fill-outline-color": "rgb(139, 0, 0)"}
-    },
+  "id": "invekos_schlaege_polygon-bio",
+  "type": "fill",
+  "metadata": {
+    "label": "ÖPUL Bio-Schläge MFA 2024",
+    "warning": "Die rot dargestellten Flächen werden biologisch bewirtschaftet. Es ist daher bei der Ausbringung von Betriebsmitteln auf Nachbarfeldstücken besondere Sorgfalt walten zu lassen",
+    "urlSort": 16,
+    "displaySort": 1,
+    "group": "one",
+    "category": "BIO"
+  },
+  "source": "agrargis",
+  "source-layer": "invekos_schlaege_bio_polygon",
+  "filter": [
+    "any",
+    ["==", "kz_bio_oepul_jn", "J"],
+    ["!has", "kz_bio_oepul_jn"]
+  ],
+  "layout": {"visibility": "none"},
+  "paint": {
+    "fill-color": "red",
+    "fill-outline-color": "rgb(139, 0, 0)"
+  }
+},
     {
       "id": "invekos_schlaege_polygon-line-selected",
       "type": "line",
