@@ -9,7 +9,7 @@
       "minzoom": 0,
       "maxzoom": 19,
       "scheme": "xyz",
-      "url": "basemapv-bmapv-3857.json"
+      "url": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemapv-bmapv-3857.json"
     }
   },
   "layers": [
