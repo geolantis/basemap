@@ -6,7 +6,7 @@
     "basemap-source": {
       "type": "raster",
       "tileSize": 256,
-      "maxzoom": 19,
+      "maxzoom": 25,
       "tiles": [
         "https://mapsneu.wien.gv.at/basemap/bmapgelaende/grau/google3857/{z}/{y}/{x}.jpeg"
       ]
