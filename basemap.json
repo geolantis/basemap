@@ -19,7 +19,7 @@
       "source": "esri",
       "source-layer": "NUTZUNG_L0-8",
       "filter": ["==", "_symbol", 1],
-      "maxzoom": 7,
+      "maxzoom": 8,
       "layout": {},
       "paint": { "fill-color": "rgba(71,179,18,0.25)" }
     },
