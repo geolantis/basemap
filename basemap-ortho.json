@@ -29,10 +29,6 @@
       "buffer": 256,
       "url": "https://gis.ktn.gv.at/osgdi/tilesets/basemap_3d.json"
     },
-    "open_zoomstack": {
-      "type": "vector",
-      "url": "https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/data/vector/open-zoomstack/config.json"
-    },
     "vbtltrp": {
       "type": "vector",
       "url": "https://kataster.bev.gv.at/styles/kataster/tiles.json"
