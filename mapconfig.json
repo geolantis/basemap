@@ -327,6 +327,274 @@
         "maxzoom": 24,
         "country": "Luxembourg"
       },
+        "ItalyOrtofoto": {
+  "name": "Italy Ortofoto",
+  "type": "raster",
+  "tiles": [
+    "https://wms.pcn.minambiente.it/ogc?map=/ms_ogc/WMS_v1.3/raster/ortofoto_colore_12.map&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&LAYERS=OI.ORTOIMMAGINI.2012&STYLES=&FORMAT=image/jpeg&DPI=96&MAP_RESOLUTION=96&FORMAT_OPTIONS=dpi:96"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Geoportale Nazionale",
+  "label": "Italy Ortofoto 2012",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"ItalyIGM": {
+  "name": "Italy IGM",
+  "type": "raster",
+  "tiles": [
+    "https://wms.igm.it/raster/igm25k?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&LAYERS=CB.IGM25K&STYLES=&FORMAT=image/png&DPI=96&MAP_RESOLUTION=96&FORMAT_OPTIONS=dpi:96"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© IGM",
+  "label": "Italy IGM 25K",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"ItalyCadastre": {
+  "name": "Italy Cadastre",
+  "type": "wms",
+  "url": "https://wms.cartografia.agenziaentrate.gov.it/inspire/wms/ows01.php",
+  "layers": "CP.CadastralParcel",
+  "format": "image/png",
+  "transparent": true,
+  "version": "1.3.0",
+  "country": "Italy",
+  "flag": "🇮🇹",
+  "label": "Italy Cadastre",
+  "attribution": "© Agenzia delle Entrate"
+},
+
+"SouthTyrolOrtho": {
+  "name": "South Tyrol Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://geoservices.buergernetz.bz.it/geoserver/gwc/service/wmts?layer=p_bz-orthoimagery:Orthoimagery_2020_2022&style=&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix={z}&TileCol={x}&TileRow={y}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 20,
+  "attribution": "© Provincia Autonoma di Bolzano",
+  "label": "South Tyrol Ortho",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"SouthTyrolTopo": {
+  "name": "South Tyrol Topo",
+  "type": "raster",
+  "tiles": [
+    "https://geoservices.buergernetz.bz.it/geoserver/gwc/service/wmts?layer=p_bz-base_map:base_map&style=&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix={z}&TileCol={x}&TileRow={y}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 20,
+  "attribution": "© Provincia Autonoma di Bolzano",
+  "label": "South Tyrol Topo",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"LombardyCTR": {
+  "name": "Lombardy CTR",
+  "type": "raster",
+  "tiles": [
+    "https://www.cartografia.servizirl.it/arcgis/rest/services/wms/ctr_wms/MapServer/WMTS/tile/1.0.0/wms_ctr_wms/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Regione Lombardia",
+  "label": "Lombardy CTR",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"LombardyOrtho": {
+  "name": "Lombardy Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://www.cartografia.servizirl.it/arcgis/rest/services/wms/ortofoto_2021_wms/MapServer/WMTS/tile/1.0.0/wms_ortofoto_2021_wms/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Lombardia",
+  "label": "Lombardy Ortho 2021",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"PiedmontBase": {
+  "name": "Piedmont Base",
+  "type": "raster",
+  "tiles": [
+    "https://wmts.geo.piemonte.it/rp-01/rest/services/pubblica/BDTRE_2021_WMTS/MapServer/WMTS/tile/1.0.0/pubblica_BDTRE_2021_WMTS/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Piemonte",
+  "label": "Piedmont BDTRE",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"PiedmontOrtho": {
+  "name": "Piedmont Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://wmts.geo.piemonte.it/rp-01/rest/services/pubblica/RIPRESA_AEREA_ICE_2021_RGB_WMTS/MapServer/WMTS/tile/1.0.0/pubblica_RIPRESA_AEREA_ICE_2021_RGB_WMTS/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Piemonte",
+  "label": "Piedmont Ortho 2021",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"TuscanyOrtho": {
+  "name": "Tuscany Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://www502.regione.toscana.it/geoscopio/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=rt_ofc.10k10.ortofoto.2019.32632&STYLE=default&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Toscana",
+  "label": "Tuscany Ortho 2019",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"TuscanyCTR": {
+  "name": "Tuscany CTR",
+  "type": "raster",
+  "tiles": [
+    "https://www502.regione.toscana.it/geoscopio/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=rt_cartoteca.ctr10k&STYLE=default&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Regione Toscana",
+  "label": "Tuscany CTR 10K",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"VenetoOrtho": {
+  "name": "Veneto Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://idt2.regione.veneto.it/gwc/service/wmts?layer=rv:OrthoPhoto_2018_WMTS&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Veneto",
+  "label": "Veneto Ortho 2018",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"VenetoCTR": {
+  "name": "Veneto CTR",
+  "type": "raster",
+  "tiles": [
+    "https://idt2.regione.veneto.it/gwc/service/wmts?layer=c0105010_CartaTecnicaRegionale10K&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Regione Veneto",
+  "label": "Veneto CTR",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"EmiliaRomagnaBase": {
+  "name": "Emilia-Romagna Base",
+  "type": "raster",
+  "tiles": [
+    "https://servizigis.regione.emilia-romagna.it/arcgis/rest/services/base/mosaico_carte_topografiche_250k_100k_50k_25k/MapServer/WMTS/tile/1.0.0/base_mosaico_carte_topografiche_250k_100k_50k_25k/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Regione Emilia-Romagna",
+  "label": "Emilia-Romagna Topo",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"EmiliaRomagnaOrtho": {
+  "name": "Emilia-Romagna Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://servizigis.regione.emilia-romagna.it/arcgis/rest/services/base/ortofoto_2020_rgb/MapServer/WMTS/tile/1.0.0/base_ortofoto_2020_rgb/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Emilia-Romagna",
+  "label": "Emilia-Romagna Ortho 2020",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"LiguriaOrtho": {
+  "name": "Liguria Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://geoportale.regione.liguria.it/geoserver/gwc/service/wmts?layer=geoserver:ortofoto_2020&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Liguria",
+  "label": "Liguria Ortho 2020",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"SicilyOrtho": {
+  "name": "Sicily Ortho",
+  "type": "raster",
+  "tiles": [
+    "https://map.sitr.regione.sicilia.it/arcgis/rest/services/WGS84_F33/Ortofoto_2012_2013/MapServer/WMTS/tile/1.0.0/WGS84_F33_Ortofoto_2012_2013/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Regione Siciliana",
+  "label": "Sicily Ortho",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
+
+"SardiniaCTR": {
+  "name": "Sardinia CTR",
+  "type": "raster",
+  "tiles": [
+    "https://webgis2.regione.sardegna.it/geoserver/gwc/service/wmts?layer=temi:sfondo_10k&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Regione Sardegna",
+  "label": "Sardinia CTR",
+  "flag": "🇮🇹",
+  "country": "Italy"
+},
       "LuxembourgTopo": {
         "name": "Luxembourg Topo",
         "style": "https://vectortiles-mobiliteit.geoportail.lu/styles/topomap_gray/style.json",
