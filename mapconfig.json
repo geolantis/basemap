@@ -529,6 +529,20 @@
   "flag": "🇨🇦",
   "country": "Canada"
 },
+        "USGSImageryOnly": {
+  "name": "USGS Imagery Only",
+  "type": "raster",
+  "tiles": [
+    "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/tile/1.0.0/USGSImageryOnly/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© USGS",
+  "label": "USGS Imagery",
+  "flag": "🇺🇸",
+  "country": "USA"
+},
         
       "VictoriaWMTS": {
         "name": "Victoria Imagery",
