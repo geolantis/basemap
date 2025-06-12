@@ -445,8 +445,35 @@
         "flag": "🇪🇸",
         "label": "ICGC (Catalunya) Standard"
       },
-        "BCImagery": {
+        "CanTopo": {
+  "name": "CanTopo",
+  "type": "raster",
+  "tiles": [
+    "https://maps-cartes.services.geo.ca/server2_serveur2/rest/services/BaseMaps/CBMT_TXT_3978/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT_TXT_3978/default/default028mm/{z}/{y}/{x}.jpg"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Natural Resources Canada",
+  "label": "CanTopo",
+  "flag": "🇨🇦",
+  "country": "Canada"
+},"CanadaSentinel2": {
+  "name": "Canada Sentinel-2",
+  "type": "raster",
+  "tiles": [
+    "https://datacube-prod-data-public.s3.ca-central-1.amazonaws.com/store/imagery/optical/canada-20m-2020/{z}/{x}/{y}.png"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 14,
+  "attribution": "© Canada Centre for Mapping and Earth Observation",
+  "label": "Canada Sentinel-2 2020",
+  "flag": "🇨🇦",
+  "country": "Canada"
+},"BCImagery": {
   "name": "BC Imagery",
+  "type": "raster",
   "tiles": [
     "https://maps.gov.bc.ca/arcgis/rest/services/province/web_mercator_cache/MapServer/WMTS/tile/1.0.0/province_web_mercator_cache/default/GoogleMapsCompatible/{z}/{y}/{x}"
   ],
@@ -455,12 +482,12 @@
   "maxzoom": 18,
   "attribution": "© Province of British Columbia",
   "label": "BC Imagery",
-  "type": "wmts",
   "flag": "🇨🇦",
   "country": "Canada"
-},
-"OntarioImagery": {
+} ,
+        "OntarioImagery": {
   "name": "Ontario Imagery",
+  "type": "raster",
   "tiles": [
     "https://ws.giscoeapp.lrc.gov.on.ca/arcgis/rest/services/imagery/Ontario_Imagery/MapServer/WMTS/tile/1.0.0/imagery_Ontario_Imagery/default/GoogleMapsCompatible/{z}/{y}/{x}"
   ],
@@ -469,10 +496,23 @@
   "maxzoom": 19,
   "attribution": "© Queen's Printer for Ontario",
   "label": "Ontario Imagery",
-  "type": "wmts",
+  "flag": "🇨🇦",
+  "country": "Canada"
+},"CanadaNRCanWMTS": {
+  "name": "Canada NRCan",
+  "type": "raster",
+  "tiles": [
+    "https://maps.geogratis.gc.ca/wms/canvec_en?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&LAYERS=canvec&STYLES=&FORMAT=image/png&DPI=96&MAP_RESOLUTION=96&FORMAT_OPTIONS=dpi:96&TRANSPARENT=TRUE"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Natural Resources Canada",
+  "label": "Canada NRCan",
   "flag": "🇨🇦",
   "country": "Canada"
 },
+        
       "VictoriaWMTS": {
         "name": "Victoria Imagery",
         "type": "raster",
