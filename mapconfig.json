@@ -445,6 +445,33 @@
         "flag": "🇪🇸",
         "label": "ICGC (Catalunya) Standard"
       },
+        "BCImagery": {
+  "name": "BC Imagery",
+  "tiles": [
+    "https://maps.gov.bc.ca/arcgis/rest/services/province/web_mercator_cache/MapServer/WMTS/tile/1.0.0/province_web_mercator_cache/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 18,
+  "attribution": "© Province of British Columbia",
+  "label": "BC Imagery",
+  "type": "wmts",
+  "flag": "🇨🇦",
+  "country": "Canada"
+},"OntarioImagery": {
+  "name": "Ontario Imagery",
+  "tiles": [
+    "https://ws.giscoeapp.lrc.gov.on.ca/arcgis/rest/services/imagery/Ontario_Imagery/MapServer/WMTS/tile/1.0.0/imagery_Ontario_Imagery/default/GoogleMapsCompatible/{z}/{y}/{x}"
+  ],
+  "tileSize": 256,
+  "minzoom": 0,
+  "maxzoom": 19,
+  "attribution": "© Queen's Printer for Ontario",
+  "label": "Ontario Imagery",
+  "type": "wmts",
+  "flag": "🇨🇦",
+  "country": "Canada"
+},
       "VictoriaWMTS": {
         "name": "Victoria Imagery",
         "type": "raster",
