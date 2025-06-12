@@ -458,7 +458,8 @@
   "type": "wmts",
   "flag": "🇨🇦",
   "country": "Canada"
-},"OntarioImagery": {
+},
+"OntarioImagery": {
   "name": "Ontario Imagery",
   "tiles": [
     "https://ws.giscoeapp.lrc.gov.on.ca/arcgis/rest/services/imagery/Ontario_Imagery/MapServer/WMTS/tile/1.0.0/imagery_Ontario_Imagery/default/GoogleMapsCompatible/{z}/{y}/{x}"
