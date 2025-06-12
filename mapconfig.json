@@ -471,20 +471,23 @@
   "label": "Canada Sentinel-2 2020",
   "flag": "🇨🇦",
   "country": "Canada"
-},"BCImagery": {
-  "name": "BC Imagery",
-  "type": "raster",
-  "tiles": [
-    "https://maps.gov.bc.ca/arcgis/rest/services/province/web_mercator_cache/MapServer/WMTS/tile/1.0.0/province_web_mercator_cache/default/GoogleMapsCompatible/{z}/{y}/{x}"
-  ],
-  "tileSize": 256,
-  "minzoom": 0,
-  "maxzoom": 18,
-  "attribution": "© Province of British Columbia",
-  "label": "BC Imagery",
-  "flag": "🇨🇦",
-  "country": "Canada"
-} ,
+},
+        "BCImagery": {
+        "name": "BC Imagery",
+        "type": "wms",
+        "url": "https://openmaps.gov.bc.ca/geo/pub/WHSE_IMAGERY_AND_BASE_MAPS.GSR_ORTHOIMAGERY_MOSAIC_2022/ows",
+        "layers": "WHSE_IMAGERY_AND_BASE_MAPS.GSR_ORTHOIMAGERY_MOSAIC_2022",
+        "format": "image/png",
+        "transparent": true,
+        "version": "1.1.1",
+        "tileSize": 256,
+        "minzoom": 0,
+        "maxzoom": 18,
+        "attribution": "© Province of British Columbia",
+        "label": "BC Imagery 2022",
+        "flag": "🇨🇦",
+        "country": "Canada"
+      },
         "OntarioImagery": {
   "name": "Ontario Imagery",
   "type": "raster",
