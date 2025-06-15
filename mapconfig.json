@@ -946,6 +946,15 @@
         "flag": "🇦🇹",
         "label": "Kataster BEV2"
       },
+"KatasterKTNLight": {
+        "name": "KatasterKTNLight",
+        "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/gst_bev.json",
+        "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/grundstuecke_kataster-ktn-light.json",
+        "selectLayer": "gst_bev_fill",
+        "country": "Austria",
+        "flag": "🇦🇹",
+        "label": "Kataster KTN Light"
+      },
       "Kataster OVL": {
         "name": "Kataster OVL",
         "tileset": "https://kataster.bev.gv.at/styles/kataster/tiles.json",
