@@ -104,6 +104,17 @@
         "label": "Basemap Ortho",
         "type": "vtc"
       },
+,
+      "Basemap Ortho KTN": {
+        "name": "Basemap Ortho KTN",
+        "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemapktn-ortho.json",
+        "country": "Austria",
+        "flag": "🇦🇹",
+        "label": "Basemap Ortho KTN",
+        "type": "vtc"
+      },
+
+        
       "BEVLight": {
         "name": "BEVLight",
         "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-light.json",
