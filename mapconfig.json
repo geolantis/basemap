@@ -27,7 +27,7 @@
       "BasemapDEGlobal": {
         "name": "BasemapDEGlobal",
         "style": "https://sgx.geodatenzentrum.de/gdz_basemapworld_vektor/styles/bm_web_wld_col.json",
-        "label": "Basemap DE Global",
+        "label": "Basemap.de Global",
         "type": "vtc",
         "flag": "🌐",
         "country": "Global"
