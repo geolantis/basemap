@@ -24,6 +24,14 @@
         "flag": "🌐",
         "country": "Global"
       },
+      "BasemapDEGlobal": {
+        "name": "BasemapDEGlobal",
+        "style": "https://sgx.geodatenzentrum.de/gdz_basemapworld_vektor/styles/bm_web_wld_col.json",
+        "label": "Basemap DE Global",
+        "type": "vtc",
+        "flag": "🌐",
+        "country": "Global"
+      },
       "Ocean": {
         "name": "Ocean",
         "style": "https://api.maptiler.com/maps/ocean/style.json?key=ldV32HV5eBdmgfE7vZJI",
