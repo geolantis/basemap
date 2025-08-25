@@ -1009,7 +1009,7 @@
         "selectLayer": "gst_bev_fill",
         "country": "Austria",
         "flag": "🇦🇹",
-        "label": "Kataster"
+        "label": "KTN Kataster"
       },
       "Kataster BEV": {
         "name": "Kataster BEV",
@@ -1019,7 +1019,7 @@
         "selectLayer": "Grundstücke - Flächen",
         "country": "Austria",
         "flag": "🇦🇹",
-        "label": "Kataster BEV"
+        "label": "BEV Kataster"
       },
       "Kataster BEV2": {
         "name": "Kataster BEV2",
@@ -1029,7 +1029,7 @@
         "selectLayer": "Grundstücke - Flächen",
         "country": "Austria",
         "flag": "🇦🇹",
-        "label": "Kataster BEV2"
+        "label": "BEV Kataster 2"
       },
 "KatasterKTNLight": {
         "name": "KatasterKTNLight",
@@ -1038,7 +1038,7 @@
         "selectLayer": "gst_bev_fill",
         "country": "Austria",
         "flag": "🇦🇹",
-        "label": "Kataster KTN Light"
+        "label": "KTN Kataster Light"
       },
       "Kataster OVL": {
         "name": "Kataster OVL",
@@ -1057,7 +1057,7 @@
         "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
         "country": "Austria",
         "flag": "🇦🇹",
-        "label": "dkm_bev_symbole"
+        "label": "BEV DKM Punkte & Symbole"
       },
       "flawi": {
         "name": "flawi",
@@ -1066,7 +1066,7 @@
         "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
         "country": "Austria",
         "flag": "🇦🇹",
-        "label": "flawi"
+        "label": "KTN Flächenwidmung"
       },
       "gefahr": {
         "name": "gefahr",
@@ -1075,7 +1075,7 @@
         "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
         "country": "Austria",
         "flag": "🇦🇹",
-        "label": "gefahr"
+        "label": "KTN Gefahrenzonen"
       },
       "NZParcels": {
         "name": "NZParcels",
