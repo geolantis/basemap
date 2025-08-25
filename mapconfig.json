@@ -221,6 +221,62 @@
         "type": "vtc",
         "label": "DE Brandenburg"
       },
+      "DE-Niedersachen-Classic": {
+        "name": "DE-Niedersachen-Classic",
+        "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-classic.json",
+        "country": "Germany",
+        "flag": "🇩🇪",
+        "type": "vtc",
+        "label": "DE Niedersachsen Klassisch"
+      },
+      "DE-Niedersachen-Color": {
+        "name": "DE-Niedersachen-Color",
+        "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-color.json",
+        "country": "Germany",
+        "flag": "🇩🇪",
+        "type": "vtc",
+        "label": "DE Niedersachsen Farbe"
+      },
+      "DE-Niedersachen-Grey": {
+        "name": "DE-Niedersachen-Grey",
+        "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-grayscale.json",
+        "country": "Germany",
+        "flag": "🇩🇪",
+        "type": "vtc",
+        "label": "DE Niedersachsen Grau"
+      },
+        "DE-Niedersachen-Light": {
+        "name": "DE-Niedersachen-Light",
+        "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-light.json",
+        "country": "Germany",
+        "flag": "🇩🇪",
+        "type": "vtc",
+        "label": "DE Niedersachsen Hell"
+      },
+        "DE-Niedersachen-Night": {
+        "name": "DE-Niedersachen-Night",
+        "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-night.json",
+        "country": "Germany",
+        "flag": "🇩🇪",
+        "type": "vtc",
+        "label": "DE Niedersachsen Nacht"
+      },     
+        "DE-Niedersachen-OSMCombi": {
+        "name": "DE-Niedersachen-OSMCombi",
+        "style": "https://basisvisualisierung.niedersachsen.de/services/osm-basiskarte/styles/osm-style-color.json",
+        "country": "Germany",
+        "flag": "🇩🇪",
+        "type": "vtc",
+        "label": "DE Niedersachsen OSM-Kombi"
+      },
+        "DE-Niedersachen-OSMBW": {
+        "name": "DE-Niedersachen-OSMBW",
+        "style": "https://basisvisualisierung.niedersachsen.de/services/osm-basiskarte/styles/osm-style-mix-gray-color.json",
+        "country": "Germany",
+        "flag": "🇩🇪",
+        "type": "vtc",
+        "label": "DE Niedersachsen OSM-SW"
+      },
       "TopPlusOpen": {
         "name": "Germany TopPlusOpen",
         "tiles": [
