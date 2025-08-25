@@ -772,10 +772,20 @@
         "type": "vtc",
         "flag": "🇫🇮"
       },
+"Spain_BTN_Completa": {
+        "name": "Spain_BTN_Completa",
+        "style": "https://geoserveis.icgc.cat/contextmaps/icgc_orto_estandard.json",
+        "country": "Spain",
+        "type": "vtc",
+        "flag": "🇪🇸",
+        "label": "BTN Completa"
+      },
+
+        
       "ICGCOrtho": {
         "name": "ICGCOrtho",
         "style": "https://geoserveis.icgc.cat/contextmaps/icgc_orto_estandard.json",
-        "country": "Spain (Catalunya)",
+        "country": "Spain",
         "type": "vtc",
         "flag": "🇪🇸",
         "label": "ICGC (Catalunya) Ortho"
@@ -783,7 +793,7 @@
       "ICGCStandard": {
         "name": "ICGCStandard",
         "style": "https://geoserveis.icgc.cat/contextmaps/icgc.json",
-        "country": "Spain (Catalunya)",
+        "country": "Spain",
         "type": "vtc",
         "flag": "🇪🇸",
         "label": "ICGC (Catalunya) Standard"
