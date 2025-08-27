@@ -72,6 +72,15 @@
         "flag": "🌐",
         "country": "Global"
       },
+        
+  "Czech_Republic_CUZK": {
+    "name": "Czech Orthophoto",
+    "tiles": ["https://ags.cuzk.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/{z}/{y}/{x}"],
+    "country": "Czech Republic",
+    "flag": "🇨🇿",
+    "label": "ČÚZK Orthophoto Czech Republic",
+    "type": "wmts"
+  },
       "OSM3D": {
         "name": "OSM3D",
         "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/maptiler3d.json",
