@@ -344,6 +344,15 @@
         "type": "vtc",
         "label": "NL Topo"
       },
+        
+  "Malta_Planning": {
+    "name": "Malta Orthophoto",
+    "tiles": ["https://pamapserver.pa.org.mt/arcgis/rest/services/Basemaps/OrthophotosPublic/MapServer/tile/{z}/{y}/{x}"],
+    "country": "Malta",
+    "flag": "🇲🇹",
+    "label": "Malta Planning Authority Orthophoto",
+    "type": "wmts"
+  },
       "NL Luchtfoto": {
         "name": "NL Luchtfoto",
         "tiles": [
