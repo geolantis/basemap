@@ -80,6 +80,15 @@
     "flag": "🇧🇬",
     "label": "Bulgaria Cadastre Orthophoto",
     "type": "wmts"
+  },
+        
+  "Iceland_LMI": {
+    "name": "Iceland Aerial",
+    "tiles": ["https://gis.lmi.is/arcgis/rest/services/GP_service/loftmyndir_isn93_wgs84/MapServer/tile/{z}/{y}/{x}"],
+    "country": "Iceland",
+    "flag": "🇮🇸",
+    "label": "Landmælingar Íslands Aerial Photos",
+    "type": "wmts"
   }
         ,
   "Denmark_Dataforsyningen": {
