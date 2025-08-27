@@ -82,6 +82,14 @@
     "type": "wmts"
   },
         
+  "Slovakia_ZBGIS": {
+    "name": "Slovakia Orthophoto",
+    "tiles": ["https://zbgisws.skgeodesy.sk/zbgis_ortofoto_wmts/service.svc/get?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ortofotomozaika&STYLE=default&TILEMATRIXSET=EPSG:3857&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg"],
+    "country": "Slovakia",
+    "flag": "🇸🇰",
+    "label": "ZBGIS Slovakia Orthophoto Mosaic",
+    "type": "wmts"
+  },
   "Iceland_LMI": {
     "name": "Iceland Aerial",
     "tiles": ["https://gis.lmi.is/arcgis/rest/services/GP_service/loftmyndir_isn93_wgs84/MapServer/tile/{z}/{y}/{x}"],
