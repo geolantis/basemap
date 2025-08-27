@@ -71,7 +71,16 @@
         "type": "vtc",
         "flag": "🌐",
         "country": "Global"
-      },
+      }
+        ,
+  "Denmark_Dataforsyningen": {
+    "name": "Denmark Orthophoto",
+    "tiles": ["https://services.datafordeler.dk/GeoDanmarkOrto/orto_foraar/1.0.0/WMS?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/jpeg&TRANSPARENT=false&LAYERS=orto_foraar&CRS=EPSG:3857&STYLES=&WIDTH={width}&HEIGHT={height}&BBOX={bbox}"],
+    "country": "Denmark",
+    "flag": "🇩🇰",
+    "label": "Denmark Spring Orthophoto (requires registration)",
+    "type": "wms"
+  },
         
   "Czech_Republic_CUZK": {
     "name": "Czech Orthophoto",
