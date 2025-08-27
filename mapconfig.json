@@ -81,6 +81,30 @@
     "label": "Bulgaria Cadastre Orthophoto",
     "type": "wmts"
   },
+  "Portugal_DGT_2018": {
+    "name": "Portugal Orthophoto 2018",
+    "tiles": ["https://cartografia.dgterritorio.gov.pt/wms/ortos2018?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=false&LAYERS=Ortos2018-RGB&CRS=EPSG:3857&STYLES=&WIDTH={width}&HEIGHT={height}&BBOX={bbox}"],
+    "country": "Portugal",
+    "flag": "🇵🇹",
+    "label": "DGT Portugal Orthophoto 2018",
+    "type": "wms"
+  },
+  "Romania_ANCPI": {
+    "name": "Romania Orthophoto",
+    "tiles": ["http://geoportal.ancpi.ro/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=false&LAYERS=orthophoto&CRS=EPSG:3857&STYLES=&WIDTH={width}&HEIGHT={height}&BBOX={bbox}"],
+    "country": "Romania",
+    "flag": "🇷🇴",
+    "label": "ANCPI Romania Orthophoto",
+    "type": "wms"
+  },
+  "Sweden_Lantmateriet": {
+    "name": "Sweden Orthophoto",
+    "tiles": ["https://minkarta.lantmateriet.se/map/ortofoto/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=false&LAYERS=Ortofoto_0.5&CRS=EPSG:3857&STYLES=&WIDTH={width}&HEIGHT={height}&BBOX={bbox}"],
+    "country": "Sweden",
+    "flag": "🇸🇪",
+    "label": "Lantmäteriet Sweden Orthophoto",
+    "type": "wms"
+  },
         
   "Slovakia_ZBGIS": {
     "name": "Slovakia Orthophoto",
