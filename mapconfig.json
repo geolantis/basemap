@@ -81,7 +81,16 @@
     "label": "Denmark Spring Orthophoto (requires registration)",
     "type": "wms"
   },
-        
+
+  "Liechtenstein_Geodaten": {
+    "name": "Liechtenstein Orthophoto",
+    "tiles": ["https://geodaten.llv.li/arcgis/rest/services/Orthofoto/MapServer/tile/{z}/{y}/{x}"],
+    "country": "Liechtenstein",
+    "flag": "🇱🇮",
+    "label": "Liechtenstein Geodaten Orthophoto",
+    "type": "wmts"
+  }
+    ,    
   "Czech_Republic_CUZK": {
     "name": "Czech Orthophoto",
     "tiles": ["https://ags.cuzk.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/{z}/{y}/{x}"],
