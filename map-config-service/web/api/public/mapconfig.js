@@ -166,7 +166,8 @@ export default async function handler(req, res) {
       // Process each configuration
       sanitizedConfigs.forEach(config => {
         // Determine if it's an overlay or background map
-        const isOverlay = 
+        // First check if database has map_category field
+        const isOverlay = config.map_category === 'overlay' ||
           config.name.toLowerCase().includes('overlay') ||
           config.name.toLowerCase().includes('kataster') ||
           config.name.toLowerCase().includes('kadaster') ||
