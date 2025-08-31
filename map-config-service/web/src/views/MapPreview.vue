@@ -291,6 +291,21 @@ function initializeMap() {
     // Add navigation controls
     map.value.addControl(new maplibregl.NavigationControl(), 'top-left');
     map.value.addControl(new maplibregl.ScaleControl(), 'bottom-left');
+    
+    // Add source error handling to ignore tile loading issues
+    map.value.on('sourcedataloading', () => {
+      // Reset error when loading new source data
+      if (error.value?.includes('tile')) {
+        error.value = '';
+      }
+    });
+    
+    map.value.on('sourcedata', (e) => {
+      // Clear loading state when source loads successfully
+      if (e.isSourceLoaded && loading.value) {
+        loading.value = false;
+      }
+    });
 
     // Update state on map move
     map.value.on('move', () => {
@@ -307,6 +322,34 @@ function initializeMap() {
     });
 
     map.value.on('error', (e) => {
+      // Ignore tile loading errors (404s are common for missing tiles at certain zoom levels)
+      const isTileError = 
+        e.error?.status === 404 || 
+        e.error?.status === 0 || 
+        e.error?.status === 403 || // Sometimes tiles are forbidden at certain zooms
+        e.error?.message?.includes('Failed to fetch') ||
+        e.error?.message?.includes('404') ||
+        e.error?.message?.includes('403') ||
+        e.error?.message?.includes('NetworkError') ||
+        e.error?.message?.includes('tile') ||
+        e.error?.message?.includes('.pbf') ||
+        e.error?.message?.includes('.png') ||
+        e.error?.message?.includes('.jpg') ||
+        e.error?.message?.includes('.jpeg') ||
+        e.error?.message?.includes('.mvt') ||
+        e.error?.url?.includes('/tiles/') ||
+        e.error?.url?.includes('.pbf') ||
+        e.error?.url?.includes('.png') ||
+        e.sourceId === 'raster-tiles' ||
+        e.sourceId?.includes('tile');
+      
+      if (isTileError) {
+        // Just log tile errors to console, don't show to user
+        console.log('Tile not available:', e.error?.url || e.error?.message);
+        return;
+      }
+      
+      // Only show critical errors to the user
       console.error('Map error:', e);
       error.value = e.error?.message || 'Failed to load map';
       loading.value = false;
