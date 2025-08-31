@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
+import { injectApiKey, stripApiKeys } from '../../utils/apiKeyInjector';
 
 // Initialize Supabase with anon key (public read access)
 const supabase = createClient(
@@ -7,15 +8,23 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 );
 
-// Sanitize configuration to remove any sensitive data
+// Sanitize configuration and inject API keys for mobile apps
 function sanitizeConfig(config: any) {
+  // First ensure the stored URL is clean (no keys in DB)
+  const cleanUrl = stripApiKeys(config.style_url);
+  
+  // Then inject API key server-side for mobile apps
+  const styleUrl = config.requires_api_key 
+    ? injectApiKey(cleanUrl, config.requires_api_key)
+    : cleanUrl;
+    
   return {
     id: config.id,
     name: config.name,
     label: config.label,
     type: config.type,
-    // Use public CDN URL or proxy endpoint, never expose API keys
-    style: config.public_style_url || `/api/styles/${config.name}.json`,
+    // Provide the full URL with injected API key for mobile apps
+    style: styleUrl || config.public_style_url || `/api/styles/${config.name}.json`,
     country: config.country,
     flag: config.flag,
     layers: config.layers?.filter((layer: any) => !layer.private) || [],
