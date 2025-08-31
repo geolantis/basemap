@@ -57,7 +57,28 @@
       
       <!-- Map Controls Overlay -->
       <div class="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-4 space-y-4">
-        <div>
+        <!-- Save/Load Position Controls -->
+        <div class="space-y-2">
+          <button
+            @click="saveMapPosition"
+            :disabled="!positionChanged"
+            :class="[
+              'w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition-colors',
+              positionChanged
+                ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            ]"
+          >
+            <i class="pi pi-save"></i>
+            <span>{{ positionSaved ? 'Position Saved' : 'Save Position' }}</span>
+          </button>
+          <div v-if="positionSaved" class="text-xs text-green-600 text-center">
+            <i class="pi pi-check-circle mr-1"></i>
+            Position saved to browser
+          </div>
+        </div>
+        
+        <div class="border-t pt-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">Style</label>
           <select
             v-model="selectedStyle"
@@ -194,6 +215,8 @@ const zoom = ref(10);
 const bearing = ref(0);
 const pitch = ref(0);
 const center = ref({ lat: 47.3769, lng: 8.5417 }); // Default to Zurich
+const positionSaved = ref(false);
+const positionChanged = ref(false);
 
 function initializeMap() {
   if (!mapContainer.value || !config.value) {
@@ -204,6 +227,20 @@ function initializeMap() {
 
   loading.value = true;
   error.value = '';
+
+  // Initialize from saved position if available
+  if (config.value.center) {
+    center.value = { lng: config.value.center[0], lat: config.value.center[1] };
+  }
+  if (config.value.zoom !== undefined) {
+    zoom.value = config.value.zoom;
+  }
+  if (config.value.bearing !== undefined) {
+    bearing.value = config.value.bearing;
+  }
+  if (config.value.pitch !== undefined) {
+    pitch.value = config.value.pitch;
+  }
 
   try {
     // Determine the style URL based on config type
@@ -317,6 +354,12 @@ function initializeMap() {
       pitch.value = map.value.getPitch();
     });
 
+    // Mark position as changed when user moves the map
+    map.value.on('moveend', () => {
+      positionChanged.value = true;
+      positionSaved.value = false;
+    });
+
     map.value.on('load', () => {
       loading.value = false;
     });
@@ -380,10 +423,18 @@ function updatePitch() {
 }
 
 function resetView() {
-  zoom.value = 10;
-  bearing.value = 0;
-  pitch.value = 0;
-  center.value = { lat: 47.3769, lng: 8.5417 };
+  // Reset to saved position or default
+  if (config.value?.center) {
+    center.value = { lng: config.value.center[0], lat: config.value.center[1] };
+    zoom.value = config.value.zoom || 10;
+    bearing.value = config.value.bearing || 0;
+    pitch.value = config.value.pitch || 0;
+  } else {
+    zoom.value = 10;
+    bearing.value = 0;
+    pitch.value = 0;
+    center.value = { lat: 47.3769, lng: 8.5417 };
+  }
   
   map.value?.jumpTo({
     center: [center.value.lng, center.value.lat],
@@ -391,6 +442,60 @@ function resetView() {
     bearing: bearing.value,
     pitch: pitch.value
   });
+}
+
+function saveMapPosition() {
+  if (!config.value) return;
+  
+  // Save position to localStorage for persistence
+  const positionData = {
+    center: [center.value.lng, center.value.lat],
+    zoom: zoom.value,
+    bearing: bearing.value,
+    pitch: pitch.value,
+    savedAt: new Date().toISOString()
+  };
+  
+  localStorage.setItem(`map-position-${config.value.id}`, JSON.stringify(positionData));
+  
+  // Update UI state
+  positionSaved.value = true;
+  positionChanged.value = false;
+  
+  // Reset the saved indicator after 3 seconds
+  setTimeout(() => {
+    positionSaved.value = false;
+  }, 3000);
+  
+  // Also update the config in store if you want to persist server-side
+  // This would require adding an update method to your config store
+  // configStore.updateMapPosition(config.value.id, positionData);
+}
+
+function loadSavedPosition() {
+  if (!config.value) return;
+  
+  // Try to load from localStorage first
+  const savedPosition = localStorage.getItem(`map-position-${config.value.id}`);
+  if (savedPosition) {
+    try {
+      const position = JSON.parse(savedPosition);
+      if (position.center) {
+        center.value = { lng: position.center[0], lat: position.center[1] };
+      }
+      if (position.zoom !== undefined) {
+        zoom.value = position.zoom;
+      }
+      if (position.bearing !== undefined) {
+        bearing.value = position.bearing;
+      }
+      if (position.pitch !== undefined) {
+        pitch.value = position.pitch;
+      }
+    } catch (e) {
+      console.error('Failed to parse saved position:', e);
+    }
+  }
 }
 
 function toggleFullscreen() {
@@ -455,9 +560,11 @@ function retryLoad() {
 onMounted(() => {
   if (!configs.value.length) {
     configStore.fetchConfigs().then(() => {
+      loadSavedPosition();
       initializeMap();
     });
   } else {
+    loadSavedPosition();
     initializeMap();
   }
 });

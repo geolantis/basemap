@@ -6,7 +6,9 @@
         "label": "Global",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [8.5417, 47.3769],
+        "zoom": 10
       },
       "Global2": {
         "name": "Global2",
@@ -14,7 +16,9 @@
         "label": "Global 2",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [8.5417, 47.3769],
+        "zoom": 10
       },
       "Landscape": {
         "name": "Landscape",
@@ -22,7 +26,9 @@
         "label": "Landscape",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [8.5417, 47.3769],
+        "zoom": 10
       },
       "BasemapDEGlobal": {
         "name": "BasemapDEGlobal",
@@ -30,7 +36,9 @@
         "label": "Basemap.de Global",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [10.451526, 51.165691],
+        "zoom": 6
       },
       "Ocean": {
         "name": "Ocean",
@@ -38,7 +46,9 @@
         "label": "Ocean",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [0, 0],
+        "zoom": 2
       },
       "Outdoor": {
         "name": "Outdoor",
@@ -46,7 +56,9 @@
         "label": "Outdoor",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [8.5417, 47.3769],
+        "zoom": 10
       },
       "Dataviz": {
         "name": "Dataviz",
@@ -54,7 +66,9 @@
         "label": "Dataviz",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [8.5417, 47.3769],
+        "zoom": 10
       },
       "OSMLiberty": {
         "name": "OSMLiberty",
@@ -62,7 +76,9 @@
         "label": "OSM Liberty",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [8.5417, 47.3769],
+        "zoom": 10
       },
       "OSMBright": {
         "name": "OSMBright",
@@ -70,7 +86,9 @@
         "label": "OSM Bright",
         "type": "vtc",
         "flag": "🌐",
-        "country": "Global"
+        "country": "Global",
+        "center": [8.5417, 47.3769],
+        "zoom": 10
       }
         ,
   "Bulgaria_Cadastre": {

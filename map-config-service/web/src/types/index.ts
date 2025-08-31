@@ -7,6 +7,10 @@ export interface MapConfig {
   originalStyle?: string;
   country: string;
   flag: string;
+  center?: [number, number]; // [lng, lat]
+  zoom?: number;
+  bearing?: number;
+  pitch?: number;
   layers?: Layer[];
   metadata?: Record<string, any>;
   version: number;
