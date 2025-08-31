@@ -12,8 +12,21 @@
         <i class="pi pi-map text-4xl text-gray-400"></i>
       </div>
       
-      <!-- Badge -->
+      <!-- Badges -->
       <div class="absolute top-2 right-2 flex items-center space-x-2">
+        <!-- Category Badge -->
+        <span 
+          :class="[
+            'backdrop-blur px-2 py-1 rounded text-xs font-medium flex items-center space-x-1',
+            isOverlay 
+              ? 'bg-purple-500/90 text-white' 
+              : 'bg-blue-500/90 text-white'
+          ]"
+        >
+          <i :class="isOverlay ? 'pi pi-clone' : 'pi pi-map'" class="text-xs"></i>
+          <span>{{ isOverlay ? 'Overlay' : 'Background' }}</span>
+        </span>
+        <!-- Type Badge -->
         <span class="bg-white/90 backdrop-blur px-2 py-1 rounded text-sm font-medium">
           {{ config.flag }} {{ config.type.toUpperCase() }}
         </span>
@@ -141,6 +154,15 @@ const emit = defineEmits<{
 }>();
 
 const showMenu = ref(false);
+
+// Determine if this is an overlay map
+const isOverlay = computed(() => {
+  return props.config.map_category === 'overlay' ||
+    props.config.name?.toLowerCase().includes('overlay') ||
+    props.config.name?.toLowerCase().includes('kataster') ||
+    props.config.name?.toLowerCase().includes('cadastr') ||
+    (props.config.layers && props.config.layers.length > 0);
+});
 
 const thumbnailUrl = computed(() => {
   // Generate thumbnail URL based on config

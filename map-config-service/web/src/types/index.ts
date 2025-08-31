@@ -15,6 +15,7 @@ export interface MapConfig {
   updatedAt: string;
   createdBy?: string;
   updatedBy?: string;
+  map_category?: 'background' | 'overlay';
 }
 
 export interface Layer {

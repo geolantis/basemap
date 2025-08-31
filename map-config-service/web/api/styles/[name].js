@@ -5,7 +5,8 @@
  * for WMTS and other raster tile services on-the-fly.
  */
 
-import { supabase } from '../../src/services/supabase';
+// Remove supabase import - we'll use local files only for now
+// import { supabase } from '../../src/services/supabase';
 
 // Generate a MapLibre style for raster tiles
 function generateRasterStyle(config) {
@@ -84,19 +85,10 @@ export default async function handler(req, res) {
       console.log(`Static style not found for ${name}, generating dynamically...`);
     }
 
-    // Fetch map configuration from database
-    const { data: maps, error } = await supabase
-      .from('maps')
-      .select('*')
-      .ilike('name', name.replace(/-/g, ' ').replace(/_/g, ' '))
-      .limit(1);
+    // Skip database lookup for now - just use local files
+    const maps = null;
 
-    if (error) {
-      console.error('Database error:', error);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
-    if (!maps || maps.length === 0) {
+    if (!maps || true) { // Always use local files for now
       // Try to find in local mapconfig
       const mapConfigPath = path.join(process.cwd(), 'src', 'data', 'mapconfig-full.json');
       const mapConfigData = await fs.promises.readFile(mapConfigPath, 'utf8');

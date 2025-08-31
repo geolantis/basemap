@@ -33,20 +33,65 @@
         
         <!-- View Toggles and Filter Tabs -->
         <div class="flex justify-between items-center mt-4">
-          <div class="flex space-x-6">
-            <button
-              v-for="tab in tabs"
-              :key="tab.value"
-              @click="selectedCountry = tab.value"
-              :class="[
-                'pb-2 px-1 border-b-2 font-medium text-sm transition-colors',
-                selectedCountry === tab.value
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              ]"
-            >
-              {{ tab.label }} ({{ getCountryCount(tab.value) }})
-            </button>
+          <div class="flex items-center space-x-6">
+            <!-- Country Tabs -->
+            <div class="flex space-x-6">
+              <button
+                v-for="tab in tabs"
+                :key="tab.value"
+                @click="selectedCountry = tab.value"
+                :class="[
+                  'pb-2 px-1 border-b-2 font-medium text-sm transition-colors',
+                  selectedCountry === tab.value
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ]"
+              >
+                {{ tab.label }} ({{ getCountryCount(tab.value) }})
+              </button>
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="flex items-center space-x-2 ml-6 pl-6 border-l border-gray-300">
+              <span class="text-sm text-gray-600">Category:</span>
+              <div class="flex space-x-2">
+                <button
+                  @click="selectedCategory = 'all'"
+                  :class="[
+                    'px-3 py-1 rounded-full text-xs font-medium transition-colors',
+                    selectedCategory === 'all'
+                      ? 'bg-primary text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ]"
+                >
+                  All
+                </button>
+                <button
+                  @click="selectedCategory = 'background'"
+                  :class="[
+                    'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center space-x-1',
+                    selectedCategory === 'background'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                  ]"
+                >
+                  <i class="pi pi-map text-xs"></i>
+                  <span>Background ({{ backgroundCount }})</span>
+                </button>
+                <button
+                  @click="selectedCategory = 'overlay'"
+                  :class="[
+                    'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center space-x-1',
+                    selectedCategory === 'overlay'
+                      ? 'bg-purple-500 text-white'
+                      : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+                  ]"
+                >
+                  <i class="pi pi-clone text-xs"></i>
+                  <span>Overlay ({{ overlayCount }})</span>
+                </button>
+              </div>
+            </div>
           </div>
           
           <!-- View Toggle -->
@@ -249,6 +294,7 @@ const {
 const showDuplicateDialog = ref(false);
 const showMapSearch = ref(false);
 const viewMode = ref<'grid' | 'list'>('grid');
+const selectedCategory = ref<'all' | 'background' | 'overlay'>('all');
 
 const tabs = computed(() => {
   const countries = new Set(configs.value.map(c => c.country));
@@ -267,10 +313,40 @@ const tabs = computed(() => {
   return countryTabs;
 });
 
+// Helper function to determine if a map is an overlay
+const isOverlay = (config: MapConfig) => {
+  return config.map_category === 'overlay' ||
+    config.name?.toLowerCase().includes('overlay') ||
+    config.name?.toLowerCase().includes('kataster') ||
+    config.name?.toLowerCase().includes('cadastr') ||
+    (config.layers && config.layers.length > 0);
+};
+
+// Category counts
+const backgroundCount = computed(() => 
+  configs.value.filter(c => !isOverlay(c)).length
+);
+
+const overlayCount = computed(() => 
+  configs.value.filter(c => isOverlay(c)).length
+);
+
+// Filter configs by category
+const categoryFilteredConfigs = computed(() => {
+  if (selectedCategory.value === 'all') {
+    return filteredConfigs.value;
+  }
+  
+  return filteredConfigs.value.filter(config => {
+    const isOverlayMap = isOverlay(config);
+    return selectedCategory.value === 'overlay' ? isOverlayMap : !isOverlayMap;
+  });
+});
+
 const groupedConfigs = computed(() => {
   const grouped = new Map<string, MapConfig[]>();
   
-  filteredConfigs.value.forEach(config => {
+  categoryFilteredConfigs.value.forEach(config => {
     const country = config.country || 'Other';
     if (!grouped.has(country)) {
       grouped.set(country, []);
