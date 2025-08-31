@@ -165,14 +165,16 @@ export default async function handler(req, res) {
 
       // Process each configuration
       sanitizedConfigs.forEach(config => {
-        // Determine if it's an overlay or background map
-        // First check if database has map_category field
+        // EXACT list of overlay maps from original mapconfig.json
+        const OVERLAY_MAPS = [
+          'Kataster', 'Kataster BEV', 'Kataster BEV2', 'KatasterKTNLight',
+          'Kataster OVL', 'dkm_bev_symbole', 'flawi', 'gefahr',
+          'NZParcels', 'NSW BaseMap Overlay', 'Inspire WMS', 'BEV DKM GST'
+        ];
+        
+        // Determine if it's an overlay - ONLY check exact list!
         const isOverlay = config.map_category === 'overlay' ||
-          config.name.toLowerCase().includes('overlay') ||
-          config.name.toLowerCase().includes('kataster') ||
-          config.name.toLowerCase().includes('kadaster') ||
-          config.name.toLowerCase().includes('cadastr') ||
-          config.label?.toLowerCase().includes('overlay');
+          OVERLAY_MAPS.some(name => name.toLowerCase() === config.name?.toLowerCase());
         
         // Generate a key for the map
         let key = config.name;

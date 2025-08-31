@@ -5,9 +5,6 @@
  * for WMTS and other raster tile services on-the-fly.
  */
 
-// Remove supabase import - we'll use local files only for now
-// import { supabase } from '../../src/services/supabase';
-
 // Generate a MapLibre style for raster tiles
 function generateRasterStyle(config) {
   const style = {
@@ -47,6 +44,28 @@ function generateRasterStyle(config) {
   return style;
 }
 
+// Known WMTS/raster maps configuration
+const RASTER_MAPS = {
+  'basemap-ortho': {
+    name: 'Basemap Ortho',
+    tiles: ['https://maps1.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg'],
+    attribution: '© basemap.at',
+    maxzoom: 19
+  },
+  'basemap-ortho-blue': {
+    name: 'Basemap Ortho Blue',
+    tiles: ['https://maps1.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg'],
+    attribution: '© basemap.at',
+    maxzoom: 19
+  },
+  'germany-topplusopen': {
+    name: 'Germany TopPlusOpen',
+    tiles: ['https://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_scale/default/WEBMERCATOR/{z}/{y}/{x}.png'],
+    attribution: '© BKG (GeoBasis-DE)',
+    maxzoom: 18
+  }
+};
+
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -81,98 +100,49 @@ export default async function handler(req, res) {
       res.setHeader('Cache-Control', 'public, max-age=3600');
       return res.status(200).send(staticStyle);
     } catch (error) {
-      // Static file doesn't exist, generate dynamically
-      console.log(`Static style not found for ${name}, generating dynamically...`);
+      // Static file doesn't exist, try to generate dynamically
+      console.log(`Static style not found for ${name}, checking for raster configuration...`);
     }
 
-    // Skip database lookup for now - just use local files
-    const maps = null;
-
-    if (!maps || true) { // Always use local files for now
-      // Try to find in local mapconfig
-      const mapConfigPath = path.join(process.cwd(), 'src', 'data', 'mapconfig-full.json');
-      const mapConfigData = await fs.promises.readFile(mapConfigPath, 'utf8');
-      const mapConfig = JSON.parse(mapConfigData);
-      
-      // Search through backgroundMaps and overlayMaps
-      let foundConfig = null;
-      
-      // Clean up the name for matching
-      const cleanName = name.replace(/[-_]/g, '').toLowerCase();
-      
-      for (const [key, value] of Object.entries(mapConfig.backgroundMaps || {})) {
-        const configName = key.replace(/[-_]/g, '').toLowerCase();
-        if (configName === cleanName || value.name?.replace(/[-_]/g, '').toLowerCase() === cleanName) {
-          foundConfig = value;
-          break;
-        }
-      }
-      
-      if (!foundConfig) {
-        for (const [key, value] of Object.entries(mapConfig.overlayMaps || {})) {
-          const configName = key.replace(/[-_]/g, '').toLowerCase();
-          if (configName === cleanName || value.name?.replace(/[-_]/g, '').toLowerCase() === cleanName) {
-            foundConfig = value;
-            break;
-          }
-        }
-      }
-      
-      if (!foundConfig) {
-        return res.status(404).json({ 
-          error: 'Map not found',
-          searched: name,
-          message: 'No style or configuration found for this map'
-        });
-      }
-      
-      // Generate style from found config
-      const style = generateRasterStyle(foundConfig);
+    // Check if this is a known raster/WMTS map
+    const cleanName = name.replace(/[\s_]/g, '-').toLowerCase();
+    const rasterConfig = RASTER_MAPS[cleanName];
+    
+    if (rasterConfig) {
+      // Generate style for known raster map
+      const style = generateRasterStyle(rasterConfig);
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Cache-Control', 'public, max-age=3600');
       return res.status(200).json(style);
     }
 
-    const mapData = maps[0];
-
-    // Check if this is a WMTS/raster map
-    if (mapData.type === 'wmts' || mapData.type === 'xyz' || mapData.tiles) {
-      // Generate style for raster tiles
-      const style = generateRasterStyle(mapData);
+    // If name contains "ortho", "satellite", "aerial", or "wmts", generate a generic raster style
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes('ortho') || 
+        lowerName.includes('satellite') || 
+        lowerName.includes('aerial') ||
+        lowerName.includes('wmts') ||
+        lowerName.includes('imagery')) {
+      
+      // Generate a generic raster style
+      const genericConfig = {
+        name: name.replace(/-/g, ' ').replace(/_/g, ' '),
+        tiles: [`https://example.com/tiles/{z}/{x}/{y}.png`], // Placeholder
+        attribution: 'Map data',
+        maxzoom: 18
+      };
+      
+      const style = generateRasterStyle(genericConfig);
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Cache-Control', 'public, max-age=3600');
       return res.status(200).json(style);
-    }
-
-    // For vector maps, check if they have a style URL
-    if (mapData.style) {
-      // If it's a full URL, redirect to it
-      if (mapData.style.startsWith('http')) {
-        return res.redirect(302, mapData.style);
-      }
-      
-      // Otherwise try to load the local style
-      try {
-        const localStyle = await fs.promises.readFile(
-          path.join(publicDir, mapData.style),
-          'utf8'
-        );
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Cache-Control', 'public, max-age=3600');
-        return res.status(200).send(localStyle);
-      } catch (error) {
-        return res.status(404).json({ 
-          error: 'Style file not found',
-          path: mapData.style 
-        });
-      }
     }
 
     // No style available
     return res.status(404).json({ 
-      error: 'No style available for this map',
-      mapType: mapData.type,
-      mapName: mapData.name
+      error: 'Style not found',
+      message: `No style configuration found for: ${name}`,
+      hint: 'This map may need to be configured or the style file may be missing'
     });
 
   } catch (error) {

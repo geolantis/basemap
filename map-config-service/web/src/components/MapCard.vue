@@ -155,13 +155,26 @@ const emit = defineEmits<{
 
 const showMenu = ref(false);
 
+// EXACT list of overlay maps - ONLY these 12!
+const OVERLAY_MAPS = [
+  'Kataster',
+  'Kataster BEV',
+  'Kataster BEV2',
+  'KatasterKTNLight',
+  'Kataster OVL',
+  'dkm_bev_symbole',
+  'flawi',
+  'gefahr',
+  'NZParcels',
+  'NSW BaseMap Overlay',
+  'Inspire WMS',
+  'BEV DKM GST'
+];
+
 // Determine if this is an overlay map
 const isOverlay = computed(() => {
   return props.config.map_category === 'overlay' ||
-    props.config.name?.toLowerCase().includes('overlay') ||
-    props.config.name?.toLowerCase().includes('kataster') ||
-    props.config.name?.toLowerCase().includes('cadastr') ||
-    (props.config.layers && props.config.layers.length > 0);
+    OVERLAY_MAPS.some(name => name.toLowerCase() === props.config.name?.toLowerCase());
 });
 
 const thumbnailUrl = computed(() => {
