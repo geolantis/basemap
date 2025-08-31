@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Diagnose Vector Tiles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        #map { 
+            position: absolute; 
+            top: 120px; 
+            bottom: 0; 
+            width: 100%; 
+        }
+        .controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .button {
+            padding: 8px 16px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #2196F3;
+            color: white;
+            font-weight: 600;
+        }
+        .button:hover {
+            background: #1976D2;
+        }
+        .info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .log-entry {
+            padding: 5px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry.error {
+            background: #fee;
+            color: #c00;
+        }
+        .log-entry.success {
+            background: #efe;
+            color: #060;
+        }
+        .log-entry.info {
+            background: #eef;
+            color: #006;
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <h3>Vector Tile Diagnostics</h3>
+    <button class="button" onclick="testKatasterStyle()">Test Kataster Style</button>
+    <button class="button" onclick="testKatasterTiles()">Test Kataster Tiles Direct</button>
+    <button class="button" onclick="testKTNTiles()">Test KTN Tiles</button>
+    <button class="button" onclick="inspectLayers()">Inspect Current Layers</button>
+    <button class="button" onclick="clearLog()">Clear Log</button>
+</div>
+
+<div id="map"></div>
+
+<div class="info">
+    <h4>Diagnostic Log</h4>
+    <div id="log"></div>
+</div>
+
+<script>
+let map = null;
+
+function log(message, type = 'info') {
+    const logEl = document.getElementById('log');
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${type}`;
+    entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+    logEl.insertBefore(entry, logEl.firstChild);
+    console.log(message);
+}
+
+function clearLog() {
+    document.getElementById('log').innerHTML = '';
+}
+
+// Initialize map
+function initMap() {
+    log('Initializing map...');
+    
+    map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            version: 8,
+            sources: {
+                'osm': {
+                    type: 'raster',
+                    tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                    tileSize: 256,
+                    attribution: '© OpenStreetMap contributors'
+                }
+            },
+            layers: [{
+                id: 'osm',
+                type: 'raster',
+                source: 'osm'
+            }]
+        },
+        center: [14.3053, 46.6364], // Klagenfurt
+        zoom: 14
+    });
+    
+    map.on('load', () => {
+        log('Map loaded successfully', 'success');
+    });
+    
+    map.on('error', (e) => {
+        log(`Map error: ${e.error?.message || 'Unknown'}`, 'error');
+    });
+    
+    map.on('sourcedata', (e) => {
+        if (e.isSourceLoaded && e.tile) {
+            log(`Tile loaded for source: ${e.sourceId}`);
+            
+            // Try to get source-layer info
+            if (e.source && e.source.vectorLayerIds) {
+                log(`Vector layers in ${e.sourceId}: ${e.source.vectorLayerIds.join(', ')}`, 'info');
+            }
+        }
+    });
+    
+    map.addControl(new maplibregl.NavigationControl());
+}
+
+// Test Kataster style directly
+async function testKatasterStyle() {
+    log('Testing Kataster style...');
+    
+    try {
+        const styleUrl = 'https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev2.json';
+        const response = await fetch(styleUrl);
+        const style = await response.json();
+        
+        log(`Style loaded: ${style.name || 'Unknown'}`, 'success');
+        log(`Sources: ${Object.keys(style.sources || {}).join(', ')}`);
+        log(`Layers: ${style.layers?.length || 0} layers`);
+        
+        // Check source-layers used
+        const sourceLayers = new Set();
+        style.layers?.forEach(layer => {
+            if (layer['source-layer']) {
+                sourceLayers.add(layer['source-layer']);
+            }
+        });
+        
+        if (sourceLayers.size > 0) {
+            log(`Source-layers used: ${Array.from(sourceLayers).join(', ')}`, 'info');
+        }
+        
+        // Try to set the style
+        map.setStyle(style);
+        
+        map.once('style.load', () => {
+            log('Kataster style applied successfully', 'success');
+            inspectLayers();
+        });
+        
+    } catch (error) {
+        log(`Error loading style: ${error.message}`, 'error');
+    }
+}
+
+// Test Kataster tiles directly
+function testKatasterTiles() {
+    log('Testing Kataster tiles directly...');
+    
+    try {
+        // Remove existing test source if any
+        if (map.getSource('test-kataster')) {
+            const layers = map.getStyle().layers.filter(l => l.source === 'test-kataster');
+            layers.forEach(l => map.removeLayer(l.id));
+            map.removeSource('test-kataster');
+        }
+        
+        // Add source
+        map.addSource('test-kataster', {
+            type: 'vector',
+            tiles: ['https://kataster.bev.gv.at/styles/kataster/{z}/{x}/{y}.pbf'],
+            minzoom: 0,
+            maxzoom: 22
+        });
+        
+        // Try common source-layer names
+        const testLayers = [
+            'Grundstücke - Flächen',
+            'Grundstuecke - Flaechen',
+            'grundstuecke',
+            'parcels',
+            'cadastre',
+            'kataster',
+            'default'
+        ];
+        
+        testLayers.forEach((layerName, index) => {
+            try {
+                const layerId = `test-kataster-${index}`;
+                map.addLayer({
+                    id: layerId,
+                    type: 'line',
+                    source: 'test-kataster',
+                    'source-layer': layerName,
+                    paint: {
+                        'line-color': `hsl(${index * 60}, 100%, 50%)`,
+                        'line-width': 2
+                    }
+                });
+                log(`Added test layer with source-layer: "${layerName}"`, 'success');
+            } catch (e) {
+                log(`Failed with source-layer "${layerName}": ${e.message}`, 'error');
+            }
+        });
+        
+    } catch (error) {
+        log(`Error testing tiles: ${error.message}`, 'error');
+    }
+}
+
+// Test KTN tiles
+function testKTNTiles() {
+    log('Testing KTN tiles...');
+    
+    try {
+        // Remove existing test source if any
+        if (map.getSource('test-ktn')) {
+            const layers = map.getStyle().layers.filter(l => l.source === 'test-ktn');
+            layers.forEach(l => map.removeLayer(l.id));
+            map.removeSource('test-ktn');
+        }
+        
+        // Add source
+        map.addSource('test-ktn', {
+            type: 'vector',
+            tiles: ['https://gis.ktn.gv.at/osgdi/tilesets/gst_bev/{z}/{x}/{y}.pbf'],
+            minzoom: 0,
+            maxzoom: 22
+        });
+        
+        // Try common source-layer names
+        const testLayers = [
+            'gst_bev_fill',
+            'gst_bev',
+            'gst',
+            'parcels',
+            'default'
+        ];
+        
+        testLayers.forEach((layerName, index) => {
+            try {
+                const layerId = `test-ktn-${index}`;
+                map.addLayer({
+                    id: layerId,
+                    type: 'line',
+                    source: 'test-ktn',
+                    'source-layer': layerName,
+                    paint: {
+                        'line-color': `hsl(${180 + index * 30}, 100%, 50%)`,
+                        'line-width': 2
+                    }
+                });
+                log(`Added KTN test layer with source-layer: "${layerName}"`, 'success');
+            } catch (e) {
+                log(`Failed KTN with source-layer "${layerName}": ${e.message}`, 'error');
+            }
+        });
+        
+    } catch (error) {
+        log(`Error testing KTN tiles: ${error.message}`, 'error');
+    }
+}
+
+// Inspect current layers
+function inspectLayers() {
+    log('Inspecting current map state...');
+    
+    const style = map.getStyle();
+    
+    // Log sources
+    Object.entries(style.sources).forEach(([id, source]) => {
+        log(`Source "${id}": type=${source.type}`);
+        if (source.tiles) {
+            log(`  Tiles: ${source.tiles[0]}`);
+        }
+        if (source.url) {
+            log(`  URL: ${source.url}`);
+        }
+    });
+    
+    // Log layers
+    log(`Total layers: ${style.layers.length}`);
+    style.layers.forEach(layer => {
+        if (layer['source-layer']) {
+            log(`Layer "${layer.id}": source="${layer.source}", source-layer="${layer['source-layer']}", type="${layer.type}"`);
+        }
+    });
+}
+
+// Initialize on load
+initMap();
+</script>
+
+</body>
+</html>

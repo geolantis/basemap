@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test Style Server - Private Repo Serving</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        #map { 
+            position: absolute; 
+            top: 200px; 
+            bottom: 0; 
+            width: 100%; 
+        }
+        .controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .button.primary {
+            background: #4CAF50;
+            color: white;
+        }
+        .button.primary:hover {
+            background: #45a049;
+        }
+        .button.secondary {
+            background: #2196F3;
+            color: white;
+        }
+        .button.secondary:hover {
+            background: #1976D2;
+        }
+        .button.overlay {
+            background: #FF9800;
+            color: white;
+        }
+        .button.overlay:hover {
+            background: #F57C00;
+        }
+        .button.danger {
+            background: #f44336;
+            color: white;
+        }
+        .button.danger:hover {
+            background: #da190b;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .api-info {
+            margin: 10px 0;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #0d47a1;
+        }
+        .api-info code {
+            background: white;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <h3 style="margin: 0 0 10px 0;">🔒 Private Repository Style Server Test</h3>
+    
+    <div class="api-info">
+        📡 Style Server: <code>http://localhost:3001/api/styles/</code> | 
+        Serving from: <code>/Users/michael/Development/basemap/</code>
+    </div>
+    
+    <div class="button-group">
+        <button class="button primary" onclick="testStyleServer()">
+            🔍 Check Server
+        </button>
+        <button class="button secondary" onclick="loadStyle('basemap')">
+            Basemap Standard
+        </button>
+        <button class="button secondary" onclick="loadStyle('basemap7')">
+            Basemap7 (→bm.json)
+        </button>
+        <button class="button secondary" onclick="loadStyle('basemap-ortho')">
+            Basemap Ortho
+        </button>
+        <button class="button overlay" onclick="addOverlay('kataster-bev2')">
+            + Kataster BEV2
+        </button>
+        <button class="button overlay" onclick="addOverlay('ovl-kataster')">
+            + Overlay Kataster
+        </button>
+        <button class="button danger" onclick="clearMap()">
+            Clear Map
+        </button>
+    </div>
+    
+    <div class="status" id="status">Ready - Start the style server with: npm run styles:server</div>
+</div>
+
+<div id="map"></div>
+
+<script>
+let map = null;
+const STYLE_SERVER = 'http://localhost:3001';
+
+// Initialize map
+function initMap() {
+    map = new maplibregl.Map({
+        container: 'map',
+        style: {
+            version: 8,
+            sources: {},
+            layers: [],
+            glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf'
+        },
+        center: [13.3, 47.5], // Austria center
+        zoom: 7
+    });
+    
+    map.on('load', () => {
+        updateStatus('Map initialized', 'success');
+    });
+    
+    map.on('error', (e) => {
+        updateStatus(`Map error: ${e.error?.message || 'Unknown'}`, 'error');
+    });
+    
+    map.addControl(new maplibregl.NavigationControl());
+}
+
+// Test if style server is running
+async function testStyleServer() {
+    updateStatus('Checking style server...');
+    
+    try {
+        const response = await fetch(`${STYLE_SERVER}/api/styles`);
+        if (!response.ok) throw new Error(`Server returned ${response.status}`);
+        
+        const styles = await response.json();
+        const totalStyles = 
+            (styles.basemaps?.length || 0) + 
+            (styles.overlays?.length || 0) + 
+            (styles.regional?.length || 0);
+        
+        updateStatus(`✅ Style server is running! Found ${totalStyles} styles available`, 'success');
+        console.log('Available styles:', styles);
+        
+    } catch (error) {
+        updateStatus(`❌ Style server not responding. Run: npm run styles:server`, 'error');
+        console.error('Server test failed:', error);
+    }
+}
+
+// Load a style from the server
+async function loadStyle(styleName) {
+    updateStatus(`Loading style: ${styleName}...`);
+    
+    try {
+        const styleUrl = `${STYLE_SERVER}/api/styles/${styleName}`;
+        const response = await fetch(styleUrl);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to fetch style: ${response.status}`);
+        }
+        
+        const style = await response.json();
+        
+        // Check if this style has dependencies
+        if (styleName === 'basemap7') {
+            updateStatus(`Loading ${styleName} (which references bm.json)...`);
+        }
+        
+        // Apply the style
+        map.setStyle(style);
+        
+        map.once('style.load', () => {
+            updateStatus(`✅ Loaded style: ${styleName}`, 'success');
+            
+            // Log some info about the loaded style
+            const loadedStyle = map.getStyle();
+            const sourceCount = Object.keys(loadedStyle.sources || {}).length;
+            const layerCount = (loadedStyle.layers || []).length;
+            console.log(`Style loaded: ${sourceCount} sources, ${layerCount} layers`);
+        });
+        
+    } catch (error) {
+        updateStatus(`❌ Failed to load ${styleName}: ${error.message}`, 'error');
+        console.error('Style load error:', error);
+    }
+}
+
+// Add an overlay style
+async function addOverlay(overlayName) {
+    updateStatus(`Adding overlay: ${overlayName}...`);
+    
+    try {
+        const styleUrl = `${STYLE_SERVER}/api/styles/${overlayName}`;
+        const response = await fetch(styleUrl);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to fetch overlay: ${response.status}`);
+        }
+        
+        const overlayStyle = await response.json();
+        
+        // Merge overlay sources and layers into current style
+        const currentStyle = map.getStyle();
+        
+        // Add overlay sources
+        if (overlayStyle.sources) {
+            Object.entries(overlayStyle.sources).forEach(([id, source]) => {
+                if (!map.getSource(id)) {
+                    map.addSource(id, source);
+                }
+            });
+        }
+        
+        // Add overlay layers
+        if (overlayStyle.layers) {
+            overlayStyle.layers.forEach(layer => {
+                if (!map.getLayer(layer.id)) {
+                    try {
+                        map.addLayer(layer);
+                    } catch (e) {
+                        console.warn(`Could not add layer ${layer.id}:`, e);
+                    }
+                }
+            });
+        }
+        
+        updateStatus(`✅ Added overlay: ${overlayName}`, 'success');
+        
+    } catch (error) {
+        updateStatus(`❌ Failed to add overlay ${overlayName}: ${error.message}`, 'error');
+        console.error('Overlay add error:', error);
+    }
+}
+
+// Clear the map
+function clearMap() {
+    map.setStyle({
+        version: 8,
+        sources: {},
+        layers: [],
+        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf'
+    });
+    updateStatus('Map cleared');
+}
+
+// Update status message
+function updateStatus(message, type = '') {
+    const statusEl = document.getElementById('status');
+    statusEl.textContent = message;
+    statusEl.className = 'status' + (type ? ' ' + type : '');
+}
+
+// Initialize on load
+initMap();
+
+// Check server on load
+setTimeout(testStyleServer, 500);
+</script>
+
+</body>
+</html>

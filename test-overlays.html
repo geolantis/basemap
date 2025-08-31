@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test Basemap with Overlays</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { position: absolute; top: 120px; bottom: 0; width: 100%; }
+        .controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .control-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+        select {
+            width: 300px;
+            padding: 5px;
+        }
+        .overlay-controls {
+            margin-top: 10px;
+        }
+        .overlay-item {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        .overlay-item input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .status {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <div class="control-group">
+        <label>Basemap:</label>
+        <select id="basemap-select">
+            <option value="Basemap Standard">Basemap Standard</option>
+            <option value="Basemap Grau">Basemap Grau</option>
+            <option value="Basemap Ortho">Basemap Ortho</option>
+            <option value="BEVLight">BEV Light</option>
+            <option value="BEVOrtho">BEV Ortho</option>
+            <option value="Orthofoto">Orthofoto</option>
+        </select>
+        <button class="test-button" onclick="testCurrentConfig()">Test Current Config</button>
+    </div>
+    
+    <div class="control-group overlay-controls">
+        <label>Overlays:</label>
+        <div style="display: inline-block;">
+            <div class="overlay-item">
+                <input type="checkbox" id="overlay-kataster-bev2" value="Kataster BEV2">
+                <label for="overlay-kataster-bev2" style="width: auto;">BEV Kataster 2</label>
+            </div>
+            <div class="overlay-item">
+                <input type="checkbox" id="overlay-dkm-symbole" value="dkm_bev_symbole">
+                <label for="overlay-dkm-symbole" style="width: auto;">BEV DKM Punkte & Symbole</label>
+            </div>
+            <div class="overlay-item">
+                <input type="checkbox" id="overlay-kataster" value="Kataster">
+                <label for="overlay-kataster" style="width: auto;">KTN Kataster</label>
+            </div>
+            <div class="overlay-item">
+                <input type="checkbox" id="overlay-flawi" value="flawi">
+                <label for="overlay-flawi" style="width: auto;">KTN Flächenwidmung</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="map"></div>
+<div class="status" id="status">Ready</div>
+
+<script>
+// Load map configuration
+let mapConfig = null;
+let map = null;
+let currentOverlays = [];
+
+// Initialize map with Austria center
+const austriaCenter = [13.3, 47.5];
+const austriaZoom = 7;
+
+async function loadMapConfig() {
+    try {
+        const response = await fetch('mapconfig_clean.json');
+        mapConfig = await response.json();
+        console.log('Map config loaded:', mapConfig);
+        initializeMap();
+    } catch (error) {
+        console.error('Error loading map config:', error);
+        document.getElementById('status').textContent = 'Error loading config: ' + error.message;
+    }
+}
+
+function initializeMap() {
+    const basemapName = document.getElementById('basemap-select').value;
+    const basemap = mapConfig.backgroundMaps[basemapName];
+    
+    if (!basemap) {
+        console.error('Basemap not found:', basemapName);
+        return;
+    }
+    
+    // Create map with the selected basemap
+    const mapOptions = {
+        container: 'map',
+        center: austriaCenter,
+        zoom: austriaZoom
+    };
+    
+    // Handle different map types
+    if (basemap.type === 'vtc' && basemap.style) {
+        mapOptions.style = basemap.style;
+    } else if (basemap.type === 'wmts' && basemap.tiles) {
+        // Create a simple style for raster tiles
+        mapOptions.style = {
+            version: 8,
+            sources: {
+                'basemap-source': {
+                    type: 'raster',
+                    tiles: basemap.tiles,
+                    tileSize: basemap.tileSize || 256
+                }
+            },
+            layers: [{
+                id: 'basemap-layer',
+                type: 'raster',
+                source: 'basemap-source'
+            }]
+        };
+    }
+    
+    // Remove existing map if any
+    if (map) {
+        map.remove();
+    }
+    
+    map = new maplibregl.Map(mapOptions);
+    
+    map.on('load', () => {
+        document.getElementById('status').textContent = 'Map loaded: ' + basemapName;
+        
+        // Apply any selected overlays
+        updateOverlays();
+    });
+    
+    map.on('error', (e) => {
+        console.error('Map error:', e);
+        document.getElementById('status').textContent = 'Map error: ' + e.error.message;
+    });
+}
+
+function updateOverlays() {
+    if (!map || !mapConfig) return;
+    
+    // Remove existing overlays
+    currentOverlays.forEach(overlayId => {
+        if (map.getSource(overlayId)) {
+            const layers = map.getStyle().layers.filter(l => l.source === overlayId);
+            layers.forEach(layer => map.removeLayer(layer.id));
+            map.removeSource(overlayId);
+        }
+    });
+    currentOverlays = [];
+    
+    // Add selected overlays
+    const checkboxes = document.querySelectorAll('.overlay-controls input[type="checkbox"]:checked');
+    checkboxes.forEach(checkbox => {
+        const overlayName = checkbox.value;
+        const overlay = mapConfig.overlayMaps[overlayName];
+        
+        if (overlay) {
+            addOverlay(overlayName, overlay);
+        }
+    });
+}
+
+function addOverlay(overlayId, overlay) {
+    try {
+        if (overlay.type === 'wms') {
+            // Add WMS overlay
+            const wmsUrl = `${overlay.url}?SERVICE=WMS&VERSION=${overlay.version}&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&LAYERS=${overlay.layers}&STYLES=&FORMAT=${overlay.format}&TRANSPARENT=${overlay.transparent}`;
+            
+            map.addSource(overlayId, {
+                type: 'raster',
+                tiles: [wmsUrl],
+                tileSize: 256
+            });
+            
+            map.addLayer({
+                id: overlayId + '-layer',
+                type: 'raster',
+                source: overlayId,
+                paint: {
+                    'raster-opacity': 0.7
+                }
+            });
+        } else if (overlay.tileset && overlay.style) {
+            // Add vector tile overlay
+            // This would require more complex merging of styles
+            console.log('Vector overlay detected:', overlayId);
+            // For now, we'll need to implement style merging
+            // This is more complex and would require fetching and merging the style JSON
+        }
+        
+        currentOverlays.push(overlayId);
+        document.getElementById('status').textContent = 'Added overlay: ' + overlay.label;
+    } catch (error) {
+        console.error('Error adding overlay:', error);
+        document.getElementById('status').textContent = 'Error adding overlay: ' + error.message;
+    }
+}
+
+// Event handlers
+document.getElementById('basemap-select').addEventListener('change', initializeMap);
+
+document.querySelectorAll('.overlay-controls input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', updateOverlays);
+});
+
+// Test function
+function testCurrentConfig() {
+    const basemap = document.getElementById('basemap-select').value;
+    const overlays = [];
+    document.querySelectorAll('.overlay-controls input[type="checkbox"]:checked').forEach(cb => {
+        overlays.push(cb.value);
+    });
+    
+    const testReport = {
+        timestamp: new Date().toISOString(),
+        basemap: basemap,
+        overlays: overlays,
+        mapCenter: map ? map.getCenter() : null,
+        mapZoom: map ? map.getZoom() : null,
+        status: 'Testing configuration...'
+    };
+    
+    console.log('Test Report:', testReport);
+    document.getElementById('status').innerHTML = `
+        <strong>Test Report:</strong><br>
+        Basemap: ${basemap}<br>
+        Overlays: ${overlays.join(', ') || 'None'}<br>
+        Center: ${testReport.mapCenter ? `${testReport.mapCenter.lat.toFixed(4)}, ${testReport.mapCenter.lng.toFixed(4)}` : 'N/A'}<br>
+        Zoom: ${testReport.mapZoom ? testReport.mapZoom.toFixed(2) : 'N/A'}
+    `;
+}
+
+// Load config on page load
+loadMapConfig();
+</script>
+
+</body>
+</html>

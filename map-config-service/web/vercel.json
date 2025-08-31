@@ -13,6 +13,14 @@
       "destination": "/api/:path*"
     },
     {
+      "source": "/proxy/kataster/:path*",
+      "destination": "https://kataster.bev.gv.at/:path*"
+    },
+    {
+      "source": "/proxy/ktn/:path*",
+      "destination": "https://gis.ktn.gv.at/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

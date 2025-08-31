@@ -1,246 +1,196 @@
-# Deployment Guide - Map Configuration Service
+# 🚀 Production Deployment Guide for Map Styles
 
-## 📋 Prerequisites
+## Current Status
+- ✅ Local development working with style server on port 3001
+- ✅ Style files prepared in `public/styles/` directory
+- ✅ Vercel configuration updated with proxy rewrites
+- ✅ API endpoint created for dynamic style serving
 
-1. **Vercel Account**: Sign up at [vercel.com](https://vercel.com)
-2. **Vercel CLI** (optional): `npm i -g vercel`
-3. **Git Repository**: Push your code to GitHub/GitLab/Bitbucket
+## Deployment Options
 
-## 🚀 Quick Deploy with Vercel
+### Option 1: Static Files (Recommended for Production)
+Styles are served as static files from `/styles/` directory.
 
-### Option 1: Deploy via Vercel Dashboard (Recommended)
+**Pros:**
+- Fast CDN delivery
+- No serverless function overhead
+- Better caching
+- Lower costs
 
-1. **Connect Repository**
-   - Go to [vercel.com/new](https://vercel.com/new)
-   - Import your Git repository
-   - Select the `map-config-service/web` directory as root
+**Cons:**
+- Need to redeploy when styles change
+- Larger deployment size
 
-2. **Configure Build Settings**
-   - Framework Preset: `Vue.js`
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-   - Install Command: `npm install`
+### Option 2: API Endpoint
+Styles are served dynamically through `/api/styles/[styleName]`
 
-3. **Set Environment Variables**
-   Click "Environment Variables" and add:
-   ```
-   VITE_SUPABASE_URL=https://wphrytrrikfkwehwahqc.supabase.co
-   VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-   API_KEYS=production-key-1,production-key-2
-   ALLOWED_ORIGINS=https://your-domain.vercel.app
-   ```
+**Pros:**
+- Can fetch from GitHub or other sources
+- Dynamic updates possible
+- Smaller deployment size
 
-4. **Deploy**
-   - Click "Deploy"
-   - Wait for build to complete (~2-3 minutes)
+**Cons:**
+- Serverless function overhead
+- Slightly slower
 
-### Option 2: Deploy via CLI
+## 🎯 Quick Deployment Steps
 
-1. **Install Vercel CLI**
-   ```bash
-   npm i -g vercel
-   ```
+### 1. Prepare for Deployment
+```bash
+# Copy all style files to public directory
+npm run prepare:styles
 
-2. **Login to Vercel**
-   ```bash
-   vercel login
-   ```
+# Test the build locally
+npm run build
+npm run preview
+```
 
-3. **Deploy**
-   ```bash
-   cd map-config-service/web
-   vercel
-   ```
+### 2. Update Vercel Configuration
+The `vercel.json` is already configured with:
+- ✅ Proxy rewrites for Kataster and KTN tiles
+- ✅ CORS headers for styles
+- ✅ Caching configuration
 
-4. **Follow prompts**
-   - Set up and deploy? `Y`
-   - Which scope? Select your account
-   - Link to existing project? `N` (first time)
-   - Project name? `map-config-service`
-   - Directory? `./`
-   - Override settings? `N`
+### 3. Commit Changes
+```bash
+git add .
+git commit -m "Add production style serving with Vercel
 
-5. **Set Environment Variables**
-   ```bash
-   vercel env add VITE_SUPABASE_URL
-   vercel env add VITE_SUPABASE_ANON_KEY
-   vercel env add API_KEYS
-   vercel env add ALLOWED_ORIGINS
-   ```
+- Added style files to public/styles
+- Configured Vercel proxy for tile servers
+- Added API endpoint for dynamic style serving
+- Updated database URLs for production"
+git push
+```
+
+### 4. Deploy to Vercel
+```bash
+# Deploy to production
+vercel --prod
+
+# Or if you have automatic deployments enabled, just push to main
+git push origin main
+```
+
+### 5. Update Database for Production
+After deployment, get your Vercel URL and update the database:
+
+```bash
+# Set your Vercel URL
+export VERCEL_URL=https://your-app.vercel.app
+
+# Update database with production URLs
+node scripts/update-to-production.js --prod
+```
+
+## 📊 What Gets Deployed
+
+### Files Structure
+```
+web/
+├── api/
+│   └── styles/
+│       └── [styleName].js      # API endpoint (optional)
+├── public/
+│   └── styles/                 # Static style files
+│       ├── basemap.json
+│       ├── kataster-bev2.json
+│       └── ... (22 files total)
+├── dist/                        # Built Vue app
+└── vercel.json                  # Vercel configuration
+```
+
+### URL Structure in Production
+```
+# Static files (faster, recommended)
+https://your-app.vercel.app/styles/basemap.json
+https://your-app.vercel.app/styles/kataster-bev2.json
+
+# API endpoint (optional, dynamic)
+https://your-app.vercel.app/api/styles/basemap
+https://your-app.vercel.app/api/styles/kataster-bev2
+
+# Proxy endpoints (for tiles)
+https://your-app.vercel.app/proxy/kataster/...
+https://your-app.vercel.app/proxy/ktn/...
+```
 
 ## 🔧 Environment Variables
 
-### Required Variables
+No additional environment variables needed for style serving. The existing Supabase variables are sufficient.
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `VITE_SUPABASE_URL` | Supabase project URL | `https://xxx.supabase.co` |
-| `VITE_SUPABASE_ANON_KEY` | Supabase anonymous key | `eyJhbG...` |
+## ✅ Post-Deployment Checklist
 
-### Optional Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `VITE_CLAUDE_API_KEY` | Claude API key for AI search | (empty) |
-| `API_KEYS` | Comma-separated API keys for 3rd party access | `development-key` |
-| `ALLOWED_ORIGINS` | Comma-separated allowed CORS origins | `*` |
-
-## 📂 Important Files
-
-### Files Included in Deployment
-
-- `/public/styles/` - All map style JSON files (25 files)
-- `/dist/` - Built Vue application
-- `/api/` - Serverless API functions
-- `vercel.json` - Deployment configuration
-
-### Files NOT Deployed
-
-- `.env.local` - Local environment variables
-- `node_modules/` - Dependencies (installed during build)
-- Source code - Only built files are deployed
-
-## 🌐 Post-Deployment
-
-### 1. Verify Deployment
-
-Your app will be available at:
-- Production: `https://map-config-service.vercel.app`
-- Preview: `https://map-config-service-[branch].vercel.app`
-
-### 2. Test Key Features
-
-- [ ] Map gallery loads (94 maps)
-- [ ] Style files accessible at `/styles/*.json`
-- [ ] API endpoint works: `/api/maps`
-- [ ] Maputnik integration opens
-- [ ] Search and filtering work
-- [ ] Config editor (if password protected)
-
-### 3. Configure Custom Domain (Optional)
-
-1. Go to Vercel Dashboard > Settings > Domains
-2. Add your domain (e.g., `maps.yourdomain.com`)
-3. Update DNS records as instructed
-
-### 4. Set Up API Access
-
-For 3rd party apps to access your maps:
-
-1. Generate API keys:
+1. **Test Style Loading**
    ```bash
-   vercel env add API_KEYS production
-   # Enter: key1,key2,key3
+   curl https://your-app.vercel.app/styles/basemap.json
+   curl https://your-app.vercel.app/api/styles/kataster-bev2
    ```
 
-2. Share with developers:
-   ```javascript
-   fetch('https://your-domain.vercel.app/api/maps', {
-     headers: {
-       'X-API-Key': 'your-api-key'
-     }
-   })
-   ```
+2. **Test Proxy Endpoints**
+   - Check that tile requests through `/proxy/kataster/` work
+   - Verify CORS headers are present
 
-## 🔄 Updating
+3. **Test in Application**
+   - Open your deployed app
+   - Load a map with overlays
+   - Verify vector tiles display correctly
 
-### Deploy Updates
+4. **Update Database**
+   - Run the production update script
+   - Verify maps load with new URLs
 
-```bash
-# Automatic (via Git)
-git add .
-git commit -m "Update maps"
-git push origin main
+## 🔄 Rollback Plan
 
-# Manual (via CLI)
-vercel --prod
-```
-
-### Update Style Files
-
-1. Upload new styles via Config Editor
-2. Or add to `public/styles/` and redeploy
-
-### Update Environment Variables
+If issues occur, you can quickly rollback:
 
 ```bash
-# Via Dashboard
-Vercel Dashboard > Settings > Environment Variables
+# Switch back to localhost URLs
+node scripts/update-to-style-server.js
 
-# Via CLI
-vercel env rm VARIABLE_NAME
-vercel env add VARIABLE_NAME
+# Or restore previous deployment in Vercel dashboard
 ```
 
-## 🐛 Troubleshooting
+## 📝 Important Notes
 
-### Build Fails
+1. **Style References**: Files like `basemap7.json` that reference `bm.json` will work automatically
+2. **CORS**: All configured in `vercel.json` - no additional setup needed
+3. **Caching**: Styles are cached for 5 minutes (API) or 1 hour (static)
+4. **Tile Proxy**: Kataster and KTN tiles are proxied to avoid CORS issues
 
-- Check `vercel.json` configuration
-- Ensure all dependencies in `package.json`
-- Review build logs in Vercel Dashboard
+## 🎉 Success Indicators
 
-### Styles Not Loading
+You'll know deployment is successful when:
+- ✅ Styles load without CORS errors
+- ✅ Vector tile overlays display correctly
+- ✅ Style references (like basemap7 → bm.json) resolve properly
+- ✅ Tile requests work through proxy endpoints
 
-- Verify files in `public/styles/`
-- Check URLs use `/styles/` prefix
-- Confirm CORS headers in `vercel.json`
+## 🆘 Troubleshooting
 
-### API Not Working
+### Styles not loading
+- Check Vercel function logs
+- Verify files exist in `public/styles/`
+- Check browser console for CORS errors
 
-- Check environment variables are set
-- Verify API functions in `/api/` directory
-- Review function logs in Vercel Dashboard
+### Tiles not displaying
+- Verify proxy rewrites in `vercel.json`
+- Check network tab for failed tile requests
+- Ensure original tile servers are accessible
 
-### Supabase Connection Issues
-
-- Verify Supabase URL and key are correct
-- Check Supabase project is active
-- Review RLS policies in Supabase
-
-## 📊 Monitoring
-
-### Analytics
-
-- View in Vercel Dashboard > Analytics
-- Track page views, API calls, performance
-
-### Logs
-
-- Function logs: Dashboard > Functions
-- Build logs: Dashboard > Deployments
-- Error tracking: Dashboard > Monitoring
-
-## 🔒 Security Checklist
-
-- [x] API keys removed from client code
-- [x] Environment variables properly set
-- [x] CORS configured for your domains
-- [x] Style files served with cache headers
-- [x] Sensitive routes password protected
-- [ ] Rate limiting configured (optional)
-- [ ] Custom domain with SSL (automatic)
+### Database not updating
+- Verify Supabase credentials
+- Check that map names match exactly
+- Review error messages in update script
 
 ## 📞 Support
 
-- **Vercel Issues**: [vercel.com/support](https://vercel.com/support)
-- **Build Problems**: Check [Vercel Docs](https://vercel.com/docs)
-- **Application Issues**: Review this repository's issues
-
-## 🎉 Success!
-
-Once deployed, your map configuration service will be:
-- ✅ Globally distributed via Vercel's CDN
-- ✅ Automatically scaled based on traffic
-- ✅ Protected with SSL certificates
-- ✅ Optimized for performance
-- ✅ Ready for 3rd party integrations
+If you encounter issues:
+1. Check Vercel deployment logs
+2. Review browser console errors
+3. Test endpoints with curl
+4. Verify database updates in Supabase dashboard
 
 ---
 
-**Next Steps:**
-1. Share your deployment URL
-2. Test all features
-3. Configure custom domain
-4. Set up monitoring
-5. Share API documentation with developers
+**Ready to deploy? Run `npm run build:prod && vercel --prod` 🚀**

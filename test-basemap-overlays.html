@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test Basemap with Overlays - Supabase Connected</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        #map { 
+            position: absolute; 
+            top: 150px; 
+            bottom: 0; 
+            width: 100%; 
+        }
+        .controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .control-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 15px;
+        }
+        label {
+            font-weight: 600;
+            min-width: 100px;
+            color: #333;
+        }
+        select {
+            flex: 1;
+            max-width: 400px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .overlay-section {
+            border-top: 1px solid #eee;
+            margin-top: 15px;
+            padding-top: 15px;
+        }
+        .overlay-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .overlay-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .overlay-item:hover {
+            background: #e9ecef;
+        }
+        .overlay-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        .overlay-item label {
+            font-weight: normal;
+            cursor: pointer;
+            min-width: auto;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .overlay-type {
+            font-size: 11px;
+            padding: 2px 6px;
+            background: #dee2e6;
+            border-radius: 3px;
+            margin-left: auto;
+        }
+        .status {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .status-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .status-text {
+            font-size: 13px;
+            color: #666;
+        }
+        .test-section {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+        .test-button.secondary {
+            background: #2196F3;
+        }
+        .test-button.secondary:hover {
+            background: #1976D2;
+        }
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .coordinates {
+            position: absolute;
+            top: 160px;
+            right: 10px;
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            font-size: 12px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <div class="control-row">
+        <label>Basemap:</label>
+        <select id="basemap-select">
+            <option value="">Loading maps from Supabase...</option>
+        </select>
+        <button class="test-button secondary" onclick="loadMapsFromSupabase()">Refresh Maps</button>
+    </div>
+    
+    <div class="overlay-section">
+        <label style="display: block; margin-bottom: 10px;">Overlay Maps:</label>
+        <div id="overlay-grid" class="overlay-grid">
+            <!-- Overlays will be populated here -->
+        </div>
+    </div>
+</div>
+
+<div id="map"></div>
+<div class="coordinates" id="coordinates">Lat: 47.5000, Lng: 13.3000</div>
+
+<div class="status">
+    <div class="status-title">Status</div>
+    <div class="status-text" id="status">Connecting to Supabase...</div>
+</div>
+
+<div class="test-section">
+    <button class="test-button" onclick="testBasemapWithOverlays()">
+        Test: Basemap Standard + Overlays
+    </button>
+    <button class="test-button secondary" onclick="generateReport()">
+        Generate Report
+    </button>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// Supabase configuration
+const supabaseUrl = 'https://wphrytrrikfkwehwahqc.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaHJ5dHJyaWtma3dlaHdhaHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NTI5NzUsImV4cCI6MjA3MjEyODk3NX0.8E7_6gTc4guWSB2lI-hFQfGSEs6ziLmIT3P8xPbmz_k';
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+let map = null;
+let allMaps = [];
+let currentOverlays = [];
+
+// Austria center coordinates
+const austriaCenter = [13.3, 47.5];
+const austriaZoom = 7;
+
+// Make functions available globally
+window.loadMapsFromSupabase = loadMapsFromSupabase;
+window.testBasemapWithOverlays = testBasemapWithOverlays;
+window.generateReport = generateReport;
+
+async function loadMapsFromSupabase() {
+    const statusEl = document.getElementById('status');
+    statusEl.textContent = 'Loading maps from Supabase...';
+    
+    try {
+        // Fetch all maps from Supabase
+        const { data: maps, error } = await supabase
+            .from('map_configs')
+            .select('*')
+            .eq('is_active', true)
+            .order('label');
+
+        if (error) {
+            console.error('Error fetching maps:', error);
+            statusEl.textContent = 'Error loading maps: ' + error.message;
+            return;
+        }
+
+        allMaps = maps;
+        
+        // Separate basemaps and overlays
+        const basemaps = maps.filter(m => !m.metadata?.isOverlay);
+        const overlays = maps.filter(m => m.metadata?.isOverlay);
+        
+        // Populate basemap dropdown
+        const basemapSelect = document.getElementById('basemap-select');
+        basemapSelect.innerHTML = '';
+        
+        // Group basemaps by country
+        const groupedBasemaps = {};
+        basemaps.forEach(map => {
+            const country = map.country || 'Other';
+            if (!groupedBasemaps[country]) {
+                groupedBasemaps[country] = [];
+            }
+            groupedBasemaps[country].push(map);
+        });
+        
+        // Add grouped options
+        Object.keys(groupedBasemaps).sort().forEach(country => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = `${groupedBasemaps[country][0].flag || ''} ${country}`;
+            
+            groupedBasemaps[country].forEach(map => {
+                const option = document.createElement('option');
+                option.value = map.id;
+                option.textContent = map.label;
+                if (map.name === 'Basemap Standard') {
+                    option.selected = true;
+                }
+                optgroup.appendChild(option);
+            });
+            
+            basemapSelect.appendChild(optgroup);
+        });
+        
+        // Populate overlay checkboxes
+        const overlayGrid = document.getElementById('overlay-grid');
+        overlayGrid.innerHTML = '';
+        
+        overlays.forEach(overlay => {
+            const item = document.createElement('div');
+            item.className = 'overlay-item';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `overlay-${overlay.id}`;
+            checkbox.value = overlay.id;
+            checkbox.addEventListener('change', updateOverlays);
+            
+            // Pre-select specific overlays for testing
+            if (overlay.name === 'Kataster BEV2' || overlay.name === 'dkm_bev_symbole') {
+                checkbox.checked = true;
+            }
+            
+            const label = document.createElement('label');
+            label.htmlFor = `overlay-${overlay.id}`;
+            label.innerHTML = `
+                ${overlay.flag || '🗺️'} ${overlay.label}
+                <span class="overlay-type">${overlay.metadata?.overlayType || 'overlay'}</span>
+            `;
+            
+            item.appendChild(checkbox);
+            item.appendChild(label);
+            overlayGrid.appendChild(item);
+        });
+        
+        statusEl.textContent = `Loaded ${basemaps.length} basemaps and ${overlays.length} overlays`;
+        
+        // Initialize map with selected basemap
+        initializeMap();
+        
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        statusEl.textContent = 'Unexpected error: ' + error.message;
+    }
+}
+
+function initializeMap() {
+    const basemapId = document.getElementById('basemap-select').value;
+    const basemap = allMaps.find(m => m.id === basemapId);
+    
+    if (!basemap) {
+        console.error('No basemap selected');
+        return;
+    }
+    
+    const mapOptions = {
+        container: 'map',
+        center: austriaCenter,
+        zoom: austriaZoom
+    };
+    
+    // Handle different map types
+    if (basemap.type === 'vtc' && basemap.style) {
+        mapOptions.style = basemap.style;
+    } else if (basemap.type === 'wmts' && basemap.metadata?.tiles) {
+        // Create style for WMTS
+        mapOptions.style = {
+            version: 8,
+            sources: {
+                'basemap-source': {
+                    type: 'raster',
+                    tiles: basemap.metadata.tiles,
+                    tileSize: basemap.metadata.tileSize || 256,
+                    minzoom: basemap.metadata.minzoom || 0,
+                    maxzoom: basemap.metadata.maxzoom || 18
+                }
+            },
+            layers: [{
+                id: 'basemap-layer',
+                type: 'raster',
+                source: 'basemap-source'
+            }]
+        };
+    }
+    
+    // Remove existing map
+    if (map) {
+        map.remove();
+    }
+    
+    map = new maplibregl.Map(mapOptions);
+    
+    map.on('load', () => {
+        document.getElementById('status').textContent = `Loaded: ${basemap.label}`;
+        updateOverlays();
+    });
+    
+    map.on('error', (e) => {
+        console.error('Map error:', e);
+        document.getElementById('status').textContent = 'Map error: ' + (e.error?.message || 'Unknown error');
+    });
+    
+    // Update coordinates on mouse move
+    map.on('mousemove', (e) => {
+        document.getElementById('coordinates').textContent = 
+            `Lat: ${e.lngLat.lat.toFixed(4)}, Lng: ${e.lngLat.lng.toFixed(4)}`;
+    });
+}
+
+function updateOverlays() {
+    if (!map) return;
+    
+    // Get selected overlays
+    const selectedOverlayIds = Array.from(document.querySelectorAll('.overlay-item input:checked'))
+        .map(cb => cb.value);
+    
+    const selectedOverlays = allMaps.filter(m => selectedOverlayIds.includes(m.id));
+    
+    // For now, show status of selected overlays
+    // Full overlay implementation would require style merging for vector tiles
+    // or adding WMS layers for WMS overlays
+    
+    const overlayNames = selectedOverlays.map(o => o.label).join(', ');
+    if (overlayNames) {
+        document.getElementById('status').textContent = `Overlays: ${overlayNames}`;
+    }
+}
+
+function testBasemapWithOverlays() {
+    // Select Basemap Standard
+    const basemapSelect = document.getElementById('basemap-select');
+    const basemapStandardOption = Array.from(basemapSelect.options)
+        .find(opt => opt.textContent === 'Basemap Standard');
+    
+    if (basemapStandardOption) {
+        basemapSelect.value = basemapStandardOption.value;
+        
+        // Check the specific overlays
+        document.querySelectorAll('.overlay-item input').forEach(cb => {
+            const overlay = allMaps.find(m => m.id === cb.value);
+            if (overlay && (overlay.name === 'Kataster BEV2' || overlay.name === 'dkm_bev_symbole')) {
+                cb.checked = true;
+            } else {
+                cb.checked = false;
+            }
+        });
+        
+        // Reinitialize map
+        initializeMap();
+        
+        // Zoom to a specific location in Austria for testing
+        setTimeout(() => {
+            if (map) {
+                // Zoom to Klagenfurt for testing cadastral data
+                map.flyTo({
+                    center: [14.3053, 46.6364],
+                    zoom: 15,
+                    duration: 2000
+                });
+            }
+        }, 1000);
+    }
+}
+
+function generateReport() {
+    const basemapSelect = document.getElementById('basemap-select');
+    const selectedBasemap = allMaps.find(m => m.id === basemapSelect.value);
+    
+    const selectedOverlays = Array.from(document.querySelectorAll('.overlay-item input:checked'))
+        .map(cb => allMaps.find(m => m.id === cb.value));
+    
+    const report = {
+        timestamp: new Date().toISOString(),
+        basemap: {
+            name: selectedBasemap?.name,
+            label: selectedBasemap?.label,
+            type: selectedBasemap?.type,
+            country: selectedBasemap?.country
+        },
+        overlays: selectedOverlays.map(o => ({
+            name: o.name,
+            label: o.label,
+            type: o.metadata?.overlayType
+        })),
+        mapState: {
+            center: map ? map.getCenter() : null,
+            zoom: map ? map.getZoom() : null,
+            bearing: map ? map.getBearing() : null
+        },
+        database: {
+            totalMaps: allMaps.length,
+            basemaps: allMaps.filter(m => !m.metadata?.isOverlay).length,
+            overlays: allMaps.filter(m => m.metadata?.isOverlay).length
+        }
+    };
+    
+    console.log('Test Report:', report);
+    alert(`Test Report Generated!\n\nBasemap: ${report.basemap.label}\nOverlays: ${report.overlays.length}\nCheck console for full report.`);
+}
+
+// Event listeners
+document.getElementById('basemap-select').addEventListener('change', initializeMap);
+
+// Load maps on page load
+loadMapsFromSupabase();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+{
+  "backgroundMaps": {
+    "Global": {
+      "name": "Global",
+      "style": "https://api.maptiler.com/maps/streets-v2/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Global",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Global2": {
+      "name": "Global2",
+      "style": "https://maps.clockworkmicro.com/streets/v1/style?x-api-key=9G4F5b99xO28esL8tArIO2Bbp8sGhURW5qIieYTy",
+      "label": "Global 2",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Landscape": {
+      "name": "Landscape",
+      "style": "https://api.maptiler.com/maps/landscape/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Landscape",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Ocean": {
+      "name": "Ocean",
+      "style": "https://api.maptiler.com/maps/ocean/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Ocean",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Outdoor": {
+      "name": "Outdoor",
+      "style": "https://api.maptiler.com/maps/outdoor-v2/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Outdoor",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Dataviz": {
+      "name": "Dataviz",
+      "style": "https://api.maptiler.com/maps/dataviz/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Dataviz",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "OSMLiberty": {
+      "name": "OSMLiberty",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/osmliberty.json",
+      "label": "OSM Liberty",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "OSMBright": {
+      "name": "OSMBright",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/osmliberty.json",
+      "label": "OSM Bright",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "OSM3D": {
+      "name": "OSM3D",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/maptiler3d.json",
+      "label": "OSM 3D",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "GlobalSat": {
+      "name": "GlobalSat",
+      "style": "https://api.maptiler.com/maps/satellite/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Global Satellite",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Basemap Standard": {
+      "name": "Basemap Standard",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/basemap_ktn_vektor.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Standard",
+      "type": "vtc"
+    },
+    "Basemap Grau": {
+      "name": "Basemap Grau",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/basemap_grau_ktn_vektor.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Grau",
+      "type": "vtc"
+    },
+    "Basemap Ortho": {
+      "name": "Basemap Ortho",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap-ortho.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Ortho",
+      "type": "vtc"
+    },
+    "Basemap Ortho KTN": {
+      "name": "Basemap Ortho KTN",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemapktn-ortho.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Ortho KTN",
+      "type": "vtc"
+    },
+    "BEVLight": {
+      "name": "BEVLight",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-light.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Light",
+      "type": "vtc"
+    },
+    "BEVOrtho": {
+      "name": "BEVOrtho",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-ortho.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Ortho",
+      "type": "vtc"
+    },
+    "Basemap Ortho Blue": {
+      "name": "Basemap Ortho Blue",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap-ortho-blue.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Ortho Blue",
+      "type": "vtc"
+    },
+    "Orthofoto": {
+      "name": "Orthofoto",
+      "tiles": [
+        "https://mapsneu.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg"
+      ],
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Orthofoto",
+      "type": "wmts"
+    },
+    "BEV Ortho": {
+      "name": "BEV Ortho",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/bev-katasterlight.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "BEV Ortho"
+    },
+    "Basemap.at": {
+      "name": "basemap.at",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap-at-new.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "basemap.at"
+    },
+    "Agrar": {
+      "name": "Agrar",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/agraratlas.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Agrar Atlas"
+    },
+    "basemapcustom2": {
+      "name": "basemapcustom2",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap2.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Basemap 1"
+    },
+    "basemapcustom3": {
+      "name": "basemapcustom3",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap3.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Basemap 2"
+    },
+    "basemapcustom4": {
+      "name": "basemapcustom4",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap7.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Basemap 3"
+    }
+  },
+  "overlayMaps": {
+    "Kataster": {
+      "name": "Kataster",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/gst_bev.json",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster.json",
+      "selectLayer": "gst_bev_fill",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Kataster"
+    },
+    "Kataster BEV": {
+      "name": "Kataster BEV",
+      "tileset": "https://kataster.bev.gv.at/styles/kataster/tiles.json",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev2.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "selectLayer": "Grundstücke - Flächen",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Kataster"
+    },
+    "Kataster BEV2": {
+      "name": "Kataster BEV2",
+      "tileset": "https://kataster.bev.gv.at/styles/kataster/tiles.json",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "selectLayer": "Grundstücke - Flächen",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Kataster 2"
+    },
+    "KatasterKTNLight": {
+      "name": "KatasterKTNLight",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/gst_bev.json",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/grundstuecke_kataster-ktn-light.json",
+      "selectLayer": "gst_bev_fill",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Kataster Light"
+    },
+    "Kataster OVL": {
+      "name": "Kataster OVL",
+      "tileset": "https://kataster.bev.gv.at/styles/kataster/tiles.json",
+      "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/ovl-kataster.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "selectLayer": "Grundstücke - Flächen",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Kataster Grau Overlay"
+    },
+    "dkm_bev_symbole": {
+      "name": "dkm_bev_symbole",
+      "tileset": "https://kataster.bev.gv.at/styles/symbole/tiles.json",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/BEV_kataster_symbole.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV DKM Punkte & Symbole"
+    },
+    "flawi": {
+      "name": "flawi",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/flawi.json",
+      "style": "https://gis.ktn.gv.at/osgdi/styles//flaewi_ktn.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Flächenwidmung"
+    },
+    "gefahr": {
+      "name": "gefahr",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/overlay_wasser.json",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/overlaystyle_wasser_schutz.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Gefahrenzonen"
+    },
+    "Inspire WMS": {
+      "name": "Inspire WMS",
+      "type": "wms",
+      "url": "http://wsa.bev.gv.at/GeoServer/Interceptor/Wms/CP/INSPIRE_KUNDEN-2375336d-49b8-4e62-8640-6d6668ba100a",
+      "layers": "CP.CadastralParcel_Parcel",
+      "format": "image/png",
+      "transparent": true,
+      "version": "1.3.0",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Inspire WMS"
+    },
+    "BEV DKM GST": {
+      "name": "BEV DKM GST",
+      "type": "wms",
+      "url": "https://data.bev.gv.at/geoserver/BEVdataKAT/wms",
+      "layers": "KAT_DKM_GST",
+      "format": "image/png",
+      "transparent": true,
+      "version": "1.3.0",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV DKM GST"
+    }
+  }
+}
