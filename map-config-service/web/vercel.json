@@ -21,7 +21,7 @@
       "destination": "https://gis.ktn.gv.at/:path*"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!styles/).*)",
       "destination": "/index.html"
     }
   ],
