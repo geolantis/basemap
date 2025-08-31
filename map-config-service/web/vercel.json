@@ -1,13 +1,32 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build:prod",
   "outputDirectory": "dist",
   "framework": "vue",
   "functions": {
     "api/**/*.ts": {
       "maxDuration": 30
+    },
+    "api/**/*.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
+    {
+      "source": "/api/proxy/style/:provider",
+      "destination": "/api/proxy/style/[provider].js"
+    },
+    {
+      "source": "/api/proxy/tiles/:style/:source/:z/:x/:y",
+      "destination": "/api/proxy/tiles/index.js"
+    },
+    {
+      "source": "/api/proxy/sprite/:style/:encoded/:rest*",
+      "destination": "/api/proxy/sprite/index.js"
+    },
+    {
+      "source": "/api/proxy/glyphs/:style/:encoded/:fontstack/:range",
+      "destination": "/api/proxy/glyphs/index.js"
+    },
     {
       "source": "/api/:path*",
       "destination": "/api/:path*"

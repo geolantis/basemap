@@ -24,6 +24,22 @@
               <span>{{ isFullscreen ? 'Exit' : 'Enter' }} Fullscreen</span>
             </button>
             <button
+              @click="viewStyleJson"
+              class="btn-secondary flex items-center space-x-2"
+              title="View Style JSON"
+            >
+              <i class="pi pi-eye"></i>
+              <span>View Style</span>
+            </button>
+            <button
+              @click="downloadStyleJson"
+              class="btn-secondary flex items-center space-x-2"
+              title="Download Style JSON"
+            >
+              <i class="pi pi-download"></i>
+              <span>Download Style</span>
+            </button>
+            <button
               @click="editConfig"
               class="btn-primary flex items-center space-x-2"
             >
@@ -346,6 +362,47 @@ function toggleFullscreen() {
 
 function editConfig() {
   router.push(`/config/${route.params.id}/edit`);
+}
+
+async function viewStyleJson() {
+  if (!config.value?.style) {
+    alert('No style URL available for this map');
+    return;
+  }
+  
+  // Open the style JSON in a new tab
+  window.open(config.value.style, '_blank');
+}
+
+async function downloadStyleJson() {
+  if (!config.value?.style) {
+    alert('No style URL available for this map');
+    return;
+  }
+  
+  try {
+    // Fetch the style JSON
+    const response = await fetch(config.value.style);
+    if (!response.ok) {
+      throw new Error('Failed to fetch style');
+    }
+    
+    const styleJson = await response.json();
+    
+    // Create a blob and download it
+    const blob = new Blob([JSON.stringify(styleJson, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${config.value.name.replace(/\s+/g, '-').toLowerCase()}-style.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Failed to download style:', error);
+    alert('Failed to download style file. Please try viewing it instead.');
+  }
 }
 
 function retryLoad() {

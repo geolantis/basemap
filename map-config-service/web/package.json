@@ -11,7 +11,7 @@
     "styles:server": "node server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run styles:server\"",
     "prepare:styles": "node scripts/prepare-styles-for-vercel.js",
-    "build:prod": "npm run prepare:styles && npm run build",
+    "build:prod": "npm run prepare:styles && vite build && cp -r public/styles dist/",
     "audit": "npm audit",
     "audit:fix": "npm audit fix",
     "update:check": "npm outdated",

@@ -24,8 +24,23 @@ function stripApiKeys(url) {
     .replace(/[?&]$/g, '');
 }
 
+function detectProvider(url) {
+  if (!url) return null;
+  if (url.includes('maptiler.com')) return 'maptiler';
+  if (url.includes('clockworkmicro.com')) return 'clockwork';
+  if (url.includes('kataster.bev.gv.at')) return 'bev';
+  return null;
+}
+
 function injectApiKey(url, provider) {
-  if (!url || !provider) return url;
+  if (!url) return url;
+  
+  // Auto-detect provider if not specified
+  if (!provider) {
+    provider = detectProvider(url);
+  }
+  
+  if (!provider) return url;
   
   // First strip any existing keys
   let cleanUrl = stripApiKeys(url);
@@ -33,11 +48,12 @@ function injectApiKey(url, provider) {
   
   switch(provider) {
     case 'maptiler':
-      const maptilerKey = process.env.MAPTILER_API_KEY;
+      const maptilerKey = process.env.MAPTILER_API_KEY || 'ldV32HV5eBdmgfE7vZJI';
       return maptilerKey ? `${cleanUrl}${separator}key=${maptilerKey}` : cleanUrl;
     case 'clockwork':
-      const clockworkKey = process.env.CLOCKWORK_API_KEY;
-      return clockworkKey ? `${cleanUrl}${separator}apikey=${clockworkKey}` : cleanUrl;
+      const clockworkKey = process.env.CLOCKWORK_API_KEY || '9G4F5b99xO28esL8tArIO2Bbp8sGhURW5qIieYTy';
+      // Clockwork uses x-api-key parameter
+      return clockworkKey ? `${cleanUrl}${separator}x-api-key=${clockworkKey}` : cleanUrl;
     case 'bev':
       const bevKey = process.env.BEV_API_KEY;
       return bevKey ? `${cleanUrl}${separator}key=${bevKey}` : cleanUrl;
@@ -49,11 +65,14 @@ function injectApiKey(url, provider) {
 // Sanitize configuration and inject API keys for mobile apps
 function sanitizeConfig(config) {
   // First ensure the stored URL is clean (no keys in DB)
-  const cleanUrl = stripApiKeys(config.style_url);
+  let cleanUrl = stripApiKeys(config.style_url);
+  
+  // Auto-detect provider or use specified one
+  const provider = config.requires_api_key || detectProvider(cleanUrl);
   
   // Then inject API key server-side for mobile apps
-  const styleUrl = config.requires_api_key 
-    ? injectApiKey(cleanUrl, config.requires_api_key)
+  const styleUrl = provider 
+    ? injectApiKey(cleanUrl, provider)
     : cleanUrl;
     
   return {
@@ -118,20 +137,94 @@ export default async function handler(req, res) {
 
     // Support legacy format for backward compatibility
     if (format === 'legacy') {
-      // Return in the exact format expected by existing mobile apps
-      const legacyFormat = sanitizedConfigs.reduce((acc, config) => {
-        if (!acc[config.country]) {
-          acc[config.country] = [];
+      // Map known providers to proxy endpoints (NO API KEYS!)
+      const proxyMaps = {
+        'Global': 'maptiler-streets-v2',
+        'Global2': 'clockwork-streets',
+        'Landscape': 'maptiler-landscape',
+        'Ocean': 'maptiler-ocean',
+        'Outdoor': 'maptiler-outdoor-v2',
+        'Dataviz': 'maptiler-dataviz',
+        'BasemapDEGlobal': 'basemap-de-global',
+        'Kataster': 'bev-kataster',
+        'Kataster BEV': 'bev-kataster',
+        'Kataster BEV2': 'bev-kataster',
+        'Kataster Light': 'bev-kataster-light'
+      };
+      
+      // Get base URL for proxy endpoints
+      const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+      const host = req.headers['x-forwarded-host'] || req.headers.host || 'mapconfig.geolantis.com';
+      const baseUrl = `${protocol}://${host}`;
+      
+      // Return the Android app's expected format: backgroundMaps and overlayMaps
+      const legacyFormat = {
+        backgroundMaps: {},
+        overlayMaps: {}
+      };
+
+      // Process each configuration
+      sanitizedConfigs.forEach(config => {
+        // Determine if it's an overlay or background map
+        const isOverlay = 
+          config.name.toLowerCase().includes('overlay') ||
+          config.name.toLowerCase().includes('kataster') ||
+          config.name.toLowerCase().includes('kadaster') ||
+          config.name.toLowerCase().includes('cadastr') ||
+          config.label?.toLowerCase().includes('overlay');
+        
+        // Generate a key for the map
+        let key = config.name;
+        
+        // Special handling for known map names to maintain compatibility
+        if (config.name === 'Global' || config.label === 'Global') {
+          key = 'Global';
+        } else if (config.name === 'Global 2' || config.label === 'Global 2') {
+          key = 'Global2';
+        } else if (config.name.includes('Basemap.de') || config.name.includes('BasemapDE')) {
+          key = 'BasemapDEGlobal';
+        } else {
+          // For others, create a clean key
+          key = config.name.replace(/[^a-zA-Z0-9]/g, '');
         }
-        acc[config.country].push({
+        
+        // Determine the style URL - USE PROXY ENDPOINTS, NOT DIRECT URLS!
+        let styleUrl = config.style;
+        
+        // Check if this is a known map that should use proxy
+        if (proxyMaps[config.name]) {
+          // Use secure proxy endpoint - NO API KEYS EXPOSED!
+          styleUrl = `${baseUrl}/api/proxy/style/${proxyMaps[config.name]}`;
+        } else if (config.style && config.style.startsWith('/api/')) {
+          // For other local styles, use full URL
+          styleUrl = `${baseUrl}${config.style}`;
+        } else if (config.style && !config.style.startsWith('http')) {
+          // For relative styles, make them absolute
+          styleUrl = `${baseUrl}/api/styles/${config.name}.json`;
+        }
+        
+        // Create a clean entry matching the expected format
+        const cleanEntry = {
           name: config.name,
+          style: styleUrl,
           label: config.label,
           type: config.type,
-          style: config.style,
-          flag: config.flag
-        });
-        return acc;
-      }, {});
+          flag: config.flag,
+          country: config.country
+        };
+        
+        // Only add optional fields if they exist
+        if (config.layers && config.layers.length > 0) {
+          cleanEntry.layers = config.layers;
+        }
+        
+        // Add to appropriate category
+        if (isOverlay) {
+          legacyFormat.overlayMaps[key] = cleanEntry;
+        } else {
+          legacyFormat.backgroundMaps[key] = cleanEntry;
+        }
+      });
 
       return res.status(200).json(legacyFormat);
     }
