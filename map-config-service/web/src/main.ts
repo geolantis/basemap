@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 
 import './style.css';
+import 'primeicons/primeicons.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import App from './App.vue';

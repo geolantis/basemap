@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import 'primeicons/primeicons.css';
 
 @layer components {
   .btn-primary {
