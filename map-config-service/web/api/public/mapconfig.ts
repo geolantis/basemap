@@ -1,12 +1,51 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
-import { injectApiKey, stripApiKeys } from '../../utils/apiKeyInjector';
 
 // Initialize Supabase with anon key (public read access)
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
-);
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing Supabase configuration');
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Helper functions for API key management
+function stripApiKeys(url: string): string {
+  if (!url) return url;
+  
+  return url
+    .replace(/[?&]key=[^&]*/gi, '')
+    .replace(/[?&]apikey=[^&]*/gi, '')
+    .replace(/[?&]api_key=[^&]*/gi, '')
+    .replace(/[?&]token=[^&]*/gi, '')
+    .replace(/\?&/g, '?')
+    .replace(/&&/g, '&')
+    .replace(/[?&]$/g, '');
+}
+
+function injectApiKey(url: string, provider?: string | null): string {
+  if (!url || !provider) return url;
+  
+  // First strip any existing keys
+  let cleanUrl = stripApiKeys(url);
+  const separator = cleanUrl.includes('?') ? '&' : '?';
+  
+  switch(provider) {
+    case 'maptiler':
+      const maptilerKey = process.env.MAPTILER_API_KEY;
+      return maptilerKey ? `${cleanUrl}${separator}key=${maptilerKey}` : cleanUrl;
+    case 'clockwork':
+      const clockworkKey = process.env.CLOCKWORK_API_KEY;
+      return clockworkKey ? `${cleanUrl}${separator}apikey=${clockworkKey}` : cleanUrl;
+    case 'bev':
+      const bevKey = process.env.BEV_API_KEY;
+      return bevKey ? `${cleanUrl}${separator}key=${bevKey}` : cleanUrl;
+    default:
+      return cleanUrl;
+  }
+}
 
 // Sanitize configuration and inject API keys for mobile apps
 function sanitizeConfig(config: any) {
