@@ -22,7 +22,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // IMPORTANT: Update this to your Vercel app URL
 const PRODUCTION_URL = process.env.VERCEL_URL || 'https://your-app.vercel.app';
-const USE_API = true; // Set to false to use static files from /styles/
+const USE_API = false; // Using static files for better performance
 
 async function updateToProduction() {
   console.log('🚀 Updating map_configs for production deployment...\n');
