@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Supabase Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Test Supabase Authentication</h1>
+    
+    <div id="signup">
+        <h2>Create Test User</h2>
+        <input type="email" id="signup-email" placeholder="Email" value="admin@example.com">
+        <input type="password" id="signup-password" placeholder="Password" value="admin123">
+        <button onclick="signUp()">Create User</button>
+    </div>
+    
+    <hr>
+    
+    <div id="login">
+        <h2>Test Login</h2>
+        <input type="email" id="login-email" placeholder="Email" value="admin@example.com">
+        <input type="password" id="login-password" placeholder="Password" value="admin123">
+        <button onclick="signIn()">Login</button>
+    </div>
+    
+    <hr>
+    
+    <div id="result"></div>
+    
+    <script>
+        // Initialize Supabase
+        const { createClient } = supabase;
+        const supabaseClient = createClient(
+            'https://wphrytrrikfkwehwahqc.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaHJ5dHJyaWtma3dlaHdhaHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NTI5NzUsImV4cCI6MjA3MjEyODk3NX0.8E7_6gTc4guWSB2lI-hFQfGSEs6ziLmIT3P8xPbmz_k'
+        );
+        
+        async function signUp() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Sign up error: ${error.message}</p>`;
+            } else {
+                document.getElementById('result').innerHTML = `<p style="color: green;">User created successfully! Check your email for confirmation or try logging in.</p>`;
+                console.log('Sign up success:', data);
+            }
+        }
+        
+        async function signIn() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Login error: ${error.message}</p>`;
+            } else {
+                document.getElementById('result').innerHTML = `<p style="color: green;">Login successful!</p><pre>${JSON.stringify(data.user, null, 2)}</pre>`;
+                console.log('Login success:', data);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+{
+  "totalFiles": 25,
+  "files": [
+    "osmliberty.json",
+    "maptiler3d.json",
+    "basemap-ortho.json",
+    "basemapktn-ortho.json",
+    "kataster-light.json",
+    "kataster-ortho.json",
+    "basemap-ortho-blue.json",
+    "bev-katasterlight.json",
+    "basemap-at-new.json",
+    "agraratlas.json",
+    "basemap2.json",
+    "basemap3.json",
+    "basemap7.json",
+    "de_brandenburg.json",
+    "plan_ign.json",
+    "nz-basemap-topographic.json",
+    "nz-topolite-ortho.json",
+    "nzortho.json",
+    "kiinteistojaotus-taustakartalla.json",
+    "kataster.json",
+    "kataster-bev2.json",
+    "kataster-bev.json",
+    "grundstuecke_kataster-ktn-light.json",
+    "ovl-kataster.json",
+    "nz-parcels.json"
+  ],
+  "mapping": [
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/osmliberty.json",
+      "filename": "osmliberty.json",
+      "newUrl": "/styles/osmliberty.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/osmliberty.json",
+      "filename": "osmliberty.json",
+      "newUrl": "/styles/osmliberty.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/maptiler3d.json",
+      "filename": "maptiler3d.json",
+      "newUrl": "/styles/maptiler3d.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap-ortho.json",
+      "filename": "basemap-ortho.json",
+      "newUrl": "/styles/basemap-ortho.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemapktn-ortho.json",
+      "filename": "basemapktn-ortho.json",
+      "newUrl": "/styles/basemapktn-ortho.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-light.json",
+      "filename": "kataster-light.json",
+      "newUrl": "/styles/kataster-light.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-ortho.json",
+      "filename": "kataster-ortho.json",
+      "newUrl": "/styles/kataster-ortho.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap-ortho-blue.json",
+      "filename": "basemap-ortho-blue.json",
+      "newUrl": "/styles/basemap-ortho-blue.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/bev-katasterlight.json",
+      "filename": "bev-katasterlight.json",
+      "newUrl": "/styles/bev-katasterlight.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap-at-new.json",
+      "filename": "basemap-at-new.json",
+      "newUrl": "/styles/basemap-at-new.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/agraratlas.json",
+      "filename": "agraratlas.json",
+      "newUrl": "/styles/agraratlas.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap2.json",
+      "filename": "basemap2.json",
+      "newUrl": "/styles/basemap2.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap3.json",
+      "filename": "basemap3.json",
+      "newUrl": "/styles/basemap3.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap7.json",
+      "filename": "basemap7.json",
+      "newUrl": "/styles/basemap7.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/de_brandenburg.json",
+      "filename": "de_brandenburg.json",
+      "newUrl": "/styles/de_brandenburg.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/plan_ign.json",
+      "filename": "plan_ign.json",
+      "newUrl": "/styles/plan_ign.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/nz-basemap-topographic.json",
+      "filename": "nz-basemap-topographic.json",
+      "newUrl": "/styles/nz-basemap-topographic.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/nz-topolite-ortho.json",
+      "filename": "nz-topolite-ortho.json",
+      "newUrl": "/styles/nz-topolite-ortho.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/nzortho.json",
+      "filename": "nzortho.json",
+      "newUrl": "/styles/nzortho.json"
+    },
+    {
+      "mapName": "backgroundMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kiinteistojaotus-taustakartalla.json",
+      "filename": "kiinteistojaotus-taustakartalla.json",
+      "newUrl": "/styles/kiinteistojaotus-taustakartalla.json"
+    },
+    {
+      "mapName": "overlayMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster.json",
+      "filename": "kataster.json",
+      "newUrl": "/styles/kataster.json"
+    },
+    {
+      "mapName": "overlayMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev2.json",
+      "filename": "kataster-bev2.json",
+      "newUrl": "/styles/kataster-bev2.json"
+    },
+    {
+      "mapName": "overlayMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev.json",
+      "filename": "kataster-bev.json",
+      "newUrl": "/styles/kataster-bev.json"
+    },
+    {
+      "mapName": "overlayMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/grundstuecke_kataster-ktn-light.json",
+      "filename": "grundstuecke_kataster-ktn-light.json",
+      "newUrl": "/styles/grundstuecke_kataster-ktn-light.json"
+    },
+    {
+      "mapName": "overlayMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/ovl-kataster.json",
+      "filename": "ovl-kataster.json",
+      "newUrl": "/styles/ovl-kataster.json"
+    },
+    {
+      "mapName": "overlayMaps",
+      "originalUrl": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/nz-parcels.json",
+      "filename": "nz-parcels.json",
+      "newUrl": "/styles/nz-parcels.json"
+    }
+  ]
+}

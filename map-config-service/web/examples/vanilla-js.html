@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Config Service - Vanilla JS Example</title>
+    <link href="https://unpkg.com/maplibre-gl@5.7.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        select, input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+        
+        button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .map-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .map-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .map-card.selected {
+            border-color: #007bff;
+            background: #f0f8ff;
+        }
+        
+        .map-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .map-flag {
+            font-size: 24px;
+        }
+        
+        .map-title {
+            flex: 1;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .map-type {
+            padding: 2px 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .map-type.vtc { background: #d1ecf1; color: #0c5460; }
+        .map-type.wmts { background: #d4edda; color: #155724; }
+        .map-type.wms { background: #f8d7da; color: #721c24; }
+        
+        .map-info {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        #map-container {
+            height: 500px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        #json-output {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ Map Configuration Service - Vanilla JS</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="country-filter">Country</label>
+                <select id="country-filter">
+                    <option value="">All Countries</option>
+                    <option value="Global">🌐 Global</option>
+                    <option value="Austria">🇦🇹 Austria</option>
+                    <option value="Germany">🇩🇪 Germany</option>
+                    <option value="Switzerland">🇨🇭 Switzerland</option>
+                    <option value="France">🇫🇷 France</option>
+                    <option value="Italy">🇮🇹 Italy</option>
+                    <option value="Spain">🇪🇸 Spain</option>
+                    <option value="Netherlands">🇳🇱 Netherlands</option>
+                    <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="type-filter">Type</label>
+                <select id="type-filter">
+                    <option value="">All Types</option>
+                    <option value="vtc">Vector Tiles</option>
+                    <option value="wmts">WMTS</option>
+                    <option value="wms">WMS</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="search-input">Search</label>
+                <input type="text" id="search-input" placeholder="Search maps...">
+            </div>
+            
+            <div class="control-group">
+                <label>&nbsp;</label>
+                <button onclick="fetchMaps()">Search</button>
+            </div>
+        </div>
+        
+        <div class="stats" id="stats">
+            Loading map configurations...
+        </div>
+        
+        <div id="map-list" class="map-grid"></div>
+        
+        <div id="selected-map" style="display:none;">
+            <h2>Selected Map Preview</h2>
+            <div id="map-container"></div>
+            <pre id="json-output"></pre>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/maplibre-gl@5.7.0/dist/maplibre-gl.js"></script>
+    <script>
+        // Configuration
+        const API_CONFIG = {
+            baseUrl: 'http://localhost:5173', // Change to your API URL
+            apiKey: 'development-key' // Change to your API key
+        };
+        
+        let allMaps = [];
+        let selectedMap = null;
+        let mapInstance = null;
+        
+        // Fetch maps from API
+        async function fetchMaps() {
+            const country = document.getElementById('country-filter').value;
+            const type = document.getElementById('type-filter').value;
+            const search = document.getElementById('search-input').value;
+            
+            const params = new URLSearchParams();
+            if (country) params.append('country', country);
+            if (type) params.append('type', type);
+            if (search) params.append('search', search);
+            
+            try {
+                document.getElementById('stats').innerHTML = 'Loading...';
+                document.getElementById('map-list').innerHTML = '<div class="loading">Fetching maps...</div>';
+                
+                const response = await fetch(
+                    `${API_CONFIG.baseUrl}/api/maps?${params}`,
+                    {
+                        headers: {
+                            'X-API-Key': API_CONFIG.apiKey,
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allMaps = data.data;
+                
+                updateStats(data.meta);
+                renderMaps(allMaps);
+            } catch (error) {
+                console.error('Error fetching maps:', error);
+                document.getElementById('stats').innerHTML = `
+                    <div class="error">Error: ${error.message}</div>
+                `;
+            }
+        }
+        
+        // Update statistics
+        function updateStats(meta) {
+            const country = document.getElementById('country-filter').value;
+            const type = document.getElementById('type-filter').value;
+            
+            let statsText = `Found <strong>${meta.total} maps</strong>`;
+            if (country) statsText += ` in ${country}`;
+            if (type) statsText += ` of type ${type.toUpperCase()}`;
+            
+            document.getElementById('stats').innerHTML = statsText;
+        }
+        
+        // Render map cards
+        function renderMaps(maps) {
+            const container = document.getElementById('map-list');
+            
+            if (maps.length === 0) {
+                container.innerHTML = '<div class="loading">No maps found</div>';
+                return;
+            }
+            
+            container.innerHTML = maps.map(map => `
+                <div class="map-card" onclick="selectMap('${map.id}')" data-id="${map.id}">
+                    <div class="map-header">
+                        <span class="map-flag">${map.flag}</span>
+                        <span class="map-title">${map.label}</span>
+                        <span class="map-type ${map.type}">${map.type.toUpperCase()}</span>
+                    </div>
+                    <div class="map-info">
+                        <div>Provider: ${map.metadata?.provider || 'Unknown'}</div>
+                        <div>Country: ${map.country}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Select and preview a map
+        function selectMap(mapId) {
+            // Update selection UI
+            document.querySelectorAll('.map-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-id="${mapId}"]`).classList.add('selected');
+            
+            // Find selected map
+            selectedMap = allMaps.find(m => m.id === mapId);
+            if (!selectedMap) return;
+            
+            // Show preview section
+            document.getElementById('selected-map').style.display = 'block';
+            
+            // Display JSON
+            document.getElementById('json-output').textContent = JSON.stringify(selectedMap, null, 2);
+            
+            // Initialize map
+            initializeMap(selectedMap);
+        }
+        
+        // Initialize MapLibre map
+        function initializeMap(mapConfig) {
+            // Remove existing map
+            if (mapInstance) {
+                mapInstance.remove();
+                mapInstance = null;
+            }
+            
+            let style;
+            if (mapConfig.type === 'vtc' && mapConfig.style) {
+                style = mapConfig.style;
+            } else {
+                // Create raster style for WMTS/WMS
+                const tileUrl = mapConfig.originalStyle || mapConfig.style;
+                style = {
+                    version: 8,
+                    sources: {
+                        'raster-source': {
+                            type: 'raster',
+                            tiles: [tileUrl],
+                            tileSize: 256
+                        }
+                    },
+                    layers: [{
+                        id: 'raster-layer',
+                        type: 'raster',
+                        source: 'raster-source'
+                    }]
+                };
+            }
+            
+            try {
+                mapInstance = new maplibregl.Map({
+                    container: 'map-container',
+                    style: style,
+                    center: [13.5, 47.5], // Default center (Austria)
+                    zoom: 7
+                });
+                
+                mapInstance.addControl(new maplibregl.NavigationControl());
+                
+                mapInstance.on('error', (e) => {
+                    console.error('Map error:', e);
+                });
+            } catch (error) {
+                console.error('Failed to initialize map:', error);
+                document.getElementById('map-container').innerHTML = `
+                    <div class="error">Failed to load map: ${error.message}</div>
+                `;
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMaps();
+        });
+        
+        // Add enter key support for search
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                fetchMaps();
+            }
+        });
+    </script>
+</body>
+</html>

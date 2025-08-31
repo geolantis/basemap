@@ -1,0 +1,69 @@
+{
+  "timestamp": "2025-08-31T08:30:04.097Z",
+  "summary": {
+    "totalOriginal": 94,
+    "totalDatabase": 94,
+    "matching": 94,
+    "missingInDb": [],
+    "extraInDb": [],
+    "fieldDifferences": [],
+    "apiKeyExposures": []
+  },
+  "countryStats": {
+    "original": {
+      "Global": 13,
+      "Austria": 14,
+      "Germany": 10,
+      "Netherlands": 2,
+      "Belgium": 1,
+      "Switzerland": 5,
+      "United Kingdom": 2,
+      "Luxembourg": 4,
+      "Italy": 18,
+      "France": 4,
+      "New Zealand": 3,
+      "Finland": 1,
+      "Spain": 3,
+      "USA": 2,
+      "Canada": 5,
+      "Australia": 7
+    },
+    "database": {
+      "Global": 13,
+      "Austria": 14,
+      "Germany": 10,
+      "Netherlands": 2,
+      "Belgium": 1,
+      "Switzerland": 5,
+      "United Kingdom": 2,
+      "Luxembourg": 4,
+      "Italy": 18,
+      "France": 4,
+      "New Zealand": 3,
+      "Finland": 1,
+      "Spain": 3,
+      "USA": 2,
+      "Canada": 5,
+      "Australia": 7
+    }
+  },
+  "missingMaps": [],
+  "extraMaps": [],
+  "fieldDifferences": [],
+  "apiKeyExposures": {
+    "original": 20,
+    "database": 20,
+    "uniqueKeys": [
+      "ldV32HV5...",
+      "9G4F5b99...",
+      "dclksBdD...",
+      "AIzaSyAk..."
+    ]
+  },
+  "providers": [
+    "MapTiler",
+    "Clockwork Micro",
+    "Ordnance Survey",
+    "Google Maps"
+  ]
+}

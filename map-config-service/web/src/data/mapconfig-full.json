@@ -1,0 +1,1102 @@
+{
+  "backgroundMaps": {
+    "Global": {
+      "name": "Global",
+      "style": "https://api.maptiler.com/maps/streets-v2/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Global",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Global2": {
+      "name": "Global2",
+      "style": "https://maps.clockworkmicro.com/streets/v1/style?x-api-key=9G4F5b99xO28esL8tArIO2Bbp8sGhURW5qIieYTy",
+      "label": "Global 2",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Landscape": {
+      "name": "Landscape",
+      "style": "https://api.maptiler.com/maps/landscape/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Landscape",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "BasemapDEGlobal": {
+      "name": "BasemapDEGlobal",
+      "style": "https://sgx.geodatenzentrum.de/gdz_basemapworld_vektor/styles/bm_web_wld_col.json",
+      "label": "Basemap.de Global",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Ocean": {
+      "name": "Ocean",
+      "style": "https://api.maptiler.com/maps/ocean/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Ocean",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Outdoor": {
+      "name": "Outdoor",
+      "style": "https://api.maptiler.com/maps/outdoor-v2/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Outdoor",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Dataviz": {
+      "name": "Dataviz",
+      "style": "https://api.maptiler.com/maps/dataviz/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Dataviz",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "OSMLiberty": {
+      "name": "OSMLiberty",
+      "style": "/styles/osmliberty.json",
+      "label": "OSM Liberty",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "OSMBright": {
+      "name": "OSMBright",
+      "style": "/styles/osmliberty.json",
+      "label": "OSM Bright",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "OSM3D": {
+      "name": "OSM3D",
+      "style": "/styles/maptiler3d.json",
+      "label": "OSM 3D",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "GlobalSat": {
+      "name": "GlobalSat",
+      "style": "https://api.maptiler.com/maps/satellite/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "label": "Global Satellite",
+      "type": "vtc",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Basemap Standard": {
+      "name": "Basemap Standard",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/basemap_ktn_vektor.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Standard",
+      "type": "vtc"
+    },
+    "Basemap Grau": {
+      "name": "Basemap Grau",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/basemap_grau_ktn_vektor.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Grau",
+      "type": "vtc"
+    },
+    "Basemap Ortho": {
+      "name": "Basemap Ortho",
+      "style": "/styles/basemap-ortho.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Ortho",
+      "type": "vtc"
+    },
+    "Basemap Ortho KTN": {
+      "name": "Basemap Ortho KTN",
+      "style": "/styles/basemapktn-ortho.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Ortho KTN",
+      "type": "vtc"
+    },
+    "BEVLight": {
+      "name": "BEVLight",
+      "style": "/styles/kataster-light.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Light",
+      "type": "vtc"
+    },
+    "BEVOrtho": {
+      "name": "BEVOrtho",
+      "style": "/styles/kataster-ortho.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Ortho",
+      "type": "vtc"
+    },
+    "Basemap Ortho Blue": {
+      "name": "Basemap Ortho Blue",
+      "style": "/styles/basemap-ortho-blue.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Basemap Ortho Blue",
+      "type": "vtc"
+    },
+    "Orthofoto": {
+      "name": "Orthofoto",
+      "tiles": [
+        "https://mapsneu.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg"
+      ],
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Orthofoto",
+      "type": "wmts"
+    },
+    "BEV Ortho": {
+      "name": "BEV Ortho",
+      "style": "/styles/bev-katasterlight.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "BEV Ortho"
+    },
+    "Basemap.at": {
+      "name": "basemap.at",
+      "style": "/styles/basemap-at-new.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "basemap.at"
+    },
+    "Agrar": {
+      "name": "Agrar",
+      "style": "/styles/agraratlas.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Agrar Atlas"
+    },
+    "basemapcustom2": {
+      "name": "basemapcustom2",
+      "style": "/styles/basemap2.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Basemap 1"
+    },
+    "basemapcustom3": {
+      "name": "basemapcustom3",
+      "style": "/styles/basemap3.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Basemap 2"
+    },
+    "basemapcustom4": {
+      "name": "basemapcustom4",
+      "style": "/styles/basemap7.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "type": "vtc",
+      "label": "Basemap 3"
+    },
+    "Basemap DE": {
+      "name": "Basemap DE",
+      "style": "https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_top.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "Basemap DE"
+    },
+    "DE-Brandenburg": {
+      "name": "Brandenburg DE",
+      "style": "/styles/de_brandenburg.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Brandenburg"
+    },
+    "DE-Niedersachen-Classic": {
+      "name": "DE-Niedersachen-Classic",
+      "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-classic.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Niedersachsen Klassisch"
+    },
+    "DE-Niedersachen-Color": {
+      "name": "DE-Niedersachen-Color",
+      "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-color.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Niedersachsen Farbe"
+    },
+    "DE-Niedersachen-Grey": {
+      "name": "DE-Niedersachen-Grey",
+      "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-grayscale.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Niedersachsen Grau"
+    },
+    "DE-Niedersachen-Light": {
+      "name": "DE-Niedersachen-Light",
+      "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-light.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Niedersachsen Hell"
+    },
+    "DE-Niedersachen-Night": {
+      "name": "DE-Niedersachen-Night",
+      "style": "https://basisvisualisierung.niedersachsen.de/services/basiskarte/styles/vt-style-night.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Niedersachsen Nacht"
+    },
+    "DE-Niedersachen-OSMCombi": {
+      "name": "DE-Niedersachen-OSMCombi",
+      "style": "https://basisvisualisierung.niedersachsen.de/services/osm-basiskarte/styles/osm-style-color.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Niedersachsen OSM-Kombi"
+    },
+    "DE-Niedersachen-OSMBW": {
+      "name": "DE-Niedersachen-OSMBW",
+      "style": "https://basisvisualisierung.niedersachsen.de/services/osm-basiskarte/styles/osm-style-mix-gray-color.json",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "type": "vtc",
+      "label": "DE Niedersachsen OSM-SW"
+    },
+    "TopPlusOpen": {
+      "name": "Germany TopPlusOpen",
+      "tiles": [
+        "https://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_scale/default/WEBMERCATOR/{z}/{y}/{x}.png"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© BKG (GeoBasis-DE)",
+      "label": "TopPlusOpen (Germany)",
+      "type": "wmts",
+      "flag": "🇩🇪",
+      "country": "Germany"
+    },
+    "NL Topo": {
+      "name": "NL Topo",
+      "style": "https://api.maptiler.com/maps/nl-cartiqo-topo/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "country": "Netherlands",
+      "flag": "🇳🇱",
+      "type": "vtc",
+      "label": "NL Topo"
+    },
+    "NL Luchtfoto": {
+      "name": "NL Luchtfoto",
+      "tiles": [
+        "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg"
+      ],
+      "tileSize": 256,
+      "attribution": "© PDOK, Luchtfoto",
+      "country": "Netherlands",
+      "type": "wmts",
+      "flag": "🇳🇱",
+      "label": "NL Luchtfoto"
+    },
+    "BelgiumOrtho": {
+      "name": "Belgium Ortho",
+      "type": "wmts",
+      "tiles": [
+        "https://wmts.ngi.be/inspire/ortho/1.0.0/Ortho/GoogleMapsCompatible/{z}/{y}/{x}.jpeg"
+      ],
+      "tileSize": 256,
+      "attribution": "© NGI Belgium",
+      "maxzoom": 18,
+      "minzoom": 0,
+      "country": "Belgium",
+      "flag": "🇧🇪",
+      "label": "Belgium Ortho"
+    },
+    "Switzerland": {
+      "name": "Switzerland",
+      "style": "https://api.maptiler.com/maps/cadastre-satellite/style.json?key=ldV32HV5eBdmgfE7vZJI",
+      "country": "Switzerland",
+      "flag": "🇨🇭",
+      "type": "vtc",
+      "label": "Switzerland"
+    },
+    "SwisstopoLight": {
+      "name": "SwisstopoLight",
+      "style": "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.leichte-basiskarte.vt/style.json",
+      "country": "Switzerland",
+      "flag": "🇨🇭",
+      "type": "vtc",
+      "label": "Swiss Topo Light"
+    },
+    "Swisstopo": {
+      "name": "Swisstopo",
+      "style": "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json",
+      "country": "Switzerland",
+      "flag": "🇨🇭",
+      "type": "vtc",
+      "label": "Swiss Topo"
+    },
+    "SwisstopoLightWinter": {
+      "name": "SwisstopoLightWinter",
+      "style": "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap-winter.vt/style.json",
+      "country": "Switzerland",
+      "flag": "🇨🇭",
+      "type": "vtc",
+      "label": "Swiss Topo Winter"
+    },
+    "SwisstopoSat": {
+      "name": "SwisstopoSat",
+      "style": "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.imagerybasemap.vt/style.json",
+      "country": "Switzerland",
+      "flag": "🇨🇭",
+      "type": "vtc",
+      "label": "Swiss Topo Satellite"
+    },
+    "OSGB": {
+      "name": "OSGB",
+      "style": "https://api.os.uk/maps/vector/v1/vts/resources/styles?srs=3857&key=dclksBdD441tZWuokDrxjRsw7Syr4nRS",
+      "country": "United Kingdom",
+      "flag": "🇬🇧",
+      "type": "vtc",
+      "label": "OSGB"
+    },
+    "OSGBGrey": {
+      "name": "OSGBGrey",
+      "style": "https://raw.githubusercontent.com/OrdnanceSurvey/OS-Vector-Tile-API-Stylesheets/refs/heads/main/OS_VTS_3857_Light.json?key=dclksBdD441tZWuokDrxjRsw7Syr4nRS",
+      "country": "United Kingdom",
+      "flag": "🇬🇧",
+      "type": "vtc",
+      "label": "OSGB Grey"
+    },
+    "Luxembourg": {
+      "name": "Luxembourg",
+      "style": "https://vectortiles-mobiliteit.geoportail.lu/styles/roadmap_jsapi/style.json",
+      "label": "Luxembourg",
+      "flag": "🇱🇺",
+      "attribution": "© Geoportail Luxembourg",
+      "type": "vtc",
+      "maxzoom": 24,
+      "country": "Luxembourg"
+    },
+    "LuxembourgRoadmap": {
+      "name": "Luxembourg Roadmap",
+      "style": "https://vectortiles-mobiliteit.geoportail.lu/styles/topomap/style.json",
+      "label": "Luxembourg Roadmap",
+      "flag": "🇱🇺",
+      "attribution": "© Geoportail Luxembourg",
+      "type": "vtc",
+      "maxzoom": 24,
+      "country": "Luxembourg"
+    },
+    "ItalyOrtofoto": {
+      "name": "Italy Ortofoto",
+      "type": "raster",
+      "tiles": [
+        "https://wms.pcn.minambiente.it/ogc?map=/ms_ogc/WMS_v1.3/raster/ortofoto_colore_12.map&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&LAYERS=OI.ORTOIMMAGINI.2012&STYLES=&FORMAT=image/jpeg&DPI=96&MAP_RESOLUTION=96&FORMAT_OPTIONS=dpi:96"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Geoportale Nazionale",
+      "label": "Italy Ortofoto 2012",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "ItalyIGM": {
+      "name": "Italy IGM",
+      "type": "raster",
+      "tiles": [
+        "https://wms.igm.it/raster/igm25k?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&LAYERS=CB.IGM25K&STYLES=&FORMAT=image/png&DPI=96&MAP_RESOLUTION=96&FORMAT_OPTIONS=dpi:96"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© IGM",
+      "label": "Italy IGM 25K",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "ItalyCadastre": {
+      "name": "Italy Cadastre",
+      "type": "wms",
+      "url": "https://wms.cartografia.agenziaentrate.gov.it/inspire/wms/ows01.php",
+      "layers": "CP.CadastralParcel",
+      "format": "image/png",
+      "transparent": true,
+      "version": "1.3.0",
+      "country": "Italy",
+      "flag": "🇮🇹",
+      "label": "Italy Cadastre",
+      "attribution": "© Agenzia delle Entrate"
+    },
+    "SouthTyrolOrtho": {
+      "name": "South Tyrol Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://geoservices.buergernetz.bz.it/geoserver/gwc/service/wmts?layer=p_bz-orthoimagery:Orthoimagery_2020_2022&style=&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix={z}&TileCol={x}&TileRow={y}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 20,
+      "attribution": "© Provincia Autonoma di Bolzano",
+      "label": "South Tyrol Ortho",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "SouthTyrolTopo": {
+      "name": "South Tyrol Topo",
+      "type": "raster",
+      "tiles": [
+        "https://geoservices.buergernetz.bz.it/geoserver/gwc/service/wmts?layer=p_bz-base_map:base_map&style=&tilematrixset=GoogleMapsCompatible&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix={z}&TileCol={x}&TileRow={y}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 20,
+      "attribution": "© Provincia Autonoma di Bolzano",
+      "label": "South Tyrol Topo",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "LombardyCTR": {
+      "name": "Lombardy CTR",
+      "type": "raster",
+      "tiles": [
+        "https://www.cartografia.servizirl.it/arcgis/rest/services/wms/ctr_wms/MapServer/WMTS/tile/1.0.0/wms_ctr_wms/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Regione Lombardia",
+      "label": "Lombardy CTR",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "LombardyOrtho": {
+      "name": "Lombardy Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://www.cartografia.servizirl.it/arcgis/rest/services/wms/ortofoto_2021_wms/MapServer/WMTS/tile/1.0.0/wms_ortofoto_2021_wms/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Lombardia",
+      "label": "Lombardy Ortho 2021",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "PiedmontBase": {
+      "name": "Piedmont Base",
+      "type": "raster",
+      "tiles": [
+        "https://wmts.geo.piemonte.it/rp-01/rest/services/pubblica/BDTRE_2021_WMTS/MapServer/WMTS/tile/1.0.0/pubblica_BDTRE_2021_WMTS/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Piemonte",
+      "label": "Piedmont BDTRE",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "PiedmontOrtho": {
+      "name": "Piedmont Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://wmts.geo.piemonte.it/rp-01/rest/services/pubblica/RIPRESA_AEREA_ICE_2021_RGB_WMTS/MapServer/WMTS/tile/1.0.0/pubblica_RIPRESA_AEREA_ICE_2021_RGB_WMTS/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Piemonte",
+      "label": "Piedmont Ortho 2021",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "TuscanyOrtho": {
+      "name": "Tuscany Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://www502.regione.toscana.it/geoscopio/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=rt_ofc.10k10.ortofoto.2019.32632&STYLE=default&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Toscana",
+      "label": "Tuscany Ortho 2019",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "TuscanyCTR": {
+      "name": "Tuscany CTR",
+      "type": "raster",
+      "tiles": [
+        "https://www502.regione.toscana.it/geoscopio/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=rt_cartoteca.ctr10k&STYLE=default&TILEMATRIXSET=GoogleMapsCompatible&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Regione Toscana",
+      "label": "Tuscany CTR 10K",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "VenetoOrtho": {
+      "name": "Veneto Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://idt2.regione.veneto.it/gwc/service/wmts?layer=rv:OrthoPhoto_2018_WMTS&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Veneto",
+      "label": "Veneto Ortho 2018",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "VenetoCTR": {
+      "name": "Veneto CTR",
+      "type": "raster",
+      "tiles": [
+        "https://idt2.regione.veneto.it/gwc/service/wmts?layer=c0105010_CartaTecnicaRegionale10K&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Regione Veneto",
+      "label": "Veneto CTR",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "EmiliaRomagnaBase": {
+      "name": "Emilia-Romagna Base",
+      "type": "raster",
+      "tiles": [
+        "https://servizigis.regione.emilia-romagna.it/arcgis/rest/services/base/mosaico_carte_topografiche_250k_100k_50k_25k/MapServer/WMTS/tile/1.0.0/base_mosaico_carte_topografiche_250k_100k_50k_25k/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Regione Emilia-Romagna",
+      "label": "Emilia-Romagna Topo",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "EmiliaRomagnaOrtho": {
+      "name": "Emilia-Romagna Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://servizigis.regione.emilia-romagna.it/arcgis/rest/services/base/ortofoto_2020_rgb/MapServer/WMTS/tile/1.0.0/base_ortofoto_2020_rgb/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Emilia-Romagna",
+      "label": "Emilia-Romagna Ortho 2020",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "LiguriaOrtho": {
+      "name": "Liguria Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://geoportale.regione.liguria.it/geoserver/gwc/service/wmts?layer=geoserver:ortofoto_2020&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/jpeg&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Liguria",
+      "label": "Liguria Ortho 2020",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "SicilyOrtho": {
+      "name": "Sicily Ortho",
+      "type": "raster",
+      "tiles": [
+        "https://map.sitr.regione.sicilia.it/arcgis/rest/services/WGS84_F33/Ortofoto_2012_2013/MapServer/WMTS/tile/1.0.0/WGS84_F33_Ortofoto_2012_2013/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Regione Siciliana",
+      "label": "Sicily Ortho",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "SardiniaCTR": {
+      "name": "Sardinia CTR",
+      "type": "raster",
+      "tiles": [
+        "https://webgis2.regione.sardegna.it/geoserver/gwc/service/wmts?layer=temi:sfondo_10k&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Regione Sardegna",
+      "label": "Sardinia CTR",
+      "flag": "🇮🇹",
+      "country": "Italy"
+    },
+    "LuxembourgTopo": {
+      "name": "Luxembourg Topo",
+      "style": "https://vectortiles-mobiliteit.geoportail.lu/styles/topomap_gray/style.json",
+      "label": "Luxembourg Topo",
+      "flag": "🇱🇺",
+      "attribution": "© Geoportail Luxembourg",
+      "type": "vtc",
+      "maxzoom": 24,
+      "country": "Luxembourg"
+    },
+    "LuxembourgMobiliteit": {
+      "name": "Luxembourg Mobiliteit",
+      "style": "https://vectortiles-mobiliteit.geoportail.lu/styles/vectortiles_mobiliteit.lu/style.json",
+      "label": "Luxembourg Mobiliteit",
+      "flag": "🇱🇺",
+      "attribution": "© Geoportail Luxembourg",
+      "type": "vtc",
+      "maxzoom": 24,
+      "country": "Luxembourg"
+    },
+    "FranceAerial": {
+      "name": "France Aerial",
+      "type": "raster",
+      "tiles": [
+        "https://data.geopf.fr/wmts?&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/jpeg&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 24,
+      "attribution": "IGN-F/Geoportail",
+      "label": "France Aerial",
+      "flag": "🇫🇷",
+      "country": "France"
+    },
+    "France Vector": {
+      "name": "France Vector",
+      "type": "vtc",
+      "style": "/styles/plan_ign.json",
+      "attribution": "IGN-F/Geoportail",
+      "label": "France Vector",
+      "flag": "🇫🇷",
+      "country": "France"
+    },
+    "France Admin Express": {
+      "name": "France Admin Express",
+      "tiles": [
+        "https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ADMINEXPRESS-COG.LATEST&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg"
+      ],
+      "tileSize": 256,
+      "maxzoom": 18,
+      "label": "France Admin Express",
+      "attribution": "© IGN-F/Geoportail",
+      "type": "wmts",
+      "flag": "🇫🇷",
+      "country": "France"
+    },
+    "France Cadastral Parcels": {
+      "name": "France Cadastral Parcels",
+      "tiles": [
+        "https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CADASTRALPARCELS.PARCELS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg"
+      ],
+      "tileSize": 256,
+      "maxzoom": 18,
+      "label": "Cadastral Parcels",
+      "attribution": "© IGN-F/Geoportail",
+      "type": "wmts",
+      "flag": "🇫🇷",
+      "country": "France"
+    },
+    "NZ": {
+      "name": "NZ",
+      "style": "/styles/nz-basemap-topographic.json",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "type": "vtc",
+      "label": "NZ"
+    },
+    "NZTopoOrtho": {
+      "name": "NZTopoOrtho",
+      "style": "/styles/nz-topolite-ortho.json",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "type": "vtc",
+      "label": "NZ Topo Ortho"
+    },
+    "NZOrtho": {
+      "name": "NZ Ortho",
+      "style": "/styles/nzortho.json",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "type": "vtc",
+      "label": "NZ Ortho"
+    },
+    "NLSTaustakartta": {
+      "name": "NLS Finland Cadaster",
+      "style": "/styles/kiinteistojaotus-taustakartalla.json",
+      "label": "NLS Finland Cadaster",
+      "attribution": "© National Land Survey of Finland",
+      "country": "Finland",
+      "type": "vtc",
+      "flag": "🇫🇮"
+    },
+    "Spain_BTN_Completa": {
+      "name": "Spain_BTN_Completa",
+      "style": "https://geoserveis.icgc.cat/contextmaps/icgc_orto_estandard.json",
+      "country": "Spain",
+      "type": "vtc",
+      "flag": "🇪🇸",
+      "label": "BTN Completa"
+    },
+    "ICGCOrtho": {
+      "name": "ICGCOrtho",
+      "style": "https://geoserveis.icgc.cat/contextmaps/icgc_orto_estandard.json",
+      "country": "Spain",
+      "type": "vtc",
+      "flag": "🇪🇸",
+      "label": "ICGC (Catalunya) Ortho"
+    },
+    "ICGCStandard": {
+      "name": "ICGCStandard",
+      "style": "https://geoserveis.icgc.cat/contextmaps/icgc.json",
+      "country": "Spain",
+      "type": "vtc",
+      "flag": "🇪🇸",
+      "label": "ICGC (Catalunya) Standard"
+    },
+    "USGSTopo": {
+      "name": "USGS Topo",
+      "type": "raster",
+      "tiles": [
+        "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/WMTS/tile/1.0.0/USGSTopo/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© USGS",
+      "label": "USGS Topo",
+      "flag": "🇺🇸",
+      "country": "USA"
+    },
+    "CanTopo": {
+      "name": "CanTopo",
+      "type": "raster",
+      "tiles": [
+        "https://maps-cartes.services.geo.ca/server2_serveur2/rest/services/BaseMaps/CBMT_TXT_3978/MapServer/WMTS/tile/1.0.0/BaseMaps_CBMT_TXT_3978/default/default028mm/{z}/{y}/{x}.jpg"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Natural Resources Canada",
+      "label": "CanTopo",
+      "flag": "🇨🇦",
+      "country": "Canada"
+    },
+    "CanadaSentinel2": {
+      "name": "Canada Sentinel-2",
+      "type": "raster",
+      "tiles": [
+        "https://datacube-prod-data-public.s3.ca-central-1.amazonaws.com/store/imagery/optical/canada-20m-2020/{z}/{x}/{y}.png"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 14,
+      "attribution": "© Canada Centre for Mapping and Earth Observation",
+      "label": "Canada Sentinel-2 2020",
+      "flag": "🇨🇦",
+      "country": "Canada"
+    },
+    "BCImagery": {
+      "name": "BC Imagery",
+      "type": "wms",
+      "url": "https://openmaps.gov.bc.ca/geo/pub/WHSE_IMAGERY_AND_BASE_MAPS.GSR_ORTHOIMAGERY_MOSAIC_2022/ows",
+      "layers": "WHSE_IMAGERY_AND_BASE_MAPS.GSR_ORTHOIMAGERY_MOSAIC_2022",
+      "format": "image/png",
+      "transparent": true,
+      "version": "1.1.1",
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Province of British Columbia",
+      "label": "BC Imagery 2022",
+      "flag": "🇨🇦",
+      "country": "Canada"
+    },
+    "OntarioImagery": {
+      "name": "Ontario Imagery",
+      "type": "raster",
+      "tiles": [
+        "https://ws.giscoeapp.lrc.gov.on.ca/arcgis/rest/services/imagery/Ontario_Imagery/MapServer/WMTS/tile/1.0.0/imagery_Ontario_Imagery/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 19,
+      "attribution": "© Queen's Printer for Ontario",
+      "label": "Ontario Imagery",
+      "flag": "🇨🇦",
+      "country": "Canada"
+    },
+    "CanadaNRCanWMTS": {
+      "name": "Canada NRCan",
+      "type": "raster",
+      "tiles": [
+        "https://maps.geogratis.gc.ca/wms/canvec_en?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX={bbox-epsg-3857}&CRS=EPSG:3857&WIDTH=256&HEIGHT=256&LAYERS=canvec&STYLES=&FORMAT=image/png&DPI=96&MAP_RESOLUTION=96&FORMAT_OPTIONS=dpi:96&TRANSPARENT=TRUE"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© Natural Resources Canada",
+      "label": "Canada NRCan",
+      "flag": "🇨🇦",
+      "country": "Canada"
+    },
+    "USGSImageryOnly": {
+      "name": "USGS Imagery Only",
+      "type": "raster",
+      "tiles": [
+        "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/tile/1.0.0/USGSImageryOnly/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "minzoom": 0,
+      "maxzoom": 18,
+      "attribution": "© USGS",
+      "label": "USGS Imagery",
+      "flag": "🇺🇸",
+      "country": "USA"
+    },
+    "VictoriaWMTS": {
+      "name": "Victoria Imagery",
+      "type": "raster",
+      "tiles": [
+        "https://base.maps.vic.gov.au/service/wmts/1.0.0/AERIAL_WM/default/EPSG:3857/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "maxzoom": 24,
+      "label": "Victoria Imagery",
+      "attribution": "© Vicmap, State of Victoria",
+      "country": "Australia",
+      "flag": "🇦🇺"
+    },
+    "NSW BaseMap": {
+      "name": "NSW BaseMap",
+      "type": "vector-esri",
+      "url": "https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile/VectorTileServer",
+      "styleUrl": "https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile/VectorTileServer/resources/styles/root.json",
+      "label": "NSW BaseMap",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "attribution": "NSW Spatial Services"
+    },
+    "NSWImagery": {
+      "name": "NSW Imagery",
+      "type": "raster",
+      "tiles": [
+        "https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Imagery/MapServer/WMTS/tile/1.0.0/NSW_Imagery/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "maxzoom": 24,
+      "label": "NSW Imagery",
+      "country": "Australia",
+      "flag": "🇦🇺"
+    },
+    "QueenslandWMTS": {
+      "name": "Queensland Aerial",
+      "type": "raster",
+      "tiles": [
+        "https://spatial-img.information.qld.gov.au/arcgis/rest/services/Basemaps/LatestStateProgram_AllUsers/ImageServer/WMTS/tile/1.0.0/Basemaps_LatestStateProgram_AllUsers/default/GoogleMapsCompatible/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "maxzoom": 24,
+      "label": "Queensland Aerial",
+      "country": "Australia",
+      "flag": "🇦🇺"
+    },
+    "WAImagery": {
+      "name": "WA Imagery",
+      "type": "wms",
+      "url": "https://services.slip.wa.gov.au/public/services/SLIP_Public_Services/Locate/MapServer/WMSServer",
+      "layers": "1",
+      "format": "image/png",
+      "version": "1.1.1",
+      "tileSize": 256,
+      "maxzoom": 19,
+      "flag": "🇦🇺",
+      "label": "WA Imagery",
+      "country": "Australia"
+    },
+    "TasmaniaOrtho": {
+      "name": "Tasmania Orthophoto",
+      "type": "raster",
+      "tiles": [
+        "https://services.thelist.tas.gov.au/arcgis/rest/services/Basemaps/Orthophoto/MapServer/WMTS/tile/1.0.0/Orthophoto/default/GoogleMapsCompatible/{z}/{y}/{x}.jpeg"
+      ],
+      "tileSize": 256,
+      "attribution": "© The LIST, Tasmania",
+      "maxzoom": 19,
+      "minzoom": 0,
+      "label": "Tasmania Orthophoto",
+      "flag": "🇦🇺",
+      "country": "Australia"
+    },
+    "QLD Aerial WMTS": {
+      "name": "QLD Aerial WMTS",
+      "type": "raster",
+      "tiles": [
+        "https://spatial-img.information.qld.gov.au/arcgis/rest/services/Basemaps/LatestStateProgram_AllUsers/ImageServer/WMTS/tile/1.0.0/Basemaps_LatestStateProgram_AllUsers/default/GoogleMapsCompatible/{z}/{y}/{x}.jpeg"
+      ],
+      "tileSize": 256,
+      "attribution": "© Queensland Government",
+      "maxzoom": 18,
+      "minzoom": 0,
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "label": "QLD Aerial"
+    },
+    "Google Roadmap": {
+      "name": "Google Roadmap",
+      "style": "https://maps.googleapis.com/maps/api/style/v1?style=roadmap&key=AIzaSyAkLRqGt0fFyaJMkDS1UyRt8j6M4XAQuog",
+      "label": "Google Roadmap",
+      "flag": "🌐",
+      "country": "Global"
+    },
+    "Google Satellite": {
+      "name": "Google Satellite",
+      "style": "https://maps.googleapis.com/maps/api/style/v1?style=satellite&key=AIzaSyAkLRqGt0fFyaJMkDS1UyRt8j6M4XAQuog",
+      "label": "Google Satellite",
+      "flag": "🌐",
+      "country": "Global"
+    }
+  },
+  "overlayMaps": {
+    "Kataster": {
+      "name": "Kataster",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/gst_bev.json",
+      "style": "/styles/kataster.json",
+      "selectLayer": "gst_bev_fill",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Kataster"
+    },
+    "Kataster BEV": {
+      "name": "Kataster BEV",
+      "tileset": "https://kataster.bev.gv.at/styles/kataster/tiles.json",
+      "style": "/styles/kataster-bev2.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "selectLayer": "Grundstücke - Flächen",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Kataster"
+    },
+    "Kataster BEV2": {
+      "name": "Kataster BEV2",
+      "tileset": "https://kataster.bev.gv.at/styles/kataster/tiles.json",
+      "style": "/styles/kataster-bev.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "selectLayer": "Grundstücke - Flächen",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV Kataster 2"
+    },
+    "KatasterKTNLight": {
+      "name": "KatasterKTNLight",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/gst_bev.json",
+      "style": "/styles/grundstuecke_kataster-ktn-light.json",
+      "selectLayer": "gst_bev_fill",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Kataster Light"
+    },
+    "Kataster OVL": {
+      "name": "Kataster OVL",
+      "tileset": "https://kataster.bev.gv.at/styles/kataster/tiles.json",
+      "style": "/styles/ovl-kataster.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "selectLayer": "Grundstücke - Flächen",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Kataster Grau Overlay"
+    },
+    "dkm_bev_symbole": {
+      "name": "dkm_bev_symbole",
+      "tileset": "https://kataster.bev.gv.at/styles/symbole/tiles.json",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/BEV_kataster_symbole.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV DKM Punkte & Symbole"
+    },
+    "flawi": {
+      "name": "flawi",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/flawi.json",
+      "style": "https://gis.ktn.gv.at/osgdi/styles//flaewi_ktn.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Flächenwidmung"
+    },
+    "gefahr": {
+      "name": "gefahr",
+      "tileset": "https://gis.ktn.gv.at/osgdi/tilesets/overlay_wasser.json",
+      "style": "https://gis.ktn.gv.at/osgdi/styles/overlaystyle_wasser_schutz.json",
+      "extra_sprite": "https://kataster.bev.gv.at/styles/sprite",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "KTN Gefahrenzonen"
+    },
+    "NZParcels": {
+      "name": "NZParcels",
+      "tileset": "https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/tile.json?api=c01j9kgtq3hq9yb59c22gnr6k64",
+      "style": "/styles/nz-parcels.json",
+      "extra_sprite": "https://basemaps.linz.govt.nz/v1/sprites/topographic",
+      "selectLayer": "Parcels-Ln",
+      "country": "New Zealand",
+      "flag": "🇳🇿",
+      "label": "NZ Parcels"
+    },
+    "NSW BaseMap Overlay": {
+      "name": "NSW BaseMap Overlay",
+      "url": "https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile/VectorTileServer",
+      "styleUrl": "https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile/VectorTileServer/resources/styles/root.json",
+      "country": "Australia",
+      "flag": "🇦🇺",
+      "label": "NSW BaseMap",
+      "attribution": "NSW Spatial Services",
+      "popupLayers": []
+    },
+    "Inspire WMS": {
+      "name": "Inspire WMS",
+      "type": "wms",
+      "url": "http://wsa.bev.gv.at/GeoServer/Interceptor/Wms/CP/INSPIRE_KUNDEN-2375336d-49b8-4e62-8640-6d6668ba100a",
+      "layers": "CP.CadastralParcel_Parcel",
+      "format": "image/png",
+      "transparent": true,
+      "version": "1.3.0",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Inspire WMS"
+    },
+    "BEV DKM GST": {
+      "name": "BEV DKM GST",
+      "type": "wms",
+      "url": "https://data.bev.gv.at/geoserver/BEVdataKAT/wms",
+      "layers": "KAT_DKM_GST",
+      "format": "image/png",
+      "transparent": true,
+      "version": "1.3.0",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "BEV DKM GST"
+    }
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "version": 8,
+  "name": "Österreichischer Kataster",
+  "metadata": {"maputnik:renderer": "mbgljs"},
+  "light": {"color": "rgba(238, 238, 239, 1)"},
+  "sources": {
+    "kataster": {
+      "type": "vector",
+      "url": "https://kataster.bev.gv.at/styles/kataster/tiles.json"
+    }
+  },
+  "sprite": "https://kataster.bev.gv.at/styles/sprite",
+  "glyphs": "https://kataster.bev.gv.at/styles/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    
+    {
+      "id": "Grundstücke - Flächen",
+      "type": "fill",
+      "source": "kataster",
+      "source-layer": "gst",
+      "minzoom": 14,
+      "paint": {"fill-color": "rgba(255, 255, 255, 0.4)", "fill-opacity": 0.1}
+    },
+    {
+      "id": "Nutzungen - Flächen",
+      "type": "fill",
+      "source": "kataster",
+      "source-layer": "nfl",
+      "paint": {"fill-color": "rgba(0, 0, 0, 0.1)", "fill-opacity": 0.1}
+    },
+    {
+      "id": "Nutzungen - der Rest",
+      "type": "line",
+      "source": "kataster",
+      "source-layer": "nfl",
+      "minzoom": 14,
+      "filter": ["!=", "ns", 41],
+      "paint": {"line-color": "#00ff00", "line-width": 0.5}
+    },
+    {
+      "id": "Gebäudenutzung",
+      "type": "line",
+      "source": "kataster",
+      "source-layer": "nfl",
+      "minzoom": 14,
+      "filter": ["==", "ns", 41],
+      "paint": {"line-color": "#ff0000", "line-width": 1}
+    },
+    {
+      "id": "Grundstücke",
+      "type": "line",
+      "source": "kataster",
+      "source-layer": "gst",
+      "minzoom": 14,
+      "paint": {"line-color": "black", "line-width": 0.7, "line-opacity": 0.99}
+    },
+    {
+      "id": "Katastralgemeinde - Flächen",
+      "type": "fill",
+      "source": "kataster",
+      "source-layer": "kg",
+      "paint": {
+        "fill-outline-color": "orange",
+        "fill-color": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "id": "Gemeinde - Flächen",
+      "type": "fill",
+      "source": "kataster",
+      "source-layer": "pg",
+      "minzoom": 6,
+      "paint": {"fill-color": "rgba(0, 0, 0, 0)"}
+    },
+    {
+      "id": "Gemeinde",
+      "type": "line",
+      "source": "kataster",
+      "source-layer": "pg",
+      "minzoom": 6,
+      "paint": {"line-color": "red", "line-width": 1.25}
+    },
+    {
+      "id": "Bundesland - Flächen",
+      "type": "fill",
+      "source": "kataster",
+      "source-layer": "bl",
+      "paint": {"fill-color": "rgba(0, 0, 0, 0)"}
+    },
+    {
+      "id": "Bundesland",
+      "type": "line",
+      "source": "kataster",
+      "source-layer": "bl",
+      "paint": {"line-width": 2, "line-color": "purple"}
+    },
+    {
+      "id": "Bundeslandname",
+      "type": "symbol",
+      "source": "kataster",
+      "source-layer": "blp",
+      "maxzoom": 8,
+      "layout": {
+        "text-field": "{bl}",
+        "text-size": 14,
+        "text-font": ["Roboto-Bold"]
+      },
+      "paint": {
+        "text-color": "purple",
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 0.8
+      }
+    },
+    {
+      "id": "Gemeindename",
+      "type": "symbol",
+      "source": "kataster",
+      "source-layer": "pgp",
+      "minzoom": 8,
+      "maxzoom": 11,
+      "layout": {
+        "text-field": "{pg}",
+        "text-size": 14,
+        "text-font": ["Roboto-Bold"]
+      },
+      "paint": {
+        "text-color": "red",
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 0.8
+      }
+    },
+    {
+      "id": "KG-Name",
+      "type": "symbol",
+      "source": "kataster",
+      "source-layer": "kgp",
+      "minzoom": 11,
+      "maxzoom": 16,
+      "layout": {
+        "text-field": "{kg} \n ({kg_nr})",
+        "text-size": 14,
+        "text-font": ["Roboto-Bold"]
+      },
+      "paint": {
+        "text-color": "orange",
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 0.8
+      }
+    },
+    {
+      "id": "Grundstücksnummern (Grenzkataster) klein",
+      "type": "symbol",
+      "source": "kataster",
+      "source-layer": "gnr",
+      "minzoom": 16,
+      "maxzoom": 18,
+      "filter": ["==", "rstatus", "G"],
+      "layout": {
+        "icon-image": "gk_underline",
+        "icon-size": 0.3,
+        "icon-rotate": ["*", -1, ["get", "rot"]],
+        "text-field": "{gnr}",
+        "text-size": 10,
+        "text-rotate": ["*", -1, ["get", "rot"]],
+        "text-font": ["Roboto-Regular"],
+        "text-offset": [0, -0.7]
+      },
+      "paint": {
+        "text-color": "#000000",
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 5
+      }
+    },
+    {
+      "id": "Grundstücksnummern (Grundsteuerkataster) klein",
+      "type": "symbol",
+      "source": "kataster",
+      "source-layer": "gnr",
+      "minzoom": 16,
+      "maxzoom": 18,
+      "filter": ["==", "rstatus", "E"],
+      "layout": {
+        "text-field": "{gnr}",
+        "text-size": 10,
+        "text-rotate": ["*", -1, ["get", "rot"]],
+        "text-font": ["Roboto-Regular"]
+      },
+      "paint": {
+        "text-color": "#000000",
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 5
+      }
+    },
+    {
+      "id": "Grundstücksnummern (Grenzkataster) gross",
+      "type": "symbol",
+      "source": "kataster",
+      "source-layer": "gnr",
+      "minzoom": 18,
+      "filter": ["==", "rstatus", "G"],
+      "layout": {
+        "icon-image": "gk_underline",
+        "icon-size": 0.3,
+        "icon-rotate": ["*", -1, ["get", "rot"]],
+        "text-field": "{gnr}",
+        "text-size": 16,
+        "text-rotate": ["*", -1, ["get", "rot"]],
+        "text-font": ["Roboto-Regular"],
+        "text-offset": [0, -0.6]
+      },
+      "paint": {
+        "text-color": "#000000",
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 5
+      }
+    },
+    {
+      "id": "Grundstücksnummern (Grundsteuerkataster) gross",
+      "type": "symbol",
+      "source": "kataster",
+      "source-layer": "gnr",
+      "minzoom": 18,
+      "filter": ["==", "rstatus", "E"],
+      "layout": {
+        "text-field": "{gnr}",
+        "text-size": 16,
+        "text-rotate": ["*", -1, ["get", "rot"]],
+        "text-font": ["Roboto-Regular"]
+      },
+      "paint": {
+        "text-color": "#000000",
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 5
+      }
+    }
+  ],
+  "id": "zkqwvp4up"
+}
