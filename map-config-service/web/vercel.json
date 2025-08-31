@@ -28,6 +28,10 @@
       "destination": "/api/proxy/glyphs/index.js"
     },
     {
+      "source": "/api/styles/:name",
+      "destination": "/api/styles/[name].js"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },
