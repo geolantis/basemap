@@ -195,10 +195,12 @@ function initializeMap() {
     
     if (config.value.type === 'vtc') {
       // Vector tile with style
-      if (config.value.originalStyle && config.value.originalStyle !== 'tiles') {
-        // In development, use the original style URL directly
-        // In production, this would go through the proxy
-        styleUrl = config.value.originalStyle;
+      if (config.value.style && config.value.style !== 'tiles') {
+        // Use the style URL from the database
+        styleUrl = config.value.style;
+      } else if (config.value.metadata?.styleUrl) {
+        // Fallback to metadata styleUrl if available
+        styleUrl = config.value.metadata.styleUrl;
       } else if (config.value.metadata?.tiles) {
         // Create a basic style from tiles array
         styleUrl = {
