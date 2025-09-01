@@ -131,19 +131,19 @@ const maputnikUrl = computed(() => {
     }
   }
   
-  console.log('Maputnik URL construction:', {
-    original: styleUrl,
-    final: finalStyleUrl,
-    encoded: encodeURIComponent(finalStyleUrl),
-    maputnikUrl: `${maputnikBaseUrl}#?style=${encodeURIComponent(finalStyleUrl)}`
-  });
-  
   // Encode the style URL properly for use as a query parameter
   const encodedStyleUrl = encodeURIComponent(finalStyleUrl);
   
-  // Maputnik v2.1.1 expects the style URL to be passed as a parameter
-  // Using the format: #?style=<encoded_style_url>
-  return `${maputnikBaseUrl}#?style=${encodedStyleUrl}`;
+  console.log('Maputnik URL construction:', {
+    original: styleUrl,
+    final: finalStyleUrl,
+    encoded: encodedStyleUrl,
+    maputnikUrl: `${maputnikBaseUrl}?style=${encodedStyleUrl}`
+  });
+  
+  // Maputnik v2.1.1 expects the style URL to be passed as a query parameter
+  // Using the format: ?style=<encoded_style_url> (without hash)
+  return `${maputnikBaseUrl}?style=${encodedStyleUrl}`;
 });
 
 function goBack() {
