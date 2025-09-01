@@ -3,8 +3,8 @@
     <!-- Map Thumbnail -->
     <div class="relative h-48 bg-gray-100 rounded-t-lg overflow-hidden">
       <img
-        v-if="config.previewImageUrl"
-        :src="config.previewImageUrl"
+        v-if="previewUrl"
+        :src="previewUrl"
         :alt="config.label"
         class="w-full h-full object-cover"
         @error="handleImageError"
@@ -168,6 +168,20 @@ const emit = defineEmits<{
 }>();
 
 const showMenu = ref(false);
+
+// Compute the preview URL, handling both regular URLs and base64 data
+const previewUrl = computed(() => {
+  if (!props.config.previewImageUrl) return null;
+  
+  // If it's already a data URL or a full URL, use it directly
+  if (props.config.previewImageUrl.startsWith('data:') || 
+      props.config.previewImageUrl.startsWith('http')) {
+    return props.config.previewImageUrl;
+  }
+  
+  // Otherwise assume it's a relative URL and needs the base URL
+  return props.config.previewImageUrl;
+});
 
 // EXACT list of overlay maps - ONLY these 12!
 const OVERLAY_MAPS = [

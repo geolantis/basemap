@@ -41,6 +41,28 @@ export async function captureMapPreview(map: maplibregl.Map): Promise<string> {
  */
 export async function uploadMapPreview(mapId: string, imageDataUrl: string): Promise<string | null> {
   try {
+    // First, check if the bucket exists and try to create it if not
+    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+    
+    if (!listError) {
+      const bucketExists = buckets?.some(bucket => bucket.name === 'map-previews');
+      
+      if (!bucketExists) {
+        // Try to create the bucket
+        const { error: createError } = await supabase.storage.createBucket('map-previews', {
+          public: true,
+          fileSizeLimit: 5242880, // 5MB
+          allowedMimeTypes: ['image/png', 'image/jpeg', 'image/webp']
+        });
+        
+        if (createError) {
+          console.error('Failed to create storage bucket:', createError);
+          // Fall back to storing as base64 in database
+          return imageDataUrl;
+        }
+      }
+    }
+    
     // Convert base64 to blob
     const base64Data = imageDataUrl.split(',')[1];
     const byteCharacters = atob(base64Data);
@@ -66,7 +88,8 @@ export async function uploadMapPreview(mapId: string, imageDataUrl: string): Pro
     
     if (error) {
       console.error('Failed to upload preview image:', error);
-      return null;
+      // Fall back to storing as base64 in database
+      return imageDataUrl;
     }
     
     // Get the public URL
@@ -77,7 +100,8 @@ export async function uploadMapPreview(mapId: string, imageDataUrl: string): Pro
     return publicUrl;
   } catch (error) {
     console.error('Failed to upload map preview:', error);
-    return null;
+    // Fall back to storing as base64 in database
+    return imageDataUrl;
   }
 }
 
