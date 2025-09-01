@@ -82,9 +82,21 @@
             <i class="pi pi-save"></i>
             <span>{{ positionSaved ? 'Position Saved' : 'Save Position' }}</span>
           </button>
+          <button
+            @click="savePreviewImage"
+            :disabled="savingPreview"
+            class="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors disabled:bg-gray-200 disabled:text-gray-400"
+          >
+            <i :class="savingPreview ? 'pi pi-spin pi-spinner' : 'pi pi-image'"></i>
+            <span>{{ previewSaved ? 'Preview Saved' : 'Save Preview Image' }}</span>
+          </button>
           <div v-if="positionSaved" class="text-xs text-green-600 text-center">
             <i class="pi pi-check-circle mr-1"></i>
             Position saved to database
+          </div>
+          <div v-if="previewSaved" class="text-xs text-green-600 text-center">
+            <i class="pi pi-check-circle mr-1"></i>
+            Preview image saved
           </div>
         </div>
         
@@ -205,6 +217,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import type { MapConfig } from '../types';
 import { openInMaputnik as openMaputnik, canOpenInMaputnik } from '../utils/maputnikHelper';
+import { captureMapPreview, uploadMapPreview, generateThumbnail } from '../utils/mapCapture';
 
 const route = useRoute();
 const router = useRouter();
@@ -232,6 +245,8 @@ const pitch = ref(0);
 const center = ref({ lat: 47.3769, lng: 8.5417 }); // Default to Zurich
 const positionSaved = ref(false);
 const positionChanged = ref(false);
+const savingPreview = ref(false);
+const previewSaved = ref(false);
 
 function initializeMap() {
   if (!mapContainer.value || !config.value) {
@@ -601,6 +616,50 @@ async function downloadStyleJson() {
   } catch (error) {
     console.error('Failed to download style:', error);
     alert('Failed to download style file. Please try viewing it instead.');
+  }
+}
+
+async function savePreviewImage() {
+  if (!map.value || !config.value) return;
+  
+  savingPreview.value = true;
+  previewSaved.value = false;
+  
+  try {
+    // Capture the current map view
+    const imageDataUrl = await captureMapPreview(map.value);
+    
+    // Generate a thumbnail
+    const thumbnailDataUrl = await generateThumbnail(imageDataUrl, 400, 300);
+    
+    // Upload to Supabase Storage
+    const previewUrl = await uploadMapPreview(config.value.id, thumbnailDataUrl);
+    
+    if (previewUrl) {
+      // Update the config with the preview URL
+      const result = await configStore.updateConfig(config.value.id, {
+        previewImageUrl: previewUrl
+      });
+      
+      if (result) {
+        console.log('Preview image saved successfully:', previewUrl);
+        previewSaved.value = true;
+        
+        // Reset the saved indicator after 3 seconds
+        setTimeout(() => {
+          previewSaved.value = false;
+        }, 3000);
+      } else {
+        throw new Error('Failed to update config with preview URL');
+      }
+    } else {
+      throw new Error('Failed to upload preview image');
+    }
+  } catch (error) {
+    console.error('Failed to save preview image:', error);
+    alert('Failed to save preview image. Please try again.');
+  } finally {
+    savingPreview.value = false;
   }
 }
 

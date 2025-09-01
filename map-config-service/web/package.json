@@ -9,7 +9,10 @@
     "build:check": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "styles:server": "node server.js",
+    "maputnik:sync": "node server/maputnik-sync.js",
+    "maputnik:install": "npm install -g maputnik",
     "dev:all": "concurrently \"npm run dev\" \"npm run styles:server\"",
+    "dev:live": "concurrently \"npm run dev\" \"npm run maputnik:sync\"",
     "prepare:styles": "node scripts/prepare-styles-for-vercel.js",
     "build:prod": "npm run prepare:styles && vite build && cp -r public/styles dist/",
     "test": "vitest",
@@ -75,7 +78,10 @@
     "vee-validate": "^4.15.1",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",
-    "zod": "^3.24.0"
+    "zod": "^3.24.0",
+    "ws": "^8.16.0",
+    "chokidar": "^3.5.3",
+    "concurrently": "^8.2.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.8.0",

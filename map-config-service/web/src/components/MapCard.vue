@@ -3,13 +3,17 @@
     <!-- Map Thumbnail -->
     <div class="relative h-48 bg-gray-100 rounded-t-lg overflow-hidden">
       <img
-        v-if="thumbnailUrl"
-        :src="thumbnailUrl"
+        v-if="config.previewImageUrl"
+        :src="config.previewImageUrl"
         :alt="config.label"
         class="w-full h-full object-cover"
+        @error="handleImageError"
       />
-      <div v-else class="flex items-center justify-center h-full">
-        <i class="pi pi-map text-4xl text-gray-400"></i>
+      <div v-else class="flex items-center justify-center h-full bg-gradient-to-br from-gray-50 to-gray-100">
+        <div class="text-center">
+          <i class="pi pi-map text-4xl text-gray-400 mb-2"></i>
+          <p class="text-xs text-gray-500">No preview available</p>
+        </div>
       </div>
       
       <!-- Badges -->
@@ -187,11 +191,13 @@ const isOverlay = computed(() => {
     OVERLAY_MAPS.some(name => name.toLowerCase() === props.config.name?.toLowerCase());
 });
 
-const thumbnailUrl = computed(() => {
-  // Generate thumbnail URL based on config
-  // In production, this would be a real thumbnail service
-  return null;
-});
+// Handle image loading errors
+function handleImageError(event: Event) {
+  const img = event.target as HTMLImageElement;
+  // Hide the broken image by setting display to none
+  img.style.display = 'none';
+  console.warn('Failed to load preview image for:', props.config.name);
+}
 
 function formatDate(date: string) {
   return format(new Date(date), 'MMM d, yyyy');

@@ -72,7 +72,12 @@ export class MapConfigService {
         isActive: item.is_active, // Convert snake_case to camelCase
         createdAt: item.created_at, // Convert snake_case to camelCase
         updatedAt: item.updated_at, // Convert snake_case to camelCase
-        createdBy: item.created_by // Convert snake_case to camelCase
+        createdBy: item.created_by, // Convert snake_case to camelCase
+        previewImageUrl: item.preview_image_url, // Convert snake_case to camelCase
+        center: item.center,
+        zoom: item.zoom,
+        bearing: item.bearing,
+        pitch: item.pitch
       }));
       
       console.log('First transformed config:', transformedData[0]);
@@ -102,7 +107,33 @@ export class MapConfigService {
 
       if (error) throw error;
       
-      return data;
+      // Transform the response to camelCase
+      if (data) {
+        return {
+          id: data.id,
+          name: data.name,
+          label: data.label,
+          type: data.type,
+          style: data.style,
+          originalStyle: data.original_style,
+          country: data.country,
+          flag: data.flag,
+          layers: data.layers || [],
+          metadata: data.metadata || {},
+          version: data.version,
+          isActive: data.is_active,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+          createdBy: data.created_by,
+          previewImageUrl: data.preview_image_url,
+          center: data.center,
+          zoom: data.zoom,
+          bearing: data.bearing,
+          pitch: data.pitch
+        };
+      }
+      
+      return null;
     } catch (error) {
       console.error('Error fetching config by ID:', error);
       return null;
@@ -166,19 +197,65 @@ export class MapConfigService {
         return null;
       }
       
+      // Transform camelCase to snake_case for database fields
+      const dbUpdates: any = {
+        updated_at: new Date().toISOString()
+      };
+      
+      // Map frontend field names to database field names
+      if (updates.name !== undefined) dbUpdates.name = updates.name;
+      if (updates.label !== undefined) dbUpdates.label = updates.label;
+      if (updates.type !== undefined) dbUpdates.type = updates.type;
+      if (updates.style !== undefined) dbUpdates.style = updates.style;
+      if (updates.originalStyle !== undefined) dbUpdates.original_style = updates.originalStyle;
+      if (updates.country !== undefined) dbUpdates.country = updates.country;
+      if (updates.flag !== undefined) dbUpdates.flag = updates.flag;
+      if (updates.layers !== undefined) dbUpdates.layers = updates.layers;
+      if (updates.metadata !== undefined) dbUpdates.metadata = updates.metadata;
+      if (updates.version !== undefined) dbUpdates.version = updates.version;
+      if (updates.isActive !== undefined) dbUpdates.is_active = updates.isActive;
+      if (updates.previewImageUrl !== undefined) dbUpdates.preview_image_url = updates.previewImageUrl;
+      if (updates.center !== undefined) dbUpdates.center = updates.center;
+      if (updates.zoom !== undefined) dbUpdates.zoom = updates.zoom;
+      if (updates.bearing !== undefined) dbUpdates.bearing = updates.bearing;
+      if (updates.pitch !== undefined) dbUpdates.pitch = updates.pitch;
+      
       const { data, error } = await supabase
         .from('map_configs')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
+        .update(dbUpdates)
         .eq('id', id)
         .select()
         .single();
 
       if (error) throw error;
       
-      return data;
+      // Transform the response back to camelCase
+      if (data) {
+        return {
+          id: data.id,
+          name: data.name,
+          label: data.label,
+          type: data.type,
+          style: data.style,
+          originalStyle: data.original_style,
+          country: data.country,
+          flag: data.flag,
+          layers: data.layers || [],
+          metadata: data.metadata || {},
+          version: data.version,
+          isActive: data.is_active,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+          createdBy: data.created_by,
+          previewImageUrl: data.preview_image_url,
+          center: data.center,
+          zoom: data.zoom,
+          bearing: data.bearing,
+          pitch: data.pitch
+        };
+      }
+      
+      return null;
     } catch (error) {
       console.error('Error updating config in database:', error);
       // Fallback to localStorage

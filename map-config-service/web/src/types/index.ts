@@ -20,6 +20,7 @@ export interface MapConfig {
   createdBy?: string;
   updatedBy?: string;
   map_category?: 'background' | 'overlay';
+  previewImageUrl?: string;
 }
 
 export interface Layer {
