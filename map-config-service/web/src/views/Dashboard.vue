@@ -22,6 +22,13 @@
               <span>Copy Existing</span>
             </button>
             <button
+              @click="showStyleUpload = true"
+              class="btn-secondary flex items-center space-x-2"
+            >
+              <i class="pi pi-upload"></i>
+              <span>Upload Style</span>
+            </button>
+            <button
               @click="createNew"
               class="btn-primary flex items-center space-x-2"
             >
@@ -172,6 +179,7 @@
           @preview="previewConfig"
           @duplicate="duplicateConfig"
           @delete="deleteConfig"
+          @upload-style="showStyleUpload = true"
         />
       </div>
       
@@ -264,6 +272,13 @@
         </div>
       </div>
     </div>
+
+    <!-- Style Upload Modal -->
+    <StyleUploadModal
+      v-model:visible="showStyleUpload"
+      @upload-success="handleStyleUploadSuccess"
+      @upload-error="handleStyleUploadError"
+    />
   </div>
 </template>
 
@@ -277,6 +292,7 @@ import StatCard from '../components/StatCard.vue';
 import MapCard from '../components/MapCard.vue';
 import DuplicateDialog from '../components/DuplicateDialog.vue';
 import MapSearchPanel from '../components/MapSearchPanel.vue';
+import StyleUploadModal from '../components/StyleUploadModal.vue';
 import type { MapConfig } from '../types';
 import { openInMaputnik as openMaputnik } from '../utils/maputnikHelper';
 
@@ -293,6 +309,7 @@ const {
 
 const showDuplicateDialog = ref(false);
 const showMapSearch = ref(false);
+const showStyleUpload = ref(false);
 const viewMode = ref<'grid' | 'list'>('grid');
 const selectedCategory = ref<'all' | 'background' | 'overlay'>('all');
 
@@ -438,6 +455,18 @@ async function deleteConfig(config: MapConfig) {
 async function handleDuplicate(request: any) {
   await configStore.duplicateConfiguration(request);
   showDuplicateDialog.value = false;
+}
+
+function handleStyleUploadSuccess(config: MapConfig) {
+  console.log('Style uploaded successfully:', config);
+  // Refresh the configs to show the new uploaded style
+  configStore.fetchConfigs();
+  showStyleUpload.value = false;
+}
+
+function handleStyleUploadError(error: string) {
+  console.error('Style upload failed:', error);
+  // Error is already shown in the modal, just log it here
 }
 
 onMounted(async () => {

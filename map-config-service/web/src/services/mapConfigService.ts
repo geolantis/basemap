@@ -273,6 +273,27 @@ export class MapConfigService {
     }
   }
 
+  // Upload a custom style file
+  async uploadStyle(formData: FormData): Promise<any> {
+    try {
+      const response = await fetch('http://localhost:3001/api/styles/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Upload failed');
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error uploading style:', error);
+      throw error;
+    }
+  }
+
   // Initialize database with seed data (admin only)
   async seedDatabase(): Promise<boolean> {
     if (!this.useSupabase) {

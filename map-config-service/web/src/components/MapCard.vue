@@ -83,6 +83,13 @@
         >
           <i class="pi pi-copy text-gray-600"></i>
         </button>
+        <button
+          @click.stop="$emit('upload-style')"
+          class="p-2 hover:bg-blue-100 rounded-lg transition-colors"
+          title="Upload Custom Style"
+        >
+          <i class="pi pi-upload text-blue-600"></i>
+        </button>
       </div>
       
       <div class="relative">
@@ -151,6 +158,7 @@ const emit = defineEmits<{
   preview: [config: MapConfig];
   duplicate: [config: MapConfig];
   delete: [config: MapConfig];
+  'upload-style': [];
 }>();
 
 const showMenu = ref(false);

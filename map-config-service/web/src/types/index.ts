@@ -149,3 +149,32 @@ export interface MapPreviewData {
   zoom?: number;
   metadata?: Record<string, any>;
 }
+
+// Style Upload Types
+export interface StyleUploadRequest {
+  name: string;
+  label: string;
+  country: string;
+  type: 'vtc' | 'wmts' | 'wms';
+  description?: string;
+  styleFile: File;
+}
+
+export interface StyleUploadResponse {
+  success: boolean;
+  message: string;
+  config?: MapConfig;
+  styleUrl?: string;
+}
+
+export interface StylePreview {
+  name?: string;
+  version?: string;
+  layers?: any[];
+  sources?: Record<string, any>;
+  metadata?: Record<string, any>;
+  center?: [number, number];
+  zoom?: number;
+  bearing?: number;
+  pitch?: number;
+}

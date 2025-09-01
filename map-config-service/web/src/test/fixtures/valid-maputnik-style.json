@@ -1,0 +1,119 @@
+{
+  "version": 8,
+  "name": "Test Basemap Style",
+  "metadata": {
+    "mapbox:autocomposite": false,
+    "mapbox:type": "template",
+    "maputnik:renderer": "mlgl",
+    "openmaptiles:version": "3.x",
+    "created_with": "Maputnik"
+  },
+  "center": [13.4050, 52.5200],
+  "zoom": 10,
+  "bearing": 0,
+  "pitch": 0,
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=test-key"
+    },
+    "raster-tiles": {
+      "type": "raster",
+      "tiles": [
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+      ],
+      "tileSize": 256,
+      "attribution": "© OpenStreetMap contributors"
+    }
+  },
+  "sprite": "https://api.maptiler.com/maps/streets/sprite",
+  "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=test-key",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#f8f4f0"
+      }
+    },
+    {
+      "id": "raster-layer",
+      "type": "raster",
+      "source": "raster-tiles",
+      "minzoom": 0,
+      "maxzoom": 18
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "filter": ["==", "$type", "Polygon"],
+      "paint": {
+        "fill-color": "rgb(158, 202, 225)",
+        "fill-opacity": 1
+      }
+    },
+    {
+      "id": "waterway",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "minzoom": 8,
+      "paint": {
+        "line-color": "rgb(158, 202, 225)",
+        "line-width": {
+          "base": 1.4,
+          "stops": [[8, 1], [20, 8]]
+        }
+      }
+    },
+    {
+      "id": "building",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "building",
+      "minzoom": 12,
+      "paint": {
+        "fill-color": "rgb(218, 218, 218)",
+        "fill-opacity": {
+          "base": 1,
+          "stops": [[12, 0], [16, 1]]
+        }
+      }
+    },
+    {
+      "id": "road_major",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "filter": ["in", "class", "primary", "secondary", "tertiary", "trunk"],
+      "paint": {
+        "line-color": "rgb(255, 255, 255)",
+        "line-width": {
+          "base": 1.4,
+          "stops": [[6, 0.5], [20, 30]]
+        }
+      }
+    },
+    {
+      "id": "place_label",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "layout": {
+        "text-field": "{name}",
+        "text-font": ["Open Sans Regular"],
+        "text-size": {
+          "base": 1.4,
+          "stops": [[4, 9], [10, 12]]
+        }
+      },
+      "paint": {
+        "text-color": "rgb(67, 67, 67)",
+        "text-halo-color": "rgb(255, 255, 255)",
+        "text-halo-width": 1
+      }
+    }
+  ]
+}
