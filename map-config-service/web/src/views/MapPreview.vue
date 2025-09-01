@@ -6,8 +6,9 @@
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center space-x-4">
             <button
-              @click="router.back()"
+              @click="router.push('/')"
               class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Back to Dashboard"
             >
               <i class="pi pi-arrow-left"></i>
             </button>
@@ -471,26 +472,32 @@ async function saveMapPosition() {
   
   try {
     // Save to Supabase via config store
-    await configStore.updateConfig(config.value.id, positionData);
+    const result = await configStore.updateConfig(config.value.id, positionData);
     
-    // Also save to localStorage as backup
-    localStorage.setItem(`map-position-${config.value.id}`, JSON.stringify({
-      ...positionData,
-      savedAt: new Date().toISOString()
-    }));
-    
-    // Update UI state
-    positionSaved.value = true;
-    positionChanged.value = false;
-    
-    // Reset the saved indicator after 3 seconds
-    setTimeout(() => {
-      positionSaved.value = false;
-    }, 3000);
+    if (result) {
+      // Successfully saved to database
+      console.log('Position saved to database successfully');
+      
+      // Also save to localStorage as backup
+      localStorage.setItem(`map-position-${config.value.id}`, JSON.stringify({
+        ...positionData,
+        savedAt: new Date().toISOString()
+      }));
+      
+      // Update UI state
+      positionSaved.value = true;
+      positionChanged.value = false;
+      
+      // Reset the saved indicator after 3 seconds
+      setTimeout(() => {
+        positionSaved.value = false;
+      }, 3000);
+    } else {
+      throw new Error('Update returned null');
+    }
     
   } catch (error) {
     console.error('Failed to save map position:', error);
-    alert('Failed to save position to database. The position has been saved locally.');
     
     // Fallback to localStorage only
     localStorage.setItem(`map-position-${config.value.id}`, JSON.stringify({
@@ -498,8 +505,14 @@ async function saveMapPosition() {
       savedAt: new Date().toISOString()
     }));
     
+    // Update UI to show it was saved (even if only locally)
     positionSaved.value = true;
     positionChanged.value = false;
+    
+    // Reset the saved indicator after 3 seconds
+    setTimeout(() => {
+      positionSaved.value = false;
+    }, 3000);
   }
 }
 

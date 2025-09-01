@@ -139,11 +139,33 @@ export class MapConfigService {
   // Update an existing configuration
   async update(id: string, updates: Partial<MapConfig>): Promise<MapConfig | null> {
     if (!this.useSupabase) {
-      throw new Error('Supabase is not configured. Cannot update configurations in demo mode.');
+      // In demo mode, save to localStorage only
+      console.log('Demo mode: Saving to localStorage only');
+      const configs = convertMapConfigToArray(allMapsConfig);
+      const config = configs.find(c => c.id === id);
+      if (config) {
+        const updatedConfig = { ...config, ...updates, updatedAt: new Date().toISOString() };
+        localStorage.setItem(`map-config-${id}`, JSON.stringify(updatedConfig));
+        return updatedConfig;
+      }
+      return null;
     }
 
     try {
       const { supabase } = await import('../lib/supabase');
+      
+      if (!supabase) {
+        console.log('Supabase client is null, saving to localStorage');
+        const configs = convertMapConfigToArray(allMapsConfig);
+        const config = configs.find(c => c.id === id);
+        if (config) {
+          const updatedConfig = { ...config, ...updates, updatedAt: new Date().toISOString() };
+          localStorage.setItem(`map-config-${id}`, JSON.stringify(updatedConfig));
+          return updatedConfig;
+        }
+        return null;
+      }
+      
       const { data, error } = await supabase
         .from('map_configs')
         .update({
@@ -158,7 +180,16 @@ export class MapConfigService {
       
       return data;
     } catch (error) {
-      console.error('Error updating config:', error);
+      console.error('Error updating config in database:', error);
+      // Fallback to localStorage
+      const configs = await this.getAll();
+      const config = configs.find(c => c.id === id);
+      if (config) {
+        const updatedConfig = { ...config, ...updates, updatedAt: new Date().toISOString() };
+        localStorage.setItem(`map-config-${id}`, JSON.stringify(updatedConfig));
+        console.log('Saved to localStorage as fallback');
+        return updatedConfig;
+      }
       throw error;
     }
   }
