@@ -228,7 +228,15 @@ function exportJSON() {
 }
 
 function openInMaputnik() {
-  openMaputnik(props.config.originalStyle || props.config.style, props.config.type);
+  // Try style, originalStyle, or name as fallback
+  const styleUrl = props.config.style || props.config.originalStyle || props.config.name;
+  console.log('MapCard - Opening Maputnik with:', {
+    style: props.config.style,
+    originalStyle: props.config.originalStyle,
+    name: props.config.name,
+    chosen: styleUrl
+  });
+  openMaputnik(styleUrl, props.config.type);
   showMenu.value = false;
 }
 

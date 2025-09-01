@@ -545,7 +545,15 @@ function editConfig() {
 
 function openInMaputnik() {
   if (config.value) {
-    openMaputnik(config.value.originalStyle || config.value.style, config.value.type);
+    // Try to find a style URL: prefer style, then originalStyle, then use name as fallback
+    const styleUrl = config.value.style || config.value.originalStyle || config.value.name;
+    console.log('MapPreview - Opening Maputnik with:', {
+      style: config.value.style,
+      originalStyle: config.value.originalStyle,
+      name: config.value.name,
+      chosen: styleUrl
+    });
+    openMaputnik(styleUrl, config.value.type);
   }
 }
 

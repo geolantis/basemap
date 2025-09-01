@@ -418,7 +418,15 @@ function duplicateConfig(config: MapConfig) {
 }
 
 function openInMaputnik(config: MapConfig) {
-  openMaputnik(config.originalStyle || config.style, config.type);
+  // Try style, originalStyle, or name as fallback
+  const styleUrl = config.style || config.originalStyle || config.name;
+  console.log('Dashboard - Opening Maputnik with:', {
+    style: config.style,
+    originalStyle: config.originalStyle,
+    name: config.name,
+    chosen: styleUrl
+  });
+  openMaputnik(styleUrl, config.type);
 }
 
 async function deleteConfig(config: MapConfig) {

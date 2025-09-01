@@ -1,7 +1,12 @@
 export function openInMaputnik(styleUrl: string | undefined, configType: string): void {
-  // Only works for vector tile maps with style URLs
-  if (configType !== 'vtc' || !styleUrl || styleUrl === 'tiles') {
-    alert('Maputnik editor only supports vector tile maps with style JSON URLs');
+  console.log('=== MAPUTNIK DEBUG ===');
+  console.log('Received styleUrl:', styleUrl);
+  console.log('Received configType:', configType);
+  console.log('StyleUrl type:', typeof styleUrl);
+  
+  // Works for any map with a valid style URL
+  if (!styleUrl || styleUrl === 'tiles') {
+    alert('Maputnik editor requires a valid style JSON URL. Received: ' + styleUrl);
     return;
   }
 
@@ -33,27 +38,53 @@ export function openInMaputnik(styleUrl: string | undefined, configType: string)
     console.log('Clockwork Micro URL detected');
   }
   
+  // Determine the styles server URL based on environment
+  const isProduction = window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1');
+  const stylesServerUrl = isProduction 
+    ? 'https://basemap-styles.vercel.app/api/styles'  // Production styles server
+    : 'http://localhost:3001/api/styles';              // Local development server
+  
+  console.log('Environment:', isProduction ? 'Production' : 'Development');
+  console.log('Styles server URL:', stylesServerUrl);
+  
   // Check if the URL is already absolute or needs to be made absolute
   if (!finalStyleUrl.startsWith('http://') && !finalStyleUrl.startsWith('https://')) {
-    // If it's a relative URL, make it absolute using the current origin
-    // This assumes the style is served from the same server
+    // If it's a relative URL, make it absolute
     if (finalStyleUrl.startsWith('/')) {
+      // Path starting with / - prepend origin
       finalStyleUrl = `${window.location.origin}${finalStyleUrl}`;
+    } else if (finalStyleUrl.includes('.json')) {
+      // If it contains .json but no protocol, assume it's a local style
+      finalStyleUrl = `${stylesServerUrl}/${finalStyleUrl}`;
     } else {
-      // Handle local server URLs like "http://localhost:3001/api/styles/..."
-      finalStyleUrl = `http://localhost:3001/api/styles/${finalStyleUrl}`;
+      // Simple name like "basemap", "kataster", etc.
+      // These need to be served from our styles API endpoint
+      // Remove any .json extension if present
+      const styleName = finalStyleUrl.replace('.json', '');
+      finalStyleUrl = `${stylesServerUrl}/${styleName}`;
     }
-    console.log('Converted relative URL to absolute:', finalStyleUrl);
+    console.log('Converted to absolute URL:', finalStyleUrl);
   }
   
-  // Try different Maputnik URL formats
-  // Format 1: Using hash with direct URL (most common)
-  // Don't encode the URL for the hash format - Maputnik handles it
-  let maputnikUrl = `https://maputnik.github.io/editor/#${finalStyleUrl}`;
+  console.log('Final style URL for Maputnik:', finalStyleUrl);
   
-  // For some URLs, we might need to use the old query parameter format
-  // This is a fallback that can be tried if the hash format doesn't work
-  const alternativeUrl = `https://maputnik.github.io/editor?style=${encodeURIComponent(finalStyleUrl)}`;
+  // Try different Maputnik URL formats
+  // For external URLs (https://), use them directly without encoding in hash format
+  // For local styles, we'll use the query parameter format
+  let maputnikUrl;
+  
+  if (finalStyleUrl.startsWith('https://') || finalStyleUrl.startsWith('http://')) {
+    // For full URLs, use the hash format without encoding - this is what Maputnik expects
+    maputnikUrl = `https://maputnik.github.io/editor/#${finalStyleUrl}`;
+  } else {
+    // For relative URLs or local styles, use query parameter with encoding
+    maputnikUrl = `https://maputnik.github.io/editor?style=${encodeURIComponent(finalStyleUrl)}`;
+  }
+  
+  // Alternative format (opposite of what we chose above)
+  const alternativeUrl = finalStyleUrl.startsWith('https://') || finalStyleUrl.startsWith('http://')
+    ? `https://maputnik.github.io/editor?style=${encodeURIComponent(finalStyleUrl)}`
+    : `https://maputnik.github.io/editor/#${finalStyleUrl}`;
   
   console.log('Opening Maputnik with URL:', maputnikUrl);
   console.log('Style URL being passed:', finalStyleUrl);
@@ -64,31 +95,30 @@ export function openInMaputnik(styleUrl: string | undefined, configType: string)
   
   // Provide instructions to the user
   if (newWindow) {
-    console.log('Maputnik opened successfully');
-    console.log('If the style doesn\'t load, try:');
-    console.log('1. Check the browser console in Maputnik for CORS errors');
-    console.log('2. Ensure the style URL is publicly accessible');
-    console.log('3. For MapTiler/Clockwork styles, ensure API keys are included');
-    console.log('4. Try the alternative URL:', alternativeUrl);
-    
-    // Show a help message to the user
-    setTimeout(() => {
-      alert(
-        'Maputnik has been opened in a new tab.\n\n' +
-        'If the style doesn\'t load automatically:\n' +
-        '1. Click on "Open" in Maputnik (top menu)\n' +
-        '2. Select "Load from URL"\n' +
-        '3. Paste this URL: ' + finalStyleUrl + '\n\n' +
-        'Note: Some styles may require CORS headers or API keys to load properly.'
-      );
-    }, 1000);
+    console.log('=== MAPUTNIK OPENED ===');
+    console.log('Direct Maputnik URL:', maputnikUrl);
+    console.log('Style URL:', finalStyleUrl);
+    console.log('');
+    console.log('If the style doesn\'t load automatically:');
+    console.log('1. The URL above can be copied and pasted directly into your browser');
+    console.log('2. Or in Maputnik: Click "Open" → "Load from URL" → Paste:', finalStyleUrl);
+    console.log('3. Alternative URL format:', alternativeUrl);
+    console.log('');
+    console.log('Common issues:');
+    console.log('- CORS: The style server must allow cross-origin requests');
+    console.log('- API Keys: Some styles require authentication');
+    console.log('- Network: Style must be publicly accessible');
+  } else {
+    // If popup was blocked
+    alert('Popup blocked! Please allow popups for this site or copy this URL:\n\n' + maputnikUrl);
   }
 }
 
 export function canOpenInMaputnik(config: any): boolean {
-  const styleUrl = config.originalStyle || config.style;
-  return config.type === 'vtc' && 
-         styleUrl && 
+  // Check style first, then originalStyle as fallback
+  const styleUrl = config.style || config.originalStyle;
+  // Allow any map with a valid style URL, not just 'vtc' type
+  return styleUrl && 
          styleUrl !== 'tiles' &&
          typeof styleUrl === 'string';
 }
