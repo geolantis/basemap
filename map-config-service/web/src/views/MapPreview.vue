@@ -115,7 +115,7 @@
         </div>
         
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Zoom: {{ zoom.toFixed(1) }}</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Zoom: {{ zoom ? zoom.toFixed(1) : '10.0' }}</label>
           <input
             type="range"
             v-model="zoom"
@@ -179,7 +179,7 @@
           </div>
           <div class="flex justify-between">
             <dt class="text-gray-600">Zoom:</dt>
-            <dd class="font-medium">{{ zoom.toFixed(1) }}</dd>
+            <dd class="font-medium">{{ zoom ? zoom.toFixed(1) : '10.0' }}</dd>
           </div>
         </dl>
       </div>
@@ -259,16 +259,16 @@ function initializeMap() {
   error.value = '';
 
   // Initialize from saved position if available
-  if (config.value.center) {
+  if (config.value.center && config.value.center.length === 2) {
     center.value = { lng: config.value.center[0], lat: config.value.center[1] };
   }
-  if (config.value.zoom !== undefined) {
+  if (config.value.zoom !== undefined && config.value.zoom !== null) {
     zoom.value = config.value.zoom;
   }
-  if (config.value.bearing !== undefined) {
+  if (config.value.bearing !== undefined && config.value.bearing !== null) {
     bearing.value = config.value.bearing;
   }
-  if (config.value.pitch !== undefined) {
+  if (config.value.pitch !== undefined && config.value.pitch !== null) {
     pitch.value = config.value.pitch;
   }
 
@@ -454,11 +454,11 @@ function updatePitch() {
 
 function resetView() {
   // Reset to saved position or default
-  if (config.value?.center) {
+  if (config.value?.center && config.value.center.length === 2) {
     center.value = { lng: config.value.center[0], lat: config.value.center[1] };
-    zoom.value = config.value.zoom || 10;
-    bearing.value = config.value.bearing || 0;
-    pitch.value = config.value.pitch || 0;
+    zoom.value = config.value.zoom ?? 10;
+    bearing.value = config.value.bearing ?? 0;
+    pitch.value = config.value.pitch ?? 0;
   } else {
     zoom.value = 10;
     bearing.value = 0;
