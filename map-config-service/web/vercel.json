@@ -8,30 +8,14 @@
   },
   "build": {
     "env": {
-      "NODE_ENV": "production",
-      "VITE_API_URL": "@vite-api-url",
-      "VITE_SUPABASE_URL": "@vite-supabase-url",
-      "VITE_SUPABASE_ANON_KEY": "@vite-supabase-anon-key",
-      "VITE_MAPUTNIK_WEBHOOK_URL": "@vite-maputnik-webhook-url",
-      "VITE_STYLES_SERVER_URL": "@vite-styles-server-url",
-      "VITE_CUSTOM_MAPUTNIK_URL": "@vite-custom-maputnik-url"
+      "NODE_ENV": "production"
     }
   },
-  "buildCommand": "npm run build:prod",
+  "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm ci",
   "outputDirectory": "dist",
   "framework": "vite",
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30
-    },
-    "api/**/*.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30
-    }
-  },
   "rewrites": [
     {
       "source": "/api/proxy/style/:provider",

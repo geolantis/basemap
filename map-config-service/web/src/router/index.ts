@@ -23,6 +23,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/MapPreview.vue'),
   },
   {
+    path: '/config/:id/maputnik',
+    name: 'MaputnikEditor',
+    component: () => import('../views/MaputnikEditor.vue'),
+  },
+  {
     path: '/discover',
     name: 'MapDiscovery',
     component: () => import('../views/MapDiscovery.vue'),

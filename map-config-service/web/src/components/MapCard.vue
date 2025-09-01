@@ -145,9 +145,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { format } from 'date-fns';
 import type { MapConfig } from '../types';
-import { openInMaputnik as openMaputnik } from '../utils/maputnikHelper';
+
+const router = useRouter();
 
 const props = defineProps<{
   config: MapConfig;
@@ -236,15 +238,8 @@ function exportJSON() {
 }
 
 function openInMaputnik() {
-  // Try style, originalStyle, or name as fallback
-  const styleUrl = props.config.style || props.config.originalStyle || props.config.name;
-  console.log('MapCard - Opening Maputnik with:', {
-    style: props.config.style,
-    originalStyle: props.config.originalStyle,
-    name: props.config.name,
-    chosen: styleUrl
-  });
-  openMaputnik(styleUrl, props.config.type);
+  // Navigate to our custom Maputnik editor page
+  router.push(`/config/${props.config.id}/maputnik`);
   showMenu.value = false;
 }
 
