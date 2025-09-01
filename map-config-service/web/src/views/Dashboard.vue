@@ -294,6 +294,7 @@ import MapSearchPanel from '../components/MapSearchPanel.vue';
 import StyleUploadModal from '../components/StyleUploadModal.vue';
 import type { MapConfig } from '../types';
 import { openInMaputnik as openMaputnik } from '../utils/maputnikHelper';
+import { getAllPreviewsFromLocalStorage } from '../utils/localStorage';
 
 const router = useRouter();
 const configStore = useConfigStore();
