@@ -16,17 +16,27 @@
           </h3>
           <div class="header-actions">
             <Button 
-              label="Save to Server" 
-              icon="pi pi-save"
-              @click="saveStyle"
+              label="Save to Map Config" 
+              icon="pi pi-cloud-upload"
+              @click="showSaveDialog"
               class="p-button-success"
-              :loading="saving"
+              :disabled="!styleData"
+            />
+            <Button 
+              label="Quick Save" 
+              icon="pi pi-save"
+              @click="quickSave"
+              class="p-button-success p-button-outlined"
+              :loading="saveStore.isLoading"
+              :disabled="!canQuickSave"
+              v-tooltip="'Save changes to current style'"
             />
             <Button 
               label="Download" 
               icon="pi pi-download"
               @click="downloadStyle"
               class="p-button-secondary"
+              :disabled="!styleData"
             />
           </div>
         </div>
@@ -45,13 +55,48 @@
       <div class="integration-info">
         <Message severity="info" :closable="false">
           <div class="info-content">
-            <strong>Direct Integration:</strong> Edit your style in Maputnik and click "Save to Server" to update it directly on Vercel.
+            <strong>Enhanced Integration:</strong> Edit your style in Maputnik and use "Save to Map Config" for direct cloud storage.
             <br>
             <span class="text-sm">Style URL: {{ styleUrl }}</span>
+            <br v-if="saveStore.lastSavedAt">
+            <span v-if="saveStore.lastSavedAt" class="text-sm text-green-600">
+              {{ saveStore.lastSavedText }}
+            </span>
+          </div>
+        </Message>
+        
+        <Message v-if="!authStore.isAuthenticated" severity="warn" :closable="false" class="mt-3">
+          <div class="info-content">
+            <strong>Login Required:</strong> Please log in to save styles to the cloud.
+            <Button 
+              label="Sign In" 
+              icon="pi pi-sign-in" 
+              link 
+              class="ml-2 p-0" 
+              @click="showLoginModal"
+            />
           </div>
         </Message>
       </div>
     </Dialog>
+    
+    <!-- Save Style Dialog -->
+    <SaveStyleDialog
+      v-model:visible="saveDialogVisible"
+      :style-data="styleData"
+      :existing-style-id="saveStore.currentStyleId"
+      :suggested-name="suggestedStyleName"
+      @save-complete="onSaveComplete"
+      @save-error="onSaveError"
+    />
+    
+    <!-- Login Modal -->
+    <LoginModal
+      v-model:visible="loginModalVisible"
+      message="Please log in to save your custom styles"
+      @login-success="onLoginSuccess"
+      @login-error="onLoginError"
+    />
   </div>
 </template>
 
@@ -61,6 +106,11 @@ import { useToast } from 'primevue/usetoast';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
+import { useSaveStore } from '../stores/save';
+import { useAuthStore } from '../stores/auth';
+import SaveStyleDialog from './SaveStyleDialog.vue';
+import LoginModal from './LoginModal.vue';
+import type { MapStyle } from '../types/save';
 
 interface MaputnikProps {
   visible: boolean;
@@ -69,13 +119,17 @@ interface MaputnikProps {
 }
 
 const props = defineProps<MaputnikProps>();
-const emit = defineEmits(['update:visible', 'style-saved']);
+const emit = defineEmits(['update:visible', 'style-saved', 'style-updated']);
 
 const toast = useToast();
+const saveStore = useSaveStore();
+const authStore = useAuthStore();
 const maputnikFrame = ref<HTMLIFrameElement | null>(null);
-const saving = ref(false);
 const currentStyle = ref<any>(null);
-const styleData = ref<any>(null);
+const styleData = ref<MapStyle | null>(null);
+const saveDialogVisible = ref(false);
+const loginModalVisible = ref(false);
+const lastStyleChange = ref<Date | null>(null);
 
 // Compute the Maputnik URL with our style
 const maputnikUrl = computed(() => {
@@ -86,6 +140,22 @@ const maputnikUrl = computed(() => {
   const encodedUrl = encodeURIComponent(styleUrl);
   
   return `https://maputnik.github.io/editor/#${encodedUrl}`;
+});
+
+// Computed properties for save functionality
+const canQuickSave = computed(() => {
+  return authStore.isAuthenticated && 
+         saveStore.currentStyleId && 
+         styleData.value && 
+         saveStore.isDirty;
+});
+
+const suggestedStyleName = computed(() => {
+  if (props.styleName) return props.styleName;
+  if (props.styleFile) {
+    return props.styleFile.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+  }
+  return 'Custom Style';
 });
 
 // Compute the style URL
@@ -138,7 +208,18 @@ function handleMaputnikMessage(event: MessageEvent) {
   
   if (event.data.type === 'style-changed') {
     // Style was modified in Maputnik
-    styleData.value = event.data.style;
+    styleData.value = event.data.style as MapStyle;
+    lastStyleChange.value = new Date();
+    
+    // Mark as dirty if we have a current style
+    if (saveStore.currentStyleId) {
+      saveStore.markDirty();
+    }
+    
+    // Auto-save if enabled
+    if (saveStore.autoSaveEnabled && canQuickSave.value) {
+      scheduleAutoSave();
+    }
   }
 }
 
@@ -152,107 +233,68 @@ function sendToMaputnik(action: string, data: any) {
   }, 'https://maputnik.github.io');
 }
 
-// Save style back to server
-async function saveStyle() {
-  if (!props.styleFile) return;
+// Show save dialog
+function showSaveDialog(): void {
+  if (!authStore.isAuthenticated) {
+    loginModalVisible.value = true;
+    return;
+  }
   
-  saving.value = true;
-  
-  try {
-    // Get the current style from Maputnik
-    // Since we can't directly get it, we'll use the last known styleData
-    // In a real implementation, you'd need to extract it from Maputnik
-    
-    // For now, we'll prompt the user to export from Maputnik first
-    const confirmed = confirm(
-      'To save your changes:\n\n' +
-      '1. Click "Export" in Maputnik (top menu)\n' +
-      '2. Copy the JSON\n' +
-      '3. Click OK here\n' +
-      '4. Paste the JSON in the next prompt\n\n' +
-      'Ready to continue?'
-    );
-    
-    if (!confirmed) {
-      saving.value = false;
-      return;
-    }
-    
-    // Get the JSON from user
-    const jsonStr = prompt('Paste the exported JSON here:');
-    if (!jsonStr) {
-      saving.value = false;
-      return;
-    }
-    
-    let styleJson;
-    try {
-      styleJson = JSON.parse(jsonStr);
-    } catch (error) {
-      toast.add({
-        severity: 'error',
-        summary: 'Invalid JSON',
-        detail: 'The pasted content is not valid JSON',
-        life: 3000
-      });
-      saving.value = false;
-      return;
-    }
-    
-    // Save to server
-    const response = await fetch(`/api/styles/${props.styleFile}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('apiKey') || 'development-key'}`
-      },
-      body: JSON.stringify(styleJson)
-    });
-    
-    if (response.ok) {
-      toast.add({
-        severity: 'success',
-        summary: 'Style Saved',
-        detail: `Successfully saved ${props.styleFile} to server`,
-        life: 3000
-      });
-      
-      emit('style-saved', props.styleFile);
-      
-      // Update local data
-      styleData.value = styleJson;
-    } else {
-      throw new Error('Failed to save style');
-    }
-  } catch (error) {
-    console.error('Save error:', error);
+  if (!styleData.value) {
     toast.add({
-      severity: 'error',
-      summary: 'Save Failed',
-      detail: 'Could not save style to server',
+      severity: 'warn',
+      summary: 'No Style Data',
+      detail: 'Please wait for the style to load from Maputnik',
       life: 3000
     });
-  } finally {
-    saving.value = false;
+    return;
+  }
+  
+  saveDialogVisible.value = true;
+}
+
+// Quick save for existing styles
+async function quickSave(): Promise<void> {
+  if (!canQuickSave.value || !styleData.value) return;
+  
+  try {
+    const success = await saveStore.saveStyle(styleData.value, {
+      name: currentStyle.value?.name || suggestedStyleName.value,
+      description: 'Quick save from Maputnik editor',
+      category: 'custom',
+      isPublic: false,
+      overwrite: true
+    });
+    
+    if (success) {
+      emit('style-updated', {
+        styleId: saveStore.lastSavedId,
+        name: currentStyle.value?.name
+      });
+    }
+  } catch (error) {
+    console.error('Quick save failed:', error);
   }
 }
 
-// Alternative: Save using automated extraction
-async function autoSaveStyle() {
-  // This would require a custom Maputnik build or browser extension
-  // that can communicate with our app
+// Auto-save scheduling
+let autoSaveTimer: NodeJS.Timeout | null = null;
+
+function scheduleAutoSave(): void {
+  if (autoSaveTimer) {
+    clearTimeout(autoSaveTimer);
+  }
   
-  // For production, consider:
-  // 1. Fork Maputnik and add postMessage API
-  // 2. Use a browser extension to inject communication
-  // 3. Host your own Maputnik instance with modifications
-  
-  toast.add({
-    severity: 'info',
-    summary: 'Auto-save',
-    detail: 'Automated save requires custom Maputnik integration',
-    life: 5000
-  });
+  autoSaveTimer = setTimeout(async () => {
+    if (canQuickSave.value && styleData.value) {
+      await quickSave();
+    }
+  }, saveStore.autoSaveInterval);
+}
+
+// Show login modal
+function showLoginModal(): void {
+  loginModalVisible.value = true;
 }
 
 // Download style locally
@@ -272,9 +314,65 @@ function downloadStyle() {
   URL.revokeObjectURL(url);
 }
 
+// Event handlers
+function onSaveComplete(data: any): void {
+  toast.add({
+    severity: 'success',
+    summary: 'Style Saved',
+    detail: `Successfully saved "${data.name}" to Map Config Service`,
+    life: 4000
+  });
+  
+  emit('style-saved', {
+    styleId: data.styleId,
+    name: data.name,
+    file: props.styleFile
+  });
+  
+  // Update current style reference
+  if (currentStyle.value) {
+    currentStyle.value.id = data.styleId;
+  }
+}
+
+function onSaveError(error: string): void {
+  toast.add({
+    severity: 'error',
+    summary: 'Save Failed',
+    detail: error,
+    life: 6000
+  });
+}
+
+function onLoginSuccess(data: any): void {
+  toast.add({
+    severity: 'success',
+    summary: 'Login Successful',
+    detail: 'You can now save your styles to the cloud',
+    life: 3000
+  });
+  
+  // Show save dialog after successful login
+  setTimeout(() => {
+    if (styleData.value) {
+      saveDialogVisible.value = true;
+    }
+  }, 500);
+}
+
+function onLoginError(error: string): void {
+  console.error('Login error:', error);
+}
+
 // Clean up on close
 function onClose() {
   window.removeEventListener('message', handleMaputnikMessage);
+  
+  if (autoSaveTimer) {
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = null;
+  }
+  
   emit('update:visible', false);
 }
 </script>

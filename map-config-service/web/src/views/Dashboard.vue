@@ -1,136 +1,135 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow-sm border-b">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <h1 class="text-2xl font-bold text-gray-900">Map Configurations</h1>
-          <div class="flex items-center space-x-4">
-            <SearchBar v-model="searchQuery" />
+  <BrandLayout>
+    <!-- Search in header -->
+    <template #search>
+      <SearchBar v-model="searchQuery" />
+    </template>
+    
+    <!-- Action buttons in header -->
+    <template #actions>
+      <button
+        @click="showMapSearch = true"
+        class="btn-secondary flex items-center space-x-2"
+      >
+        <i class="pi pi-sparkles"></i>
+        <span>AI Search</span>
+      </button>
+      <button
+        @click="showDuplicateDialog = true"
+        class="btn-secondary flex items-center space-x-2"
+      >
+        <i class="pi pi-copy"></i>
+        <span>Copy Existing</span>
+      </button>
+      <button
+        @click="showStyleUpload = true"
+        class="btn-secondary flex items-center space-x-2"
+      >
+        <i class="pi pi-upload"></i>
+        <span>Upload Style</span>
+      </button>
+      <button
+        @click="createNew"
+        class="btn-primary flex items-center space-x-2"
+      >
+        <i class="pi pi-plus"></i>
+        <span>New Config</span>
+      </button>
+    </template>
+    
+    <!-- Secondary navigation with tabs -->
+    <template #navigation>
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center space-x-6">
+          <!-- Country Tabs -->
+          <div class="flex space-x-6">
             <button
-              @click="showMapSearch = true"
-              class="btn-secondary flex items-center space-x-2"
+              v-for="tab in tabs"
+              :key="tab.value"
+              @click="selectedCountry = tab.value"
+              :class="[
+                'pb-2 px-1 border-b-2 font-medium text-sm transition-colors',
+                selectedCountry === tab.value
+                  ? 'border-blue-600 text-blue-600'
+                  : 'border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral-300'
+              ]"
             >
-              <i class="pi pi-sparkles"></i>
-              <span>AI Search</span>
+              {{ tab.label }} ({{ getCountryCount(tab.value) }})
             </button>
-            <button
-              @click="showDuplicateDialog = true"
-              class="btn-secondary flex items-center space-x-2"
-            >
-              <i class="pi pi-copy"></i>
-              <span>Copy Existing</span>
-            </button>
-            <button
-              @click="showStyleUpload = true"
-              class="btn-secondary flex items-center space-x-2"
-            >
-              <i class="pi pi-upload"></i>
-              <span>Upload Style</span>
-            </button>
-            <button
-              @click="createNew"
-              class="btn-primary flex items-center space-x-2"
-            >
-              <i class="pi pi-plus"></i>
-              <span>New Config</span>
-            </button>
+          </div>
+          
+          <!-- Category Filter -->
+          <div class="flex items-center space-x-2 ml-6 pl-6 border-l border-neutral-300">
+            <span class="text-sm text-neutral-600">Category:</span>
+            <div class="flex space-x-2">
+              <button
+                @click="selectedCategory = 'all'"
+                :class="[
+                  'px-3 py-1 rounded-full text-xs font-medium transition-colors',
+                  selectedCategory === 'all'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-neutral-200 text-neutral-700 hover:bg-neutral-300'
+                ]"
+              >
+                All
+              </button>
+              <button
+                @click="selectedCategory = 'background'"
+                :class="[
+                  'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center space-x-1',
+                  selectedCategory === 'background'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                ]"
+              >
+                <i class="pi pi-map text-xs"></i>
+                <span>Background ({{ backgroundCount }})</span>
+              </button>
+              <button
+                @click="selectedCategory = 'overlay'"
+                :class="[
+                  'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center space-x-1',
+                  selectedCategory === 'overlay'
+                    ? 'bg-violet-600 text-white'
+                    : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+                ]"
+              >
+                <i class="pi pi-clone text-xs"></i>
+                <span>Overlay ({{ overlayCount }})</span>
+              </button>
+            </div>
           </div>
         </div>
         
-        <!-- View Toggles and Filter Tabs -->
-        <div class="flex justify-between items-center mt-4">
-          <div class="flex items-center space-x-6">
-            <!-- Country Tabs -->
-            <div class="flex space-x-6">
-              <button
-                v-for="tab in tabs"
-                :key="tab.value"
-                @click="selectedCountry = tab.value"
-                :class="[
-                  'pb-2 px-1 border-b-2 font-medium text-sm transition-colors',
-                  selectedCountry === tab.value
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                ]"
-              >
-                {{ tab.label }} ({{ getCountryCount(tab.value) }})
-              </button>
-            </div>
-            
-            <!-- Category Filter -->
-            <div class="flex items-center space-x-2 ml-6 pl-6 border-l border-gray-300">
-              <span class="text-sm text-gray-600">Category:</span>
-              <div class="flex space-x-2">
-                <button
-                  @click="selectedCategory = 'all'"
-                  :class="[
-                    'px-3 py-1 rounded-full text-xs font-medium transition-colors',
-                    selectedCategory === 'all'
-                      ? 'bg-primary text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  ]"
-                >
-                  All
-                </button>
-                <button
-                  @click="selectedCategory = 'background'"
-                  :class="[
-                    'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center space-x-1',
-                    selectedCategory === 'background'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                  ]"
-                >
-                  <i class="pi pi-map text-xs"></i>
-                  <span>Background ({{ backgroundCount }})</span>
-                </button>
-                <button
-                  @click="selectedCategory = 'overlay'"
-                  :class="[
-                    'px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center space-x-1',
-                    selectedCategory === 'overlay'
-                      ? 'bg-purple-500 text-white'
-                      : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                  ]"
-                >
-                  <i class="pi pi-clone text-xs"></i>
-                  <span>Overlay ({{ overlayCount }})</span>
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- View Toggle -->
-          <div class="flex items-center space-x-2">
-            <button
-              @click="viewMode = 'grid'"
-              :class="[
-                'p-2 rounded',
-                viewMode === 'grid' ? 'bg-gray-200' : 'hover:bg-gray-100'
-              ]"
-              title="Grid View"
-            >
-              <i class="pi pi-th-large"></i>
-            </button>
-            <button
-              @click="viewMode = 'list'"
-              :class="[
-                'p-2 rounded',
-                viewMode === 'list' ? 'bg-gray-200' : 'hover:bg-gray-100'
-              ]"
-              title="List View"
-            >
-              <i class="pi pi-list"></i>
-            </button>
-          </div>
+        <!-- View Toggle -->
+        <div class="flex items-center space-x-2">
+          <button
+            @click="viewMode = 'grid'"
+            :class="[
+              'p-2 rounded transition-colors',
+              viewMode === 'grid' ? 'bg-neutral-200 text-blue-600' : 'hover:bg-neutral-100 text-neutral-600'
+            ]"
+            title="Grid View"
+          >
+            <i class="pi pi-th-large"></i>
+          </button>
+          <button
+            @click="viewMode = 'list'"
+            :class="[
+              'p-2 rounded transition-colors',
+              viewMode === 'list' ? 'bg-neutral-200 text-blue-600' : 'hover:bg-neutral-100 text-neutral-600'
+            ]"
+            title="List View"
+          >
+            <i class="pi pi-list"></i>
+          </button>
         </div>
       </div>
-    </header>
+    </template>
 
     <!-- Stats Cards -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="max-w-brand mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <StatCard
           title="Total Maps"
           :value="configs.length"
@@ -152,27 +151,26 @@
           icon="pi-images"
         />
       </div>
-    </div>
 
-    <!-- Content Area -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
-        <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+        <i class="pi pi-spin pi-spinner text-4xl text-blue-600"></i>
       </div>
       
-      <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+      <!-- Error State -->
+      <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 mb-6">
         <i class="pi pi-exclamation-triangle mr-2"></i>
         {{ error }}
       </div>
       
       <!-- Grid View -->
       <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <div v-if="filteredConfigs.length === 0" class="col-span-full text-center py-12 text-gray-500">
+        <div v-if="categoryFilteredConfigs.length === 0" class="col-span-full text-center py-12 text-neutral-500">
           <i class="pi pi-inbox text-4xl mb-2"></i>
           <p>No maps found. Try adjusting your filters or search query.</p>
         </div>
         <MapCard
-          v-for="config in filteredConfigs"
+          v-for="config in categoryFilteredConfigs"
           :key="config.id"
           :config="config"
           @edit="editConfig"
@@ -261,12 +259,12 @@
     <div v-if="showMapSearch" class="fixed inset-0 z-50 overflow-y-auto">
       <div class="flex items-center justify-center min-h-screen p-4">
         <div class="fixed inset-0 bg-black bg-opacity-50" @click="showMapSearch = false"></div>
-        <div class="relative bg-white rounded-lg max-w-7xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="relative bg-white rounded-lg max-w-brand w-full max-h-[90vh] overflow-y-auto">
           <button
             @click="showMapSearch = false"
-            class="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 rounded-lg"
+            class="absolute top-4 right-4 z-10 p-2 hover:bg-neutral-100 rounded-lg"
           >
-            <i class="pi pi-times text-gray-600"></i>
+            <i class="pi pi-times text-neutral-600"></i>
           </button>
           <MapSearchPanel @close="showMapSearch = false" />
         </div>
@@ -279,7 +277,7 @@
       @upload-success="handleStyleUploadSuccess"
       @upload-error="handleStyleUploadError"
     />
-  </div>
+  </BrandLayout>
 </template>
 
 <script setup lang="ts">
@@ -287,6 +285,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useConfigStore } from '../stores/config';
 import { storeToRefs } from 'pinia';
+import BrandLayout from '../components/BrandLayout.vue';
 import SearchBar from '../components/SearchBar.vue';
 import StatCard from '../components/StatCard.vue';
 import MapCard from '../components/MapCard.vue';

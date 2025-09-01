@@ -1,12 +1,34 @@
 {
+  "version": 2,
+  "name": "basemap-config-editor",
+  "alias": ["basemap-editor"],
+  "public": true,
+  "github": {
+    "autoAlias": false
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "VITE_API_URL": "@vite-api-url",
+      "VITE_SUPABASE_URL": "@vite-supabase-url",
+      "VITE_SUPABASE_ANON_KEY": "@vite-supabase-anon-key",
+      "VITE_MAPUTNIK_WEBHOOK_URL": "@vite-maputnik-webhook-url",
+      "VITE_STYLES_SERVER_URL": "@vite-styles-server-url",
+      "VITE_CUSTOM_MAPUTNIK_URL": "@vite-custom-maputnik-url"
+    }
+  },
   "buildCommand": "npm run build:prod",
+  "devCommand": "npm run dev",
+  "installCommand": "npm ci",
   "outputDirectory": "dist",
-  "framework": "vue",
+  "framework": "vite",
   "functions": {
     "api/**/*.ts": {
+      "runtime": "nodejs18.x",
       "maxDuration": 30
     },
     "api/**/*.js": {
+      "runtime": "nodejs18.x",
       "maxDuration": 30
     }
   },
@@ -53,12 +75,24 @@
       "source": "/styles/(.*)",
       "headers": [
         {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
         },
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-API-Key, X-Requested-With"
         }
       ]
     },
@@ -75,9 +109,59 @@
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-API-Key"
+          "value": "Content-Type, Authorization, X-API-Key, X-Requested-With"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=60, stale-while-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self)"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
-  ]
+  ],
+  "redirects": [
+    {
+      "source": "/editor",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "trailingSlash": false
 }

@@ -1,6 +1,17 @@
-# Deployment Instructions
+# 🚀 Deployment Guide - Basemap Config Editor
 
-## 🚀 Deploy to Vercel
+This guide covers all deployment options for the Basemap Configuration Editor, including Vercel, Docker, and self-hosted setups.
+
+## 📋 Table of Contents
+
+- [Quick Deploy to Vercel](#quick-deploy-to-vercel)
+- [Comprehensive Deployment Options](#comprehensive-deployment-options)
+- [Environment Variables](#environment-variables)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [Docker Deployment](#docker-deployment)
+- [Monitoring & Security](#monitoring--security)
+
+## ⚡ Quick Deploy to Vercel
 
 ### Step 1: Create Supabase User
 1. Go to Supabase Dashboard: https://app.supabase.com/project/pelicancorp
@@ -56,6 +67,136 @@ CLOCKWORK_API_KEY=9G4F5b99xO28esL8tArIO2Bbp8sGhURW5qIieYTy
 
 ```bash
 vercel --prod
+```
+
+## 🌟 Comprehensive Deployment Options
+
+### Automatic Deployment (Recommended)
+
+1. **Connect Repository to Vercel:**
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
+   
+   # Link project to Vercel
+   vercel link
+   
+   # Set additional environment variables
+   vercel env add VITE_MAPUTNIK_WEBHOOK_URL
+   vercel env add VITE_STYLES_SERVER_URL
+   ```
+
+2. **GitHub Integration:**
+   - Push to `main` branch triggers production deployment
+   - Pull requests create preview deployments
+   - Automatic domain assignment
+
+### Domain Configuration
+
+```bash
+# Add custom domain
+vercel domains add your-domain.com
+
+# Configure DNS (add CNAME record)
+# CNAME: your-domain.com -> cname.vercel-dns.com
+```
+
+## 🐳 Docker Deployment
+
+### Development Environment
+
+```bash
+# Start development environment
+docker-compose --profile development up
+
+# Available at: http://localhost:5173
+```
+
+### Production Environment
+
+```bash
+# Build and start production containers
+docker-compose --profile production up --build
+
+# With API server
+docker-compose --profile production --profile api up --build
+
+# Available at: http://localhost:80
+```
+
+### Docker Build Options
+
+```bash
+# Build development image
+docker build --target dev -t basemap-editor:dev .
+
+# Build production image
+docker build --target production -t basemap-editor:prod .
+
+# Multi-platform build
+docker buildx build --platform linux/amd64,linux/arm64 -t basemap-editor:latest .
+```
+
+## 🔄 CI/CD Pipeline
+
+### GitHub Actions Setup
+
+The pipeline includes:
+
+1. **Quality Checks:**
+   - TypeScript compilation
+   - Linting and formatting
+   - Unit tests with coverage
+   - Security scanning
+
+2. **Build Process:**
+   - Optimized production build
+   - Asset compression
+   - Source maps generation
+
+3. **Deployment:**
+   - Preview deployments for PRs
+   - Production deployment on main
+   - Automatic versioning
+
+### Required GitHub Secrets
+
+```bash
+# Vercel secrets
+VERCEL_TOKEN=your_vercel_token
+VERCEL_ORG_ID=your_org_id
+VERCEL_PROJECT_ID=your_project_id
+
+# Environment variables (same as Vercel environment variables above)
+```
+
+## 🔒 Security & Monitoring
+
+### Security Headers
+
+The application includes comprehensive security headers:
+
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: SAMEORIGIN`
+- `X-XSS-Protection: 1; mode=block`
+- `Strict-Transport-Security: max-age=31536000; includeSubDomains`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+
+### Performance Monitoring
+
+- Lighthouse CI integration
+- Core Web Vitals tracking
+- Bundle size analysis
+- Performance budgets
+
+### Health Checks
+
+```bash
+# API health check
+curl https://your-domain.com/api/health
+
+# Application health
+curl https://your-domain.com/health
 ```
 
 ## 📱 API Endpoints

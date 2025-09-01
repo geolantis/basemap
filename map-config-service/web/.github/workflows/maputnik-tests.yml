@@ -1,0 +1,573 @@
+name: 🧪 Maputnik Integration Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'web/src/**'
+      - 'web/test/**'
+      - 'web/package*.json'
+      - 'web/vite.config.*'
+      - 'web/tsconfig*.json'
+      - '.github/workflows/maputnik-tests.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'web/src/**'
+      - 'web/test/**'
+      - 'web/package*.json'
+      - 'web/vite.config.*'
+      - 'web/tsconfig*.json'
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+env:
+  NODE_VERSION: '20'
+  CACHE_DEPENDENCY_PATH: 'web/package-lock.json'
+
+jobs:
+  # Lint and Type Check
+  lint-and-types:
+    name: 🔍 Lint & Type Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Run ESLint
+        working-directory: web
+        run: npm run lint
+      
+      - name: Run TypeScript check
+        working-directory: web
+        run: npm run typecheck
+
+  # Unit Tests
+  unit-tests:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: lint-and-types
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Run unit tests
+        working-directory: web
+        run: npm run test:unit
+        env:
+          CI: true
+          VITEST_REPORTER: 'verbose'
+      
+      - name: Upload unit test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-test-results
+          path: web/test-reports/unit-*.xml
+          retention-days: 7
+
+  # Integration Tests
+  integration-tests:
+    name: 🔗 Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: lint-and-types
+    
+    services:
+      # Mock API server for testing
+      test-api:
+        image: mockserver/mockserver:latest
+        ports:
+          - 3001:1080
+        env:
+          MOCKSERVER_INITIALIZATION_JSON_PATH: /config
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Setup mock API
+        run: |
+          curl -X PUT http://localhost:3001/mockserver/expectation \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "httpRequest": {
+                "method": "POST",
+                "path": "/api/v1/styles"
+              },
+              "httpResponse": {
+                "statusCode": 200,
+                "body": {
+                  "styleId": "test-style-123",
+                  "url": "http://localhost:3001/api/styles/test-style-123/download",
+                  "message": "Style saved successfully"
+                }
+              }
+            }'
+      
+      - name: Run integration tests
+        working-directory: web
+        run: npm run test:integration
+        env:
+          CI: true
+          VITE_API_BASE_URL: http://localhost:3001
+          VITEST_REPORTER: 'verbose'
+      
+      - name: Upload integration test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-results
+          path: web/test-reports/integration-*.xml
+          retention-days: 7
+
+  # Security Tests
+  security-tests:
+    name: 🔒 Security Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: lint-and-types
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Run security tests
+        working-directory: web
+        run: npm run test:security
+        env:
+          CI: true
+          VITEST_REPORTER: 'verbose'
+      
+      - name: Run npm audit
+        working-directory: web
+        run: npm audit --audit-level=high
+      
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+      
+      - name: Upload security test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-test-results
+          path: web/test-reports/security-*.xml
+          retention-days: 30
+
+  # Performance Tests
+  performance-tests:
+    name: ⚡ Performance Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Run performance tests
+        working-directory: web
+        run: npm run test:performance
+        env:
+          CI: true
+          NODE_OPTIONS: '--max-old-space-size=4096'
+          VITEST_REPORTER: 'verbose'
+      
+      - name: Upload performance test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-test-results
+          path: web/test-reports/performance-*.json
+          retention-days: 30
+
+  # E2E Tests
+  e2e-tests:
+    name: 🎭 E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Install Playwright
+        working-directory: web
+        run: npx playwright install --with-deps chromium firefox
+      
+      - name: Build application
+        working-directory: web
+        run: npm run build
+      
+      - name: Start application
+        working-directory: web
+        run: npm run preview &
+        env:
+          PORT: 4173
+      
+      - name: Wait for application
+        run: npx wait-on http://localhost:4173 --timeout 30000
+      
+      - name: Run E2E tests
+        working-directory: web
+        run: npm run test:e2e
+        env:
+          CI: true
+          BASE_URL: http://localhost:4173
+      
+      - name: Upload E2E test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-results
+          path: |
+            web/test-reports/e2e-*.xml
+            web/test-results/
+          retention-days: 7
+
+  # Code Coverage
+  coverage:
+    name: 📊 Coverage Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Run tests with coverage
+        working-directory: web
+        run: npm run test:coverage
+        env:
+          CI: true
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: web/coverage/lcov.info
+          directory: web/coverage
+          flags: maputnik-integration
+          name: codecov-umbrella
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: web/coverage/
+          retention-days: 30
+
+  # Generate Test Report
+  test-report:
+    name: 📋 Generate Test Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [unit-tests, integration-tests, security-tests, performance-tests, e2e-tests, coverage]
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Download all test artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: web/test-artifacts
+      
+      - name: Generate comprehensive test report
+        working-directory: web
+        run: npm run test:report
+        env:
+          CI: true
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+      
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: comprehensive-test-report
+          path: web/test-reports/
+          retention-days: 90
+      
+      - name: Comment PR with test results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = './web/test-reports/latest-report.json';
+            
+            if (fs.existsSync(path)) {
+              const report = JSON.parse(fs.readFileSync(path, 'utf8'));
+              const passRate = ((report.summary.passed / report.summary.totalTests) * 100).toFixed(1);
+              
+              const body = `## 🧪 Test Results
+              
+              | Metric | Value |
+              |--------|-------|
+              | **Total Tests** | ${report.summary.totalTests} |
+              | **Passed** | ${report.summary.passed} (${passRate}%) |
+              | **Failed** | ${report.summary.failed} |
+              | **Coverage** | ${report.coverage.overall.statements.toFixed(1)}% |
+              | **Security Findings** | ${report.securityFindings.length} |
+              | **Duration** | ${(report.summary.duration / 1000).toFixed(1)}s |
+              
+              ${report.summary.failed > 0 ? '❌ **Some tests failed. Please check the logs.**' : '✅ **All tests passed!**'}
+              
+              [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+              `;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }
+
+  # Deployment (only on success)
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [test-report]
+    if: |
+      success() && 
+      github.ref == 'refs/heads/develop' && 
+      github.event_name == 'push'
+    environment: staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Build for staging
+        working-directory: web
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.STAGING_API_URL }}
+          VITE_ENVIRONMENT: staging
+      
+      - name: Deploy to staging
+        run: |
+          echo "🚀 Deploying to staging environment..."
+          # Add your deployment script here
+          # e.g., rsync, scp, or deployment service API calls
+
+  # Production deployment (only from main)
+  deploy-production:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [test-report]
+    if: |
+      success() && 
+      github.ref == 'refs/heads/main' && 
+      github.event_name == 'push'
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.CACHE_DEPENDENCY_PATH }}
+      
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+      
+      - name: Build for production
+        working-directory: web
+        run: npm run build:prod
+        env:
+          VITE_API_BASE_URL: ${{ secrets.PRODUCTION_API_URL }}
+          VITE_ENVIRONMENT: production
+      
+      - name: Deploy to production
+        run: |
+          echo "🚀 Deploying to production environment..."
+          # Add your production deployment script here
+      
+      - name: Run post-deployment tests
+        working-directory: web
+        run: npm run test:smoke
+        env:
+          BASE_URL: ${{ secrets.PRODUCTION_URL }}
+
+  # Notify on failure
+  notify-failure:
+    name: 📢 Notify on Failure
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests, security-tests, performance-tests, e2e-tests]
+    if: failure()
+    
+    steps:
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        if: env.SLACK_WEBHOOK_URL != ''
+        with:
+          status: failure
+          channel: '#dev-alerts'
+          text: |
+            🚨 Maputnik integration tests failed!
+            
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            
+            [View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      
+      - name: Create GitHub issue on failure
+        if: github.event_name == 'schedule' # Only for nightly runs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Nightly Test Failure - ${new Date().toDateString()}`,
+              body: `## Test Failure Summary
+              
+              The nightly test run has failed. Please investigate and fix the issues.
+              
+              **Run Details:**
+              - Workflow: ${{ github.workflow }}
+              - Run ID: ${{ github.run_id }}
+              - Branch: ${{ github.ref_name }}
+              - Commit: ${{ github.sha }}
+              
+              [View detailed logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+              `,
+              labels: ['bug', 'ci/cd', 'priority-high']
+            });
+
+# Security settings
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
+  actions: read
+  security-events: write
