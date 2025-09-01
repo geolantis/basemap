@@ -1,5 +1,5 @@
 <template>
-  <div class="card hover:shadow-lg transition-shadow cursor-pointer">
+  <div class="card hover:shadow-lg transition-shadow cursor-pointer" @click="$emit('preview', config)">
     <!-- Map Thumbnail -->
     <div class="relative h-48 bg-gray-100 rounded-t-lg overflow-hidden">
       <img
