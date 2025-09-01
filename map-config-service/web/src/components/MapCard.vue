@@ -228,7 +228,7 @@ function exportJSON() {
 }
 
 function openInMaputnik() {
-  openMaputnik(props.config.originalStyle, props.config.type);
+  openMaputnik(props.config.originalStyle || props.config.style, props.config.type);
   showMenu.value = false;
 }
 

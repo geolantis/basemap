@@ -33,9 +33,23 @@ export function openInMaputnik(styleUrl: string | undefined, configType: string)
     console.log('Clockwork Micro URL detected');
   }
   
+  // Check if the URL is already absolute or needs to be made absolute
+  if (!finalStyleUrl.startsWith('http://') && !finalStyleUrl.startsWith('https://')) {
+    // If it's a relative URL, make it absolute using the current origin
+    // This assumes the style is served from the same server
+    if (finalStyleUrl.startsWith('/')) {
+      finalStyleUrl = `${window.location.origin}${finalStyleUrl}`;
+    } else {
+      // Handle local server URLs like "http://localhost:3001/api/styles/..."
+      finalStyleUrl = `http://localhost:3001/api/styles/${finalStyleUrl}`;
+    }
+    console.log('Converted relative URL to absolute:', finalStyleUrl);
+  }
+  
   // Try different Maputnik URL formats
   // Format 1: Using hash with direct URL (most common)
-  let maputnikUrl = `https://maputnik.github.io/editor/#${encodeURIComponent(finalStyleUrl)}`;
+  // Don't encode the URL for the hash format - Maputnik handles it
+  let maputnikUrl = `https://maputnik.github.io/editor/#${finalStyleUrl}`;
   
   // For some URLs, we might need to use the old query parameter format
   // This is a fallback that can be tried if the hash format doesn't work
@@ -56,14 +70,27 @@ export function openInMaputnik(styleUrl: string | undefined, configType: string)
     console.log('2. Ensure the style URL is publicly accessible');
     console.log('3. For MapTiler/Clockwork styles, ensure API keys are included');
     console.log('4. Try the alternative URL:', alternativeUrl);
+    
+    // Show a help message to the user
+    setTimeout(() => {
+      alert(
+        'Maputnik has been opened in a new tab.\n\n' +
+        'If the style doesn\'t load automatically:\n' +
+        '1. Click on "Open" in Maputnik (top menu)\n' +
+        '2. Select "Load from URL"\n' +
+        '3. Paste this URL: ' + finalStyleUrl + '\n\n' +
+        'Note: Some styles may require CORS headers or API keys to load properly.'
+      );
+    }, 1000);
   }
 }
 
 export function canOpenInMaputnik(config: any): boolean {
+  const styleUrl = config.originalStyle || config.style;
   return config.type === 'vtc' && 
-         config.originalStyle && 
-         config.originalStyle !== 'tiles' &&
-         typeof config.originalStyle === 'string';
+         styleUrl && 
+         styleUrl !== 'tiles' &&
+         typeof styleUrl === 'string';
 }
 
 // Helper function to extract style info for debugging

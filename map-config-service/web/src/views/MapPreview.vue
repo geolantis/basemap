@@ -32,6 +32,15 @@
               <span>View Style</span>
             </button>
             <button
+              v-if="canEditInMaputnik"
+              @click="openInMaputnik"
+              class="btn-secondary flex items-center space-x-2"
+              title="Edit in Maputnik"
+            >
+              <i class="pi pi-palette"></i>
+              <span>Edit in Maputnik</span>
+            </button>
+            <button
               @click="downloadStyleJson"
               class="btn-secondary flex items-center space-x-2"
               title="Download Style JSON"
@@ -74,7 +83,7 @@
           </button>
           <div v-if="positionSaved" class="text-xs text-green-600 text-center">
             <i class="pi pi-check-circle mr-1"></i>
-            Position saved to browser
+            Position saved to database
           </div>
         </div>
         
@@ -194,6 +203,7 @@ import { storeToRefs } from 'pinia';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import type { MapConfig } from '../types';
+import { openInMaputnik as openMaputnik, canOpenInMaputnik } from '../utils/maputnikHelper';
 
 const route = useRoute();
 const router = useRouter();
@@ -209,6 +219,10 @@ const isFullscreen = ref(false);
 const config = computed(() => 
   configs.value.find(c => c.id === route.params.id)
 );
+
+const canEditInMaputnik = computed(() => {
+  return config.value && canOpenInMaputnik(config.value);
+});
 
 const selectedStyle = ref('');
 const zoom = ref(10);
@@ -444,32 +458,49 @@ function resetView() {
   });
 }
 
-function saveMapPosition() {
+async function saveMapPosition() {
   if (!config.value) return;
   
-  // Save position to localStorage for persistence
+  // Prepare position data
   const positionData = {
     center: [center.value.lng, center.value.lat],
     zoom: zoom.value,
     bearing: bearing.value,
-    pitch: pitch.value,
-    savedAt: new Date().toISOString()
+    pitch: pitch.value
   };
   
-  localStorage.setItem(`map-position-${config.value.id}`, JSON.stringify(positionData));
-  
-  // Update UI state
-  positionSaved.value = true;
-  positionChanged.value = false;
-  
-  // Reset the saved indicator after 3 seconds
-  setTimeout(() => {
-    positionSaved.value = false;
-  }, 3000);
-  
-  // Also update the config in store if you want to persist server-side
-  // This would require adding an update method to your config store
-  // configStore.updateMapPosition(config.value.id, positionData);
+  try {
+    // Save to Supabase via config store
+    await configStore.updateConfig(config.value.id, positionData);
+    
+    // Also save to localStorage as backup
+    localStorage.setItem(`map-position-${config.value.id}`, JSON.stringify({
+      ...positionData,
+      savedAt: new Date().toISOString()
+    }));
+    
+    // Update UI state
+    positionSaved.value = true;
+    positionChanged.value = false;
+    
+    // Reset the saved indicator after 3 seconds
+    setTimeout(() => {
+      positionSaved.value = false;
+    }, 3000);
+    
+  } catch (error) {
+    console.error('Failed to save map position:', error);
+    alert('Failed to save position to database. The position has been saved locally.');
+    
+    // Fallback to localStorage only
+    localStorage.setItem(`map-position-${config.value.id}`, JSON.stringify({
+      ...positionData,
+      savedAt: new Date().toISOString()
+    }));
+    
+    positionSaved.value = true;
+    positionChanged.value = false;
+  }
 }
 
 function loadSavedPosition() {
@@ -510,6 +541,12 @@ function toggleFullscreen() {
 
 function editConfig() {
   router.push(`/config/${route.params.id}/edit`);
+}
+
+function openInMaputnik() {
+  if (config.value) {
+    openMaputnik(config.value.originalStyle || config.value.style, config.value.type);
+  }
 }
 
 async function viewStyleJson() {

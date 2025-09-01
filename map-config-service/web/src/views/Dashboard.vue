@@ -418,7 +418,7 @@ function duplicateConfig(config: MapConfig) {
 }
 
 function openInMaputnik(config: MapConfig) {
-  openMaputnik(config.originalStyle, config.type);
+  openMaputnik(config.originalStyle || config.style, config.type);
 }
 
 async function deleteConfig(config: MapConfig) {
