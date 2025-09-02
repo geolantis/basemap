@@ -177,6 +177,20 @@
                 <option value="wms">WMS (Web Map Service)</option>
               </select>
             </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Map Category
+              </label>
+              <select
+                v-model="mapCategory"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="background">Background (Base Layer)</option>
+                <option value="overlay">Overlay (Transparent Layer)</option>
+              </select>
+            </div>
           </div>
           
           <div>
@@ -277,6 +291,7 @@ const styleName = ref('');
 const styleLabel = ref('');
 const styleCountry = ref('');
 const styleType = ref<'vtc' | 'wmts' | 'wms' | ''>('');
+const mapCategory = ref<'background' | 'overlay'>('background');
 const styleDescription = ref('');
 
 // Computed
@@ -342,6 +357,7 @@ function resetForm() {
   styleLabel.value = '';
   styleCountry.value = '';
   styleType.value = '';
+  mapCategory.value = 'background';
   styleDescription.value = '';
   errorMessage.value = '';
   successMessage.value = '';
@@ -414,6 +430,7 @@ async function uploadStyle() {
     formData.append('label', styleLabel.value);
     formData.append('country', styleCountry.value);
     formData.append('type', styleType.value);
+    formData.append('map_category', mapCategory.value);
     
     if (styleDescription.value) {
       formData.append('description', styleDescription.value);

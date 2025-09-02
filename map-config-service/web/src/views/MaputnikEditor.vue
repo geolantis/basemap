@@ -11,6 +11,10 @@
           <h2 class="editor-title">{{ mapName }} - Style Editor</h2>
         </div>
         <div class="header-right">
+          <select v-model="selectedCategory" class="category-select">
+            <option value="background">Background Layer</option>
+            <option value="overlay">Overlay Layer</option>
+          </select>
           <label class="btn-primary cursor-pointer">
             <i class="pi pi-upload"></i>
             Upload Style
@@ -87,6 +91,7 @@ const isLoading = ref(true);
 const hasChanges = ref(false);
 const lastSaved = ref<Date | null>(null);
 const autoSaveInterval = ref<number | null>(null);
+const selectedCategory = ref<'background' | 'overlay'>('background');
 
 const mapId = computed(() => route.params.id as string);
 const mapConfig = computed(() => 
@@ -239,11 +244,12 @@ async function handleStyleUpload(event: Event) {
       throw new Error('Failed to upload style');
     }
     
-    // Update the config with new style URL
+    // Update the config with new style URL and category
     const result = await response.json();
     if (result.styleUrl) {
       await configStore.updateConfig(mapId.value, {
         style: result.styleUrl,
+        map_category: selectedCategory.value,
         metadata: {
           ...mapConfig.value?.metadata,
           lastStyleUpdate: new Date().toISOString()
@@ -313,6 +319,11 @@ onMounted(async () => {
   // Ensure configs are loaded
   if (configStore.configs.length === 0) {
     await configStore.fetchConfigs();
+  }
+  
+  // Load the current map category if editing an existing map
+  if (mapConfig.value?.map_category) {
+    selectedCategory.value = mapConfig.value.map_category;
   }
   
   // Set up auto-save (if we had direct integration)
@@ -426,6 +437,12 @@ onUnmounted(() => {
 
 .hidden {
   display: none;
+}
+
+.category-select {
+  @apply px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm
+         focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2
+         transition-all duration-200;
 }
 
 /* Loading animation */

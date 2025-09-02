@@ -63,20 +63,35 @@
               />
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Map Type <span class="text-red-500">*</span>
-              </label>
-              <select
-                v-model="formData.type"
-                @change="onTypeChange"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Select type...</option>
-                <option value="vtc">Vector Tiles (VTC)</option>
-                <option value="wmts">WMTS</option>
-                <option value="wms">WMS</option>
-              </select>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Map Type <span class="text-red-500">*</span>
+                </label>
+                <select
+                  v-model="formData.type"
+                  @change="onTypeChange"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select type...</option>
+                  <option value="vtc">Vector Tiles (VTC)</option>
+                  <option value="wmts">WMTS</option>
+                  <option value="wms">WMS</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Map Category <span class="text-red-500">*</span>
+                </label>
+                <select
+                  v-model="formData.map_category"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="background">Background (Base Layer)</option>
+                  <option value="overlay">Overlay (Transparent Layer)</option>
+                </select>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -292,6 +307,7 @@ const formData = ref<Partial<MapConfig>>({
   style: '',
   country: 'Global',
   flag: '🌐',
+  map_category: 'background',
   layers: [],
   metadata: {}
 });

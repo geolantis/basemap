@@ -9,51 +9,72 @@ import { supabase } from '../lib/supabase';
 export async function captureMapPreview(map: maplibregl.Map): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
-      // Function to capture the image
-      const captureImage = () => {
-        // Get the map canvas
-        const canvas = map.getCanvas();
-        
-        // Check if canvas has content
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          reject(new Error('Could not get canvas context'));
-          return;
+      // Force a render to ensure we have the latest frame
+      map.triggerRepaint();
+      
+      // Use requestAnimationFrame to capture after the next render
+      requestAnimationFrame(() => {
+        try {
+          const mapCanvas = map.getCanvas();
+          
+          // Create a new canvas with white background
+          const finalCanvas = document.createElement('canvas');
+          finalCanvas.width = mapCanvas.width;
+          finalCanvas.height = mapCanvas.height;
+          
+          const ctx = finalCanvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'));
+            return;
+          }
+          
+          // Fill with white background
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+          
+          // Draw the map canvas on top
+          ctx.drawImage(mapCanvas, 0, 0);
+          
+          // Convert the final canvas to data URL
+          const dataUrl = finalCanvas.toDataURL('image/png');
+          
+          // Check if we got a valid image
+          if (!dataUrl || dataUrl === 'data:,' || dataUrl.length < 1000) {
+            // Try one more time after another frame
+            requestAnimationFrame(() => {
+              // Retry with white background
+              const retryCanvas = document.createElement('canvas');
+              retryCanvas.width = mapCanvas.width;
+              retryCanvas.height = mapCanvas.height;
+              
+              const retryCtx = retryCanvas.getContext('2d');
+              if (!retryCtx) {
+                reject(new Error('Failed to get canvas context'));
+                return;
+              }
+              
+              // Fill with white background
+              retryCtx.fillStyle = '#FFFFFF';
+              retryCtx.fillRect(0, 0, retryCanvas.width, retryCanvas.height);
+              
+              // Draw the map canvas on top
+              retryCtx.drawImage(mapCanvas, 0, 0);
+              
+              const retryDataUrl = retryCanvas.toDataURL('image/png');
+              if (!retryDataUrl || retryDataUrl === 'data:,' || retryDataUrl.length < 1000) {
+                reject(new Error('Failed to capture map - ensure preserveDrawingBuffer is enabled'));
+              } else {
+                resolve(retryDataUrl);
+              }
+            });
+          } else {
+            resolve(dataUrl);
+          }
+        } catch (err) {
+          reject(err);
         }
-        
-        // Convert to base64 - use PNG for better quality
-        const dataUrl = canvas.toDataURL('image/png');
-        
-        // Verify the image isn't empty/black
-        if (dataUrl.length < 1000) {
-          reject(new Error('Captured image appears to be empty'));
-          return;
-        }
-        
-        resolve(dataUrl);
-      };
-
-      // Wait for the map to be fully loaded and rendered
-      if (!map.loaded()) {
-        map.once('load', () => {
-          // Wait for the next render after load
-          map.once('render', () => {
-            // Add a small delay to ensure all tiles are rendered
-            setTimeout(captureImage, 500);
-          });
-        });
-      } else {
-        // Map is loaded, but wait for next render cycle
-        map.once('idle', () => {
-          // Add a small delay to ensure all tiles and layers are rendered
-          setTimeout(captureImage, 500);
-        });
-        
-        // Trigger a render if needed
-        map.triggerRepaint();
-      }
+      });
     } catch (error) {
-      console.error('Failed to capture map preview:', error);
       reject(error);
     }
   });
@@ -202,7 +223,11 @@ export async function generateThumbnail(
         return;
       }
       
-      // Draw resized image
+      // Fill with white background first
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, width, height);
+      
+      // Draw resized image on top
       ctx.drawImage(img, 0, 0, width, height);
       
       // Convert to base64

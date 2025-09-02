@@ -345,14 +345,15 @@ function initializeMap() {
       throw new Error('Unable to determine map style URL');
     }
 
-    // Initialize the map
+    // Initialize the map with preserveDrawingBuffer for screenshot capability
     map.value = new maplibregl.Map({
       container: mapContainer.value,
       style: styleUrl,
       center: [center.value.lng, center.value.lat],
       zoom: zoom.value,
       bearing: bearing.value,
-      pitch: pitch.value
+      pitch: pitch.value,
+      preserveDrawingBuffer: true // CRITICAL: Required for capturing screenshots
     });
 
     // Add navigation controls
@@ -599,33 +600,24 @@ async function downloadStyleJson() {
 async function savePreviewImage() {
   if (!map.value || !config.value) return;
   
+  // Remove the problematic loading check - just proceed with capture
   savingPreview.value = true;
   previewSaved.value = false;
   
   try {
-    // Ensure the map is fully rendered before capturing
-    // Trigger a repaint to make sure everything is up to date
-    map.value.triggerRepaint();
-    
-    // Wait a moment for any pending renders
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Wait a moment to ensure map is stable
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     // Capture the current map view
+    console.log('Capturing map preview...');
     const imageDataUrl = await captureMapPreview(map.value);
-    
-    // Check if the image is valid (not all black)
-    const img = new Image();
-    img.src = imageDataUrl;
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-    });
+    console.log('Captured image size:', imageDataUrl.length);
     
     // Generate a thumbnail
     const thumbnailDataUrl = await generateThumbnail(imageDataUrl, 400, 300);
+    console.log('Generated thumbnail size:', thumbnailDataUrl.length);
     
-    // For now, save directly as base64 in the database
-    // This works immediately without storage bucket setup
+    // Save directly as base64 in the database
     const result = await configStore.updateConfig(config.value.id, {
       previewImageUrl: thumbnailDataUrl
     });
@@ -647,7 +639,19 @@ async function savePreviewImage() {
     
   } catch (error) {
     console.error('Failed to save preview image:', error);
-    alert('Failed to save preview image. Please ensure the map is fully loaded and try again.');
+    
+    // More specific error messages
+    if (error instanceof Error) {
+      if (error.message.includes('empty') || error.message.includes('preserveDrawingBuffer')) {
+        alert('Failed to capture map image. Please try refreshing the page and trying again.');
+      } else if (error.message.includes('database')) {
+        alert('Failed to save to database. Please check if RLS policies are configured correctly.');
+      } else {
+        alert(`Failed to save preview: ${error.message}`);
+      }
+    } else {
+      alert('Failed to save preview image. Please try again.');
+    }
   } finally {
     savingPreview.value = false;
   }
