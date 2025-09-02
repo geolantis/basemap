@@ -218,7 +218,6 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import type { MapConfig } from '../types';
 import { openInMaputnik as openMaputnik, canOpenInMaputnik } from '../utils/maputnikHelper';
 import { captureMapPreview, uploadMapPreview, generateThumbnail } from '../utils/mapCapture';
-import { savePreviewToLocalStorage, savePositionToLocalStorage } from '../utils/localStorage';
 
 const route = useRoute();
 const router = useRouter();
@@ -480,33 +479,33 @@ async function saveMapPosition() {
   
   // Prepare position data
   const positionData = {
-    center: [center.value.lng, center.value.lat] as [number, number],
+    center: [center.value.lng, center.value.lat],
     zoom: zoom.value,
     bearing: bearing.value,
     pitch: pitch.value
   };
   
-  // Always save to localStorage first (reliable)
-  savePositionToLocalStorage(config.value.id, positionData);
-  console.log('Position saved to localStorage');
-  
-  // Try to save to database (might fail due to RLS policies)
   try {
-    await configStore.updateConfig(config.value.id, positionData).catch(err => {
-      console.log('Database update failed, using localStorage fallback:', err);
-    });
+    // Save to database
+    const result = await configStore.updateConfig(config.value.id, positionData);
+    
+    if (result) {
+      console.log('Position saved to database');
+      positionSaved.value = true;
+      positionChanged.value = false;
+      
+      // Reset the saved indicator after 3 seconds
+      setTimeout(() => {
+        positionSaved.value = false;
+      }, 3000);
+    } else {
+      throw new Error('Failed to update database');
+    }
+    
   } catch (error) {
-    console.log('Failed to save to database, localStorage save successful');
+    console.error('Failed to save map position:', error);
+    alert('Failed to save position. The database may need to be updated. Please contact support.');
   }
-  
-  // Update UI to show it was saved
-  positionSaved.value = true;
-  positionChanged.value = false;
-  
-  // Reset the saved indicator after 3 seconds
-  setTimeout(() => {
-    positionSaved.value = false;
-  }, 3000);
 }
 
 function loadSavedPosition() {
@@ -604,45 +603,51 @@ async function savePreviewImage() {
   previewSaved.value = false;
   
   try {
+    // Ensure the map is fully rendered before capturing
+    // Trigger a repaint to make sure everything is up to date
+    map.value.triggerRepaint();
+    
+    // Wait a moment for any pending renders
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
     // Capture the current map view
     const imageDataUrl = await captureMapPreview(map.value);
+    
+    // Check if the image is valid (not all black)
+    const img = new Image();
+    img.src = imageDataUrl;
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+    });
     
     // Generate a thumbnail
     const thumbnailDataUrl = await generateThumbnail(imageDataUrl, 400, 300);
     
-    // Always save to localStorage first (reliable fallback)
-    savePreviewToLocalStorage(config.value.id, thumbnailDataUrl);
-    console.log('Preview image saved to localStorage');
+    // For now, save directly as base64 in the database
+    // This works immediately without storage bucket setup
+    const result = await configStore.updateConfig(config.value.id, {
+      previewImageUrl: thumbnailDataUrl
+    });
     
-    // Try to upload to Supabase Storage (might fail due to permissions)
-    try {
-      const previewUrl = await uploadMapPreview(config.value.id, thumbnailDataUrl);
+    if (result) {
+      console.log('Preview image saved to database');
+      previewSaved.value = true;
       
-      if (previewUrl && !previewUrl.startsWith('data:')) {
-        // If we got a real URL (not base64), try to update the database
-        // This might fail due to RLS policies, but that's okay
-        await configStore.updateConfig(config.value.id, {
-          previewImageUrl: previewUrl
-        }).catch(err => {
-          console.log('Database update failed, using localStorage fallback:', err);
-        });
-      }
-    } catch (uploadError) {
-      console.log('Storage upload failed, using localStorage fallback:', uploadError);
+      // Refresh the configs to show the new preview
+      await configStore.fetchConfigs();
+      
+      // Reset the saved indicator after 3 seconds
+      setTimeout(() => {
+        previewSaved.value = false;
+      }, 3000);
+    } else {
+      throw new Error('Failed to update database');
     }
-    
-    // Always show success since localStorage save is reliable
-    console.log('Preview image saved successfully');
-    previewSaved.value = true;
-    
-    // Reset the saved indicator after 3 seconds
-    setTimeout(() => {
-      previewSaved.value = false;
-    }, 3000);
     
   } catch (error) {
     console.error('Failed to save preview image:', error);
-    alert('Failed to save preview image. Please try again.');
+    alert('Failed to save preview image. Please ensure the map is fully loaded and try again.');
   } finally {
     savingPreview.value = false;
   }

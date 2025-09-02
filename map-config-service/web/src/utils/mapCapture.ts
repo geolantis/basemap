@@ -9,22 +9,48 @@ import { supabase } from '../lib/supabase';
 export async function captureMapPreview(map: maplibregl.Map): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
-      // Wait for the map to be fully loaded
-      if (!map.loaded()) {
-        map.once('load', () => {
-          captureImage();
-        });
-      } else {
-        captureImage();
-      }
-
-      function captureImage() {
+      // Function to capture the image
+      const captureImage = () => {
         // Get the map canvas
         const canvas = map.getCanvas();
         
-        // Convert to base64
-        const dataUrl = canvas.toDataURL('image/png', 0.8); // 0.8 quality for smaller file size
+        // Check if canvas has content
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'));
+          return;
+        }
+        
+        // Convert to base64 - use PNG for better quality
+        const dataUrl = canvas.toDataURL('image/png');
+        
+        // Verify the image isn't empty/black
+        if (dataUrl.length < 1000) {
+          reject(new Error('Captured image appears to be empty'));
+          return;
+        }
+        
         resolve(dataUrl);
+      };
+
+      // Wait for the map to be fully loaded and rendered
+      if (!map.loaded()) {
+        map.once('load', () => {
+          // Wait for the next render after load
+          map.once('render', () => {
+            // Add a small delay to ensure all tiles are rendered
+            setTimeout(captureImage, 500);
+          });
+        });
+      } else {
+        // Map is loaded, but wait for next render cycle
+        map.once('idle', () => {
+          // Add a small delay to ensure all tiles and layers are rendered
+          setTimeout(captureImage, 500);
+        });
+        
+        // Trigger a render if needed
+        map.triggerRepaint();
       }
     } catch (error) {
       console.error('Failed to capture map preview:', error);

@@ -152,7 +152,6 @@ import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { format } from 'date-fns';
 import type { MapConfig } from '../types';
-import { getPreviewFromLocalStorage } from '../utils/localStorage';
 
 const router = useRouter();
 
@@ -170,22 +169,9 @@ const emit = defineEmits<{
 
 const showMenu = ref(false);
 
-// Compute the preview URL, checking localStorage as fallback
+// Use preview URL from database
 const previewUrl = computed(() => {
-  // First check if config has a preview URL
-  if (props.config.previewImageUrl) {
-    // If it's already a data URL or a full URL, use it directly
-    if (props.config.previewImageUrl.startsWith('data:') || 
-        props.config.previewImageUrl.startsWith('http')) {
-      return props.config.previewImageUrl;
-    }
-    // Otherwise assume it's a relative URL and needs the base URL
-    return props.config.previewImageUrl;
-  }
-  
-  // Fallback to localStorage
-  const localPreview = getPreviewFromLocalStorage(props.config.id);
-  return localPreview;
+  return props.config.previewImageUrl || null;
 });
 
 // EXACT list of overlay maps - ONLY these 12!
