@@ -83,9 +83,9 @@ export interface BrandingConfig {
 
 export const brandingConfig: BrandingConfig = {
   // Brand Identity
-  name: "Basemap Style Editor",
+  name: "Geolantis360 Basemap Style Editor",
   tagline: "Professional Map Style Management",
-  description: "Create, edit, and manage Mapbox GL styles with our professional editing platform powered by Maputnik.",
+  description: "Create, edit and manage Geolantis360 basemap and overlay styles as well WMTS, WMS maps with our professional editing platform",
   
   // Visual Identity
   logo: {
@@ -137,17 +137,17 @@ export const brandingConfig: BrandingConfig = {
   
   // Links & Contact
   links: {
-    website: "https://basemap.io",
-    documentation: "https://docs.basemap.io",
-    support: "https://support.basemap.io", 
-    github: "https://github.com/basemap-io",
-    privacy: "https://basemap.io/privacy",
-    terms: "https://basemap.io/terms",
+    website: "https://www.geolantis.com",
+    documentation: "https://knowledgebase.geolantis.com",
+    support: "https://www.geolantis.com", 
+    github: "https://github.com/geolantis",
+    privacy: "- not availabile ;-) -",
+    terms: "Don't copy!!",
   },
   
   // Footer
   footer: {
-    copyright: `© ${new Date().getFullYear()} Basemap. All rights reserved.`,
+    copyright: `© ${new Date().getFullYear()} Michael P. All rights reserved.`,
     version: "v2.1.0",
     buildDate: new Date().toISOString().split('T')[0],
   },

@@ -321,14 +321,24 @@ function initializeMap() {
             source: 'raster-tiles'
           }]
         } as any;
-      } else if (config.value.metadata?.url) {
-        // WMS endpoint
+      } else if (config.value.metadata?.url || config.value.url) {
+        // WMS endpoint (check both metadata.url and top-level url)
+        const wmsUrl = config.value.metadata?.url || config.value.url;
+        const layers = config.value.layers || config.value.metadata?.layers;
+        const layerString = Array.isArray(layers) ? layers.join(',') : (typeof layers === 'string' ? layers : '');
+        
+        // Handle WMS parameters from the config
+        const version = config.value.version || config.value.metadata?.version || '1.1.0';
+        const format = config.value.format || config.value.metadata?.format || 'image/png';
+        const transparent = config.value.transparent !== undefined ? config.value.transparent : true;
+        const crs = version === '1.3.0' ? 'CRS' : 'SRS';
+        
         styleUrl = {
           version: 8,
           sources: {
             'wms-source': {
               type: 'raster',
-              tiles: [`${config.value.metadata.url}?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.0&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=${config.value.layers?.join(',') || ''}`],
+              tiles: [`${wmsUrl}?bbox={bbox-epsg-3857}&format=${format}&service=WMS&version=${version}&request=GetMap&${crs}=EPSG:3857&width=256&height=256&layers=${layerString}${transparent ? '&transparent=true' : ''}`],
               tileSize: 256
             }
           },
@@ -336,6 +346,24 @@ function initializeMap() {
             id: 'wms-layer',
             type: 'raster',
             source: 'wms-source'
+          }]
+        } as any;
+      } else if (config.value.tiles) {
+        // Direct tiles array at top level (for WMTS)
+        styleUrl = {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              type: 'raster',
+              tiles: Array.isArray(config.value.tiles) ? config.value.tiles : [config.value.tiles],
+              tileSize: config.value.tileSize || 256,
+              attribution: config.value.attribution
+            }
+          },
+          layers: [{
+            id: 'raster-layer',
+            type: 'raster',
+            source: 'raster-tiles'
           }]
         } as any;
       }
