@@ -261,7 +261,21 @@ async function initializeMap() {
   // Initialize from saved position if available
   if (config.value.center && config.value.center.length === 2) {
     center.value = { lng: config.value.center[0], lat: config.value.center[1] };
+  } else {
+    // Set default centers for known Australian services
+    if (config.value.name?.includes('QLD') || config.value.label?.includes('Queensland')) {
+      center.value = { lng: 153.0251, lat: -27.4698 }; // Brisbane
+    } else if (config.value.name?.includes('NSW')) {
+      center.value = { lng: 151.2093, lat: -33.8688 }; // Sydney
+    } else if (config.value.name?.includes('Tasmania') || config.value.name?.includes('TAS')) {
+      center.value = { lng: 147.3272, lat: -42.8821 }; // Hobart
+    } else if (config.value.name?.includes('VIC')) {
+      center.value = { lng: 144.9631, lat: -37.8136 }; // Melbourne
+    } else if (config.value.name?.includes('WA')) {
+      center.value = { lng: 115.8605, lat: -31.9505 }; // Perth
+    }
   }
+  
   if (config.value.zoom !== undefined && config.value.zoom !== null) {
     zoom.value = config.value.zoom;
   }
@@ -498,10 +512,27 @@ async function initializeMap() {
       }
     });
     
+    // Track source loading states
+    let sourcesLoading = new Set();
+    
     map.value.on('sourcedata', (e) => {
-      // Clear loading state when source loads successfully
-      if (e.isSourceLoaded && loading.value) {
-        loading.value = false;
+      if (e.sourceId) {
+        if (e.isSourceLoaded) {
+          sourcesLoading.delete(e.sourceId);
+        } else if (e.sourceDataType === 'metadata') {
+          sourcesLoading.add(e.sourceId);
+        }
+      }
+      
+      // Clear loading state when all sources have attempted to load
+      // Even if tiles fail, we consider the map "loaded" after metadata is loaded
+      if (e.sourceDataType === 'metadata' && e.isSourceLoaded) {
+        // Give it a small delay to ensure map is ready
+        setTimeout(() => {
+          if (loading.value) {
+            loading.value = false;
+          }
+        }, 500);
       }
     });
 
@@ -524,6 +555,15 @@ async function initializeMap() {
     map.value.on('load', () => {
       loading.value = false;
     });
+    
+    // Failsafe: If still loading after 5 seconds, assume map is ready
+    // This handles cases where tile loading errors prevent normal load event
+    setTimeout(() => {
+      if (loading.value && map.value) {
+        console.log('Map load timeout reached, forcing ready state');
+        loading.value = false;
+      }
+    }, 5000);
 
     map.value.on('error', (e) => {
       // Ignore tile loading errors (404s are common for missing tiles at certain zoom levels)
