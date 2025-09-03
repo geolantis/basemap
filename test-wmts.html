@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test WMTS Maps</title>
+    <script>
+        // Test if the WMTS maps are working
+        async function testWMTSMaps() {
+            const maps = [
+                'BEV DKM GST',
+                'BEV Kataster',
+                'BEV Kataster 2',
+                'BEV Light',
+                'TopPlusOpen'
+            ];
+            
+            console.log('Testing WMTS/WMS maps on production...');
+            
+            for (const mapName of maps) {
+                try {
+                    const url = `https://mapconfig.geolantis.com/api/config?name=${encodeURIComponent(mapName)}`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data && data.length > 0) {
+                        const config = data[0];
+                        console.log(`✅ ${mapName}:`, {
+                            type: config.type,
+                            hasStyle: !!config.style,
+                            hasUrl: !!config.url,
+                            hasTiles: !!config.tiles,
+                            hasMetadata: !!config.metadata
+                        });
+                        
+                        // Check preview URL
+                        const previewUrl = `https://mapconfig.geolantis.com/preview/${config.id}`;
+                        console.log(`   Preview: ${previewUrl}`);
+                    } else {
+                        console.log(`❌ ${mapName}: Not found`);
+                    }
+                } catch (error) {
+                    console.log(`❌ ${mapName}: Error - ${error.message}`);
+                }
+            }
+        }
+        
+        window.onload = testWMTSMaps;
+    </script>
+</head>
+<body>
+    <h1>Testing WMTS Maps</h1>
+    <p>Open browser console (F12) to see results</p>
+    <p>This tests if the WMTS maps are properly configured on production.</p>
+</body>
+</html>
