@@ -1,20 +1,6 @@
 {
-  "builds": [
-    {
-      "src": "map-config-service/web/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "map-config-service/web/dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/map-config-service/web/$1"
-    }
-  ],
   "installCommand": "cd map-config-service/web && npm ci",
   "buildCommand": "cd map-config-service/web && npm run build",
-  "outputDirectory": "map-config-service/web/dist"
+  "outputDirectory": "map-config-service/web/dist",
+  "framework": null
 }
