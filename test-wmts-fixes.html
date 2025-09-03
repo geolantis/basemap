@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMTS Services Test - Fixed</title>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 10px;
+            height: 100vh;
+        }
+        .map-container {
+            position: relative;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .map {
+            width: 100%;
+            height: 100%;
+        }
+        .map-title {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            z-index: 1;
+        }
+        .status {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1;
+        }
+        .status.success { color: green; }
+        .status.error { color: red; }
+        .status.loading { color: orange; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- NSW BaseMap (Vector Esri) -->
+        <div class="map-container">
+            <div class="map-title">NSW BaseMap (Vector Esri)</div>
+            <div id="status-nsw-basemap" class="status loading">Loading...</div>
+            <div id="map-nsw-basemap" class="map"></div>
+        </div>
+        
+        <!-- NSW Imagery (Raster) -->
+        <div class="map-container">
+            <div class="map-title">NSW Imagery (Raster)</div>
+            <div id="status-nsw-imagery" class="status loading">Loading...</div>
+            <div id="map-nsw-imagery" class="map"></div>
+        </div>
+        
+        <!-- QLD Aerial (WMTS with .jpeg) -->
+        <div class="map-container">
+            <div class="map-title">QLD Aerial (WMTS)</div>
+            <div id="status-qld-aerial" class="status loading">Loading...</div>
+            <div id="map-qld-aerial" class="map"></div>
+        </div>
+        
+        <!-- Tasmania Orthophoto (WMTS with .jpeg) -->
+        <div class="map-container">
+            <div class="map-title">Tasmania Orthophoto</div>
+            <div id="status-tas-ortho" class="status loading">Loading...</div>
+            <div id="map-tas-ortho" class="map"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <script>
+        // Helper function to fix relative URLs in style JSON
+        async function fetchAndFixStyle(styleUrl) {
+            try {
+                const response = await fetch(styleUrl);
+                const styleJson = await response.json();
+                
+                // Fix relative sprite URLs
+                if (styleJson.sprite && !styleJson.sprite.startsWith('http')) {
+                    const baseUrl = styleUrl.substring(0, styleUrl.lastIndexOf('/'));
+                    styleJson.sprite = baseUrl + '/' + styleJson.sprite;
+                }
+                
+                // Fix relative glyphs URLs
+                if (styleJson.glyphs && !styleJson.glyphs.startsWith('http')) {
+                    const baseUrl = styleUrl.substring(0, styleUrl.lastIndexOf('/'));
+                    styleJson.glyphs = baseUrl + '/' + styleJson.glyphs;
+                }
+                
+                // Fix relative source URLs
+                if (styleJson.sources) {
+                    Object.values(styleJson.sources).forEach((source) => {
+                        if (source.url && !source.url.startsWith('http')) {
+                            const baseUrl = styleUrl.substring(0, styleUrl.lastIndexOf('/'));
+                            source.url = baseUrl + '/' + source.url;
+                        }
+                    });
+                }
+                
+                return styleJson;
+            } catch (err) {
+                console.error('Failed to fetch or fix style JSON:', err);
+                throw err;
+            }
+        }
+
+        // Initialize NSW BaseMap (Vector Esri)
+        async function initNSWBaseMap() {
+            const statusEl = document.getElementById('status-nsw-basemap');
+            try {
+                const styleUrl = 'https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile/VectorTileServer/resources/styles/root.json';
+                const style = await fetchAndFixStyle(styleUrl);
+                
+                const map = new maplibregl.Map({
+                    container: 'map-nsw-basemap',
+                    style: style,
+                    center: [151.2093, -33.8688], // Sydney
+                    zoom: 10
+                });
+                
+                map.on('load', () => {
+                    statusEl.textContent = 'Loaded successfully';
+                    statusEl.className = 'status success';
+                });
+                
+                map.on('error', (e) => {
+                    console.error('NSW BaseMap error:', e);
+                    if (!e.error?.message?.includes('tile') && !e.error?.message?.includes('404')) {
+                        statusEl.textContent = 'Error: ' + (e.error?.message || 'Unknown error');
+                        statusEl.className = 'status error';
+                    }
+                });
+            } catch (err) {
+                statusEl.textContent = 'Failed to initialize';
+                statusEl.className = 'status error';
+            }
+        }
+
+        // Initialize NSW Imagery
+        function initNSWImagery() {
+            const statusEl = document.getElementById('status-nsw-imagery');
+            const map = new maplibregl.Map({
+                container: 'map-nsw-imagery',
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            type: 'raster',
+                            tiles: [
+                                'https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Imagery/MapServer/WMTS/tile/1.0.0/NSW_Imagery/default/GoogleMapsCompatible/{z}/{y}/{x}'
+                            ],
+                            tileSize: 256,
+                            maxzoom: 24
+                        }
+                    },
+                    layers: [{
+                        id: 'raster-layer',
+                        type: 'raster',
+                        source: 'raster-tiles'
+                    }]
+                },
+                center: [151.2093, -33.8688], // Sydney
+                zoom: 10
+            });
+            
+            map.on('load', () => {
+                statusEl.textContent = 'Loaded successfully';
+                statusEl.className = 'status success';
+            });
+            
+            map.on('error', (e) => {
+                console.error('NSW Imagery error:', e);
+                // Ignore tile errors
+                if (!e.error?.url?.includes('/tile/') && !e.error?.status) {
+                    statusEl.textContent = 'Error: ' + (e.error?.message || 'Unknown error');
+                    statusEl.className = 'status error';
+                }
+            });
+        }
+
+        // Initialize QLD Aerial
+        function initQLDAerial() {
+            const statusEl = document.getElementById('status-qld-aerial');
+            const map = new maplibregl.Map({
+                container: 'map-qld-aerial',
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            type: 'raster',
+                            tiles: [
+                                'https://spatial-img.information.qld.gov.au/arcgis/rest/services/Basemaps/LatestStateProgram_AllUsers/ImageServer/WMTS/tile/1.0.0/Basemaps_LatestStateProgram_AllUsers/default/GoogleMapsCompatible/{z}/{y}/{x}.jpeg'
+                            ],
+                            tileSize: 256,
+                            maxzoom: 18
+                        }
+                    },
+                    layers: [{
+                        id: 'raster-layer',
+                        type: 'raster',
+                        source: 'raster-tiles'
+                    }]
+                },
+                center: [153.0251, -27.4698], // Brisbane
+                zoom: 10
+            });
+            
+            map.on('load', () => {
+                statusEl.textContent = 'Loaded successfully';
+                statusEl.className = 'status success';
+            });
+            
+            map.on('error', (e) => {
+                console.error('QLD Aerial error:', e);
+                // Ignore tile errors
+                if (!e.error?.url?.includes('/tile/') && !e.error?.status) {
+                    statusEl.textContent = 'Error: ' + (e.error?.message || 'Unknown error');
+                    statusEl.className = 'status error';
+                }
+            });
+        }
+
+        // Initialize Tasmania Orthophoto
+        function initTasOrtho() {
+            const statusEl = document.getElementById('status-tas-ortho');
+            const map = new maplibregl.Map({
+                container: 'map-tas-ortho',
+                style: {
+                    version: 8,
+                    sources: {
+                        'raster-tiles': {
+                            type: 'raster',
+                            tiles: [
+                                'https://services.thelist.tas.gov.au/arcgis/rest/services/Basemaps/Orthophoto/MapServer/WMTS/tile/1.0.0/Orthophoto/default/GoogleMapsCompatible/{z}/{y}/{x}.jpeg'
+                            ],
+                            tileSize: 256,
+                            maxzoom: 19
+                        }
+                    },
+                    layers: [{
+                        id: 'raster-layer',
+                        type: 'raster',
+                        source: 'raster-tiles'
+                    }]
+                },
+                center: [147.3272, -42.8821], // Hobart
+                zoom: 10
+            });
+            
+            map.on('load', () => {
+                statusEl.textContent = 'Loaded successfully';
+                statusEl.className = 'status success';
+            });
+            
+            map.on('error', (e) => {
+                console.error('Tasmania Ortho error:', e);
+                // Ignore tile errors
+                if (!e.error?.url?.includes('/tile/') && !e.error?.status) {
+                    statusEl.textContent = 'Error: ' + (e.error?.message || 'Unknown error');
+                    statusEl.className = 'status error';
+                }
+            });
+        }
+
+        // Initialize all maps
+        initNSWBaseMap();
+        initNSWImagery();
+        initQLDAerial();
+        initTasOrtho();
+    </script>
+</body>
+</html>

@@ -248,7 +248,7 @@ const positionChanged = ref(false);
 const savingPreview = ref(false);
 const previewSaved = ref(false);
 
-function initializeMap() {
+async function initializeMap() {
   if (!mapContainer.value || !config.value) {
     error.value = 'Map configuration not found';
     loading.value = false;
@@ -276,11 +276,14 @@ function initializeMap() {
     // Determine the style URL based on config type
     let styleUrl = '';
     
-    if (config.value.type === 'vtc') {
+    if (config.value.type === 'vtc' || config.value.type === 'vector-esri') {
       // Vector tile with style
       if (config.value.style && config.value.style !== 'tiles') {
         // Use the style URL from the database
         styleUrl = config.value.style;
+      } else if (config.value.styleUrl) {
+        // Check for styleUrl at the top level (for vector-esri)
+        styleUrl = config.value.styleUrl;
       } else if (config.value.metadata?.styleUrl) {
         // Fallback to metadata styleUrl if available
         styleUrl = config.value.metadata.styleUrl;
@@ -305,14 +308,30 @@ function initializeMap() {
     } else if (config.value.type === 'wmts' || config.value.type === 'wms') {
       // WMTS/WMS layers
       if (config.value.metadata?.tiles) {
+        // Ensure tiles is an array and handle missing file extensions
+        let tilesArray = Array.isArray(config.value.metadata.tiles) 
+          ? config.value.metadata.tiles 
+          : [config.value.metadata.tiles];
+        
+        // Add file extensions if missing (common for WMTS services)
+        tilesArray = tilesArray.map(tileUrl => {
+          // Check if URL already has an image extension
+          if (!tileUrl.match(/\.(png|jpg|jpeg|webp)$/i)) {
+            // Add .jpeg extension for WMTS services (common default)
+            // Some services use .png, but .jpeg is more common for imagery
+            return tileUrl + '.jpeg';
+          }
+          return tileUrl;
+        });
+        
         styleUrl = {
           version: 8,
           sources: {
             'raster-tiles': {
               type: 'raster',
-              tiles: config.value.metadata.tiles,
+              tiles: tilesArray,
               tileSize: config.value.metadata.tileSize || 256,
-              attribution: config.value.metadata.attribution
+              attribution: config.value.metadata.attribution || ''
             }
           },
           layers: [{
@@ -350,14 +369,61 @@ function initializeMap() {
         } as any;
       } else if (config.value.tiles) {
         // Direct tiles array at top level (for WMTS)
+        let tilesArray = Array.isArray(config.value.tiles) ? config.value.tiles : [config.value.tiles];
+        
+        // Add file extensions if missing
+        tilesArray = tilesArray.map(tileUrl => {
+          if (!tileUrl.match(/\.(png|jpg|jpeg|webp)$/i)) {
+            return tileUrl + '.jpeg';
+          }
+          return tileUrl;
+        });
+        
         styleUrl = {
           version: 8,
           sources: {
             'raster-tiles': {
               type: 'raster',
-              tiles: Array.isArray(config.value.tiles) ? config.value.tiles : [config.value.tiles],
+              tiles: tilesArray,
               tileSize: config.value.tileSize || 256,
-              attribution: config.value.attribution
+              attribution: config.value.attribution || ''
+            }
+          },
+          layers: [{
+            id: 'raster-layer',
+            type: 'raster',
+            source: 'raster-tiles'
+          }]
+        } as any;
+      }
+    } else if (config.value.type === 'raster') {
+      // Raster tile layers (like NSW Imagery)
+      if (config.value.tiles) {
+        let tilesArray = Array.isArray(config.value.tiles) ? config.value.tiles : [config.value.tiles];
+        
+        // Add file extensions if missing (common for WMTS services)
+        tilesArray = tilesArray.map(tileUrl => {
+          if (!tileUrl.match(/\.(png|jpg|jpeg|webp)$/i)) {
+            // NSW Imagery doesn't need extension, QLD Aerial needs .jpeg
+            // Check if it's QLD service
+            if (tileUrl.includes('qld.gov.au')) {
+              return tileUrl + '.jpeg';
+            }
+            // NSW services typically don't need extension
+            return tileUrl;
+          }
+          return tileUrl;
+        });
+        
+        styleUrl = {
+          version: 8,
+          sources: {
+            'raster-tiles': {
+              type: 'raster',
+              tiles: tilesArray,
+              tileSize: config.value.tileSize || 256,
+              attribution: config.value.attribution || '',
+              maxzoom: config.value.maxzoom || 22
             }
           },
           layers: [{
@@ -371,6 +437,42 @@ function initializeMap() {
 
     if (!styleUrl) {
       throw new Error('Unable to determine map style URL');
+    }
+
+    // If styleUrl is a string (URL), fetch and fix it
+    if (typeof styleUrl === 'string') {
+      try {
+        const response = await fetch(styleUrl);
+        const styleJson = await response.json();
+        
+        // Fix relative sprite URLs
+        if (styleJson.sprite && !styleJson.sprite.startsWith('http')) {
+          // Make sprite URL absolute based on the style URL
+          const baseUrl = styleUrl.substring(0, styleUrl.lastIndexOf('/'));
+          styleJson.sprite = baseUrl + '/' + styleJson.sprite;
+        }
+        
+        // Fix relative glyphs URLs
+        if (styleJson.glyphs && !styleJson.glyphs.startsWith('http')) {
+          const baseUrl = styleUrl.substring(0, styleUrl.lastIndexOf('/'));
+          styleJson.glyphs = baseUrl + '/' + styleJson.glyphs;
+        }
+        
+        // Fix relative source URLs
+        if (styleJson.sources) {
+          Object.values(styleJson.sources).forEach((source: any) => {
+            if (source.url && !source.url.startsWith('http')) {
+              const baseUrl = styleUrl.substring(0, styleUrl.lastIndexOf('/'));
+              source.url = baseUrl + '/' + source.url;
+            }
+          });
+        }
+        
+        styleUrl = styleJson;
+      } catch (err) {
+        console.error('Failed to fetch or fix style JSON:', err);
+        // Continue with the original URL, map might still work
+      }
     }
 
     // Initialize the map with preserveDrawingBuffer for screenshot capability
