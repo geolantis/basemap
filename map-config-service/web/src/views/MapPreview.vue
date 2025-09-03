@@ -268,17 +268,35 @@ const positionChanged = ref(false);
 const savingPreview = ref(false);
 const previewSaved = ref(false);
 
-// Helper function to proxy HTTP URLs through our CORS proxy
+// Helper function to proxy URLs through our CORS proxy when needed
 function proxyTileUrl(url: string): string {
-  // If it's already HTTPS or a local URL, don't proxy
-  if (url.startsWith('https://') || url.startsWith('/')) {
+  // Local URLs don't need proxy
+  if (url.startsWith('/')) {
     return url;
   }
   
-  // If it's HTTP, use our proxy to handle CORS
-  if (url.startsWith('http://')) {
-    // For production, we'll use the API proxy endpoint
-    // For development, we can also use the same endpoint
+  // List of domains that need proxy even with HTTPS due to CORS issues
+  const corsProblematicDomains = [
+    'pamapserver.pa.org.mt',  // Malta
+    'services.datafordeler.dk', // Denmark
+    'geoportal.ancpi.ro',      // Romania
+    'geoserver.geoportal.gov.cz', // Czech Republic
+    'mapy.geoportal.gov.pl',   // Poland
+    'services.terraitaly.it',   // Italy
+    'geo.nls.uk',               // UK
+    'geodata.nationaalgeoregister.nl', // Netherlands
+    'services.data.shom.fr',    // France
+    'wms.ngi.be',               // Belgium
+    'gis.lmi.is',               // Iceland
+    'geoserver.geoportal.lt'    // Lithuania
+  ];
+  
+  // Check if this domain needs proxy (either HTTP or problematic HTTPS)
+  const needsProxy = url.startsWith('http://') || 
+    corsProblematicDomains.some(domain => url.includes(domain));
+  
+  if (needsProxy) {
+    // Use our proxy to handle CORS
     return `/api/proxy-tiles?url=${encodeURIComponent(url)}`;
   }
   
@@ -364,21 +382,22 @@ async function initializeMap() {
     } else if (config.value.type === 'wmts' || config.value.type === 'wms') {
       // WMTS/WMS layers
       if (config.value.metadata?.tiles) {
-        // Ensure tiles is an array and handle missing file extensions
+        // Ensure tiles is an array
         let tilesArray = Array.isArray(config.value.metadata.tiles) 
           ? config.value.metadata.tiles 
           : [config.value.metadata.tiles];
         
-        // Add file extensions if missing (common for WMTS services)
-        tilesArray = tilesArray.map(tileUrl => {
-          // Check if URL already has an image extension
-          if (!tileUrl.match(/\.(png|jpg|jpeg|webp)$/i)) {
-            // Add .jpeg extension for WMTS services (common default)
-            // Some services use .png, but .jpeg is more common for imagery
-            return tileUrl + '.jpeg';
-          }
-          return tileUrl;
-        });
+        // Only add file extensions for WMTS (not WMS)
+        if (config.value.type === 'wmts') {
+          tilesArray = tilesArray.map(tileUrl => {
+            // Check if URL already has an image extension
+            if (!tileUrl.match(/\.(png|jpg|jpeg|webp)$/i)) {
+              // Add .jpeg extension for WMTS services (common default)
+              return tileUrl + '.jpeg';
+            }
+            return tileUrl;
+          });
+        }
         
         // Proxy HTTP URLs
         tilesArray = proxyTileUrls(tilesArray);
@@ -411,8 +430,8 @@ async function initializeMap() {
         const transparent = config.value.transparent !== undefined ? config.value.transparent : true;
         const crs = version === '1.3.0' ? 'CRS' : 'SRS';
         
-        // Construct the WMS URL
-        const wmsUrlTemplate = `${wmsUrl}?bbox={bbox-epsg-3857}&format=${format}&service=WMS&version=${version}&request=GetMap&${crs}=EPSG:3857&width=256&height=256&layers=${layerString}${transparent ? '&transparent=true' : ''}`;
+        // Construct the WMS URL - MapLibre will replace the placeholders
+        const wmsUrlTemplate = `${wmsUrl}?SERVICE=WMS&VERSION=${version}&REQUEST=GetMap&FORMAT=${format}&TRANSPARENT=${transparent}&LAYERS=${layerString}&${crs}=EPSG:3857&WIDTH=256&HEIGHT=256&BBOX={bbox-epsg-3857}`;
         
         styleUrl = {
           version: 8,
@@ -420,7 +439,8 @@ async function initializeMap() {
             'wms-source': {
               type: 'raster',
               tiles: [proxyTileUrl(wmsUrlTemplate)],
-              tileSize: 256
+              tileSize: 256,
+              scheme: 'xyz'
             }
           },
           layers: [{
@@ -430,18 +450,20 @@ async function initializeMap() {
           }]
         } as any;
       } else if (config.value.tiles) {
-        // Direct tiles array at top level (for WMTS)
+        // Direct tiles array at top level
         let tilesArray = Array.isArray(config.value.tiles) ? config.value.tiles : [config.value.tiles];
         
-        // Add file extensions if missing
-        tilesArray = tilesArray.map(tileUrl => {
-          if (!tileUrl.match(/\.(png|jpg|jpeg|webp)$/i)) {
-            return tileUrl + '.jpeg';
-          }
-          return tileUrl;
-        });
+        // Only add file extensions for WMTS (not WMS)
+        if (config.value.type === 'wmts') {
+          tilesArray = tilesArray.map(tileUrl => {
+            if (!tileUrl.match(/\.(png|jpg|jpeg|webp)$/i)) {
+              return tileUrl + '.jpeg';
+            }
+            return tileUrl;
+          });
+        }
         
-        // Proxy HTTP URLs
+        // Proxy URLs that need it
         tilesArray = proxyTileUrls(tilesArray);
         
         styleUrl = {
