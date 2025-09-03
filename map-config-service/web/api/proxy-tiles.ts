@@ -1,6 +1,19 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+export const config = {
+  runtime: 'nodejs',
+  maxDuration: 30,
+};
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return res.status(200).end();
+  }
+  
   // Only allow GET requests
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -43,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     //   return res.status(403).json({ error: 'Domain not whitelisted' });
     // }
     
-    console.log(`Proxying tile request: ${targetUrl}`);
+    console.log(`[Proxy] Requesting: ${targetUrl}`);
     
     // Fetch the tile from the original server
     const response = await fetch(targetUrl, {
@@ -54,10 +67,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     if (!response.ok) {
-      console.error(`Tile fetch failed: ${response.status} ${response.statusText}`);
-      return res.status(response.status).json({ 
-        error: `Failed to fetch tile: ${response.statusText}` 
-      });
+      console.error(`[Proxy] Tile fetch failed: ${response.status} ${response.statusText} for ${targetUrl}`);
+      // For tile errors, return appropriate status but don't send JSON
+      // as the client expects image data
+      return res.status(response.status).end();
     }
 
     const contentType = response.headers.get('content-type') || 'image/png';
@@ -89,10 +102,3 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-// Handle OPTIONS request for CORS preflight
-export async function OPTIONS(req: VercelRequest, res: VercelResponse) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.status(200).end();
-}
