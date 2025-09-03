@@ -1,0 +1,150 @@
+{
+  "version": 2,
+  "name": "web",
+  "public": true,
+  "github": {
+    "autoAlias": false
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm ci",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/proxy/style/:provider",
+      "destination": "/api/proxy/style/[provider].js"
+    },
+    {
+      "source": "/api/proxy/tiles/:style/:source/:z/:x/:y",
+      "destination": "/api/proxy/tiles/index.js"
+    },
+    {
+      "source": "/api/proxy/sprite/:style/:encoded/:rest*",
+      "destination": "/api/proxy/sprite/index.js"
+    },
+    {
+      "source": "/api/proxy/glyphs/:style/:encoded/:fontstack/:range",
+      "destination": "/api/proxy/glyphs/index.js"
+    },
+    {
+      "source": "/api/styles/:name",
+      "destination": "/api/styles/[name].js"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/proxy/kataster/:path*",
+      "destination": "https://kataster.bev.gv.at/:path*"
+    },
+    {
+      "source": "/proxy/ktn/:path*",
+      "destination": "https://gis.ktn.gv.at/:path*"
+    },
+    {
+      "source": "/((?!styles/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/styles/(.*)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-API-Key, X-Requested-With"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-API-Key, X-Requested-With"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=60, stale-while-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self)"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/editor",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "trailingSlash": false
+}

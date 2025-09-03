@@ -65,6 +65,17 @@
     <div class="relative flex-1" style="height: calc(100vh - 4rem)">
       <div ref="mapContainer" class="w-full h-full"></div>
       
+      <!-- Location Search Overlay -->
+      <div class="absolute top-4 left-4 z-10">
+        <LocationSearch
+          :placeholder="'Search for a location...'"
+          :proximity="currentMapCenter"
+          :limit="8"
+          @select="handleLocationSelect"
+          @error="handleSearchError"
+        />
+      </div>
+      
       <!-- Map Controls Overlay -->
       <div class="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-4 space-y-4">
         <!-- Save/Load Position Controls -->
@@ -218,6 +229,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import type { MapConfig } from '../types';
 import { openInMaputnik as openMaputnik, canOpenInMaputnik } from '../utils/maputnikHelper';
 import { captureMapPreview, uploadMapPreview, generateThumbnail } from '../utils/mapCapture';
+import LocationSearch from '../components/LocationSearch.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -236,6 +248,14 @@ const config = computed(() =>
 
 const canEditInMaputnik = computed(() => {
   return config.value && canOpenInMaputnik(config.value);
+});
+
+// Computed property for current map center (for location search proximity)
+const currentMapCenter = computed(() => {
+  return {
+    lng: center.value.lng,
+    lat: center.value.lat
+  };
 });
 
 const selectedStyle = ref('');
@@ -829,6 +849,89 @@ async function savePreviewImage() {
 
 function retryLoad() {
   initializeMap();
+}
+
+// Handle location selection from search
+function handleLocationSelect(location: any) {
+  if (!map.value) return;
+  
+  // Extract coordinates
+  const [lng, lat] = location.center || location.geometry.coordinates;
+  
+  // Determine appropriate zoom level based on place type
+  let zoomLevel = 12; // Default zoom
+  if (location.place_type) {
+    const placeType = location.place_type[0];
+    switch (placeType) {
+      case 'country':
+        zoomLevel = 5;
+        break;
+      case 'region':
+        zoomLevel = 7;
+        break;
+      case 'postcode':
+      case 'district':
+        zoomLevel = 11;
+        break;
+      case 'place':
+      case 'locality':
+        zoomLevel = 12;
+        break;
+      case 'neighborhood':
+        zoomLevel = 14;
+        break;
+      case 'address':
+        zoomLevel = 16;
+        break;
+      case 'poi':
+        zoomLevel = 17;
+        break;
+    }
+  }
+  
+  // If bbox is provided, fit to bounds instead
+  if (location.bbox && location.bbox.length === 4) {
+    map.value.fitBounds(location.bbox, {
+      padding: 50,
+      duration: 1000
+    });
+  } else {
+    // Fly to the location
+    map.value.flyTo({
+      center: [lng, lat],
+      zoom: zoomLevel,
+      duration: 1000,
+      essential: true
+    });
+  }
+  
+  // Update local state
+  center.value = { lng, lat };
+  zoom.value = zoomLevel;
+  
+  // Mark position as changed
+  positionChanged.value = true;
+  positionSaved.value = false;
+  
+  // Optionally add a marker for the searched location
+  // This could be enhanced with a temporary marker that disappears after a few seconds
+  const marker = new maplibregl.Marker({
+    color: '#3b82f6'
+  })
+    .setLngLat([lng, lat])
+    .addTo(map.value);
+  
+  // Remove marker after 5 seconds
+  setTimeout(() => {
+    marker.remove();
+  }, 5000);
+}
+
+// Handle search errors
+function handleSearchError(error: Error) {
+  console.error('Location search error:', error);
+  // You could show a toast notification here
+  // For now, we'll just log the error
 }
 
 onMounted(() => {

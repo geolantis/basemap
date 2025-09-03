@@ -10,6 +10,14 @@
           </button>
           <h2 class="editor-title">{{ mapName }} - Style Editor</h2>
         </div>
+        <div class="header-center">
+          <LocationSearch
+            :placeholder="'Jump to location in editor...'"
+            :limit="5"
+            @select="handleLocationSelect"
+            class="editor-location-search"
+          />
+        </div>
         <div class="header-right">
           <select v-model="selectedCategory" class="category-select">
             <option value="background">Background Layer</option>
@@ -81,6 +89,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useConfigStore } from '../stores/config';
+import LocationSearch from '../components/LocationSearch.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -92,6 +101,7 @@ const hasChanges = ref(false);
 const lastSaved = ref<Date | null>(null);
 const autoSaveInterval = ref<number | null>(null);
 const selectedCategory = ref<'background' | 'overlay'>('background');
+const selectedLocation = ref<{ lng: number; lat: number; zoom?: number } | null>(null);
 
 const mapId = computed(() => route.params.id as string);
 const mapConfig = computed(() => 
@@ -139,16 +149,25 @@ const maputnikUrl = computed(() => {
   // Encode the style URL properly for use as a query parameter
   const encodedStyleUrl = encodeURIComponent(finalStyleUrl);
   
+  // Build the URL with optional location parameters
+  let url = `${maputnikBaseUrl}?style=${encodedStyleUrl}`;
+  
+  // Add location parameters if selected
+  if (selectedLocation.value) {
+    const zoom = selectedLocation.value.zoom || 12;
+    // Maputnik uses hash parameters for map position
+    url += `#${zoom}/${selectedLocation.value.lat}/${selectedLocation.value.lng}`;
+  }
+  
   console.log('Maputnik URL construction:', {
     original: styleUrl,
     final: finalStyleUrl,
     encoded: encodedStyleUrl,
-    maputnikUrl: `${maputnikBaseUrl}?style=${encodedStyleUrl}`
+    location: selectedLocation.value,
+    maputnikUrl: url
   });
   
-  // Maputnik v2.1.1 expects the style URL to be passed as a query parameter
-  // Using the format: ?style=<encoded_style_url> (without hash)
-  return `${maputnikBaseUrl}?style=${encodedStyleUrl}`;
+  return url;
 });
 
 function goBack() {
@@ -315,6 +334,49 @@ function formatTime(date: Date): string {
   }).format(date);
 }
 
+// Handle location selection from search
+function handleLocationSelect(location: any) {
+  // Extract coordinates
+  const [lng, lat] = location.center || location.geometry.coordinates;
+  
+  // Determine appropriate zoom level based on place type
+  let zoomLevel = 12; // Default zoom
+  if (location.place_type) {
+    const placeType = location.place_type[0];
+    switch (placeType) {
+      case 'country':
+        zoomLevel = 5;
+        break;
+      case 'region':
+        zoomLevel = 7;
+        break;
+      case 'postcode':
+      case 'district':
+        zoomLevel = 11;
+        break;
+      case 'place':
+      case 'locality':
+        zoomLevel = 12;
+        break;
+      case 'neighborhood':
+        zoomLevel = 14;
+        break;
+      case 'address':
+        zoomLevel = 16;
+        break;
+      case 'poi':
+        zoomLevel = 17;
+        break;
+    }
+  }
+  
+  // Update selected location
+  selectedLocation.value = { lng, lat, zoom: zoomLevel };
+  
+  // Reload the iframe with new location
+  refreshEditor();
+}
+
 onMounted(async () => {
   // Ensure configs are loaded
   if (configStore.configs.length === 0) {
@@ -365,18 +427,32 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   max-width: 100%;
+  gap: 1rem;
 }
 
 .header-left {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-shrink: 0;
+}
+
+.header-center {
+  flex: 0 1 400px;
+  display: flex;
+  justify-content: center;
 }
 
 .header-right {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.editor-location-search {
+  width: 100%;
+  max-width: 400px;
 }
 
 .editor-title {
