@@ -88,9 +88,11 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/vue": "^8.1.0",
+    "@types/node-fetch": "^2.6.13",
     "@vitest/ui": "^3.2.4",
     "@vue/test-utils": "^2.4.6",
     "jsdom": "^26.1.0",
+    "node-fetch": "^3.3.2",
     "vitest": "^3.2.4"
   }
 }

@@ -29,6 +29,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'geo.nls.uk',
       'geodata.nationaalgeoregister.nl',
       'services.data.shom.fr',
+      'services.datafordeler.dk',
+      'pamapserver.pa.org.mt',
       'wms.ngi.be',
       'gis.lmi.is',
       'geoserver.geoportal.lt'

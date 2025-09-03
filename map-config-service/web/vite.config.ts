@@ -6,6 +6,59 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     proxy: {
+      // Proxy for tile CORS issues - handles /api/proxy-tiles
+      '/api/proxy-tiles': {
+        target: 'http://localhost:5173', // dummy target, we'll override it
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('proxyReq', async (proxyReq, req, res) => {
+            const url = new URL(req.url || '', 'http://localhost:5173');
+            const targetUrl = url.searchParams.get('url');
+            
+            if (!targetUrl) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({ error: 'Missing URL parameter' }));
+              return;
+            }
+            
+            try {
+              const decodedUrl = decodeURIComponent(targetUrl);
+              console.log(`Proxying tile: ${decodedUrl}`);
+              
+              // Fetch the tile directly
+              const fetch = (await import('node-fetch')).default;
+              const response = await fetch(decodedUrl, {
+                headers: {
+                  'User-Agent': 'MapConfigService/1.0',
+                  'Accept': 'image/*,*/*'
+                }
+              });
+              
+              if (!response.ok) {
+                res.statusCode = response.status;
+                res.end(`Proxy failed: ${response.statusText}`);
+                return;
+              }
+              
+              const buffer = await response.buffer();
+              const contentType = response.headers.get('content-type') || 'image/png';
+              
+              res.setHeader('Content-Type', contentType);
+              res.setHeader('Cache-Control', 'public, max-age=86400');
+              res.setHeader('Access-Control-Allow-Origin', '*');
+              res.end(buffer);
+              
+              // Prevent the normal proxy from continuing
+              proxyReq.abort();
+            } catch (error) {
+              console.error('Proxy error:', error);
+              res.statusCode = 500;
+              res.end(JSON.stringify({ error: 'Proxy failed' }));
+              proxyReq.abort();
+            }
+          });
+        }
+      },
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
