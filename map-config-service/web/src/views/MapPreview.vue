@@ -268,6 +268,28 @@ const positionChanged = ref(false);
 const savingPreview = ref(false);
 const previewSaved = ref(false);
 
+// Helper function to proxy HTTP URLs through our CORS proxy
+function proxyTileUrl(url: string): string {
+  // If it's already HTTPS or a local URL, don't proxy
+  if (url.startsWith('https://') || url.startsWith('/')) {
+    return url;
+  }
+  
+  // If it's HTTP, use our proxy to handle CORS
+  if (url.startsWith('http://')) {
+    // For production, we'll use the API proxy endpoint
+    // For development, we can also use the same endpoint
+    return `/api/proxy-tiles?url=${encodeURIComponent(url)}`;
+  }
+  
+  return url;
+}
+
+// Helper function to process tile URLs in an array
+function proxyTileUrls(urls: string[]): string[] {
+  return urls.map(url => proxyTileUrl(url));
+}
+
 async function initializeMap() {
   if (!mapContainer.value || !config.value) {
     error.value = 'Map configuration not found';
@@ -358,6 +380,9 @@ async function initializeMap() {
           return tileUrl;
         });
         
+        // Proxy HTTP URLs
+        tilesArray = proxyTileUrls(tilesArray);
+        
         styleUrl = {
           version: 8,
           sources: {
@@ -386,12 +411,15 @@ async function initializeMap() {
         const transparent = config.value.transparent !== undefined ? config.value.transparent : true;
         const crs = version === '1.3.0' ? 'CRS' : 'SRS';
         
+        // Construct the WMS URL
+        const wmsUrlTemplate = `${wmsUrl}?bbox={bbox-epsg-3857}&format=${format}&service=WMS&version=${version}&request=GetMap&${crs}=EPSG:3857&width=256&height=256&layers=${layerString}${transparent ? '&transparent=true' : ''}`;
+        
         styleUrl = {
           version: 8,
           sources: {
             'wms-source': {
               type: 'raster',
-              tiles: [`${wmsUrl}?bbox={bbox-epsg-3857}&format=${format}&service=WMS&version=${version}&request=GetMap&${crs}=EPSG:3857&width=256&height=256&layers=${layerString}${transparent ? '&transparent=true' : ''}`],
+              tiles: [proxyTileUrl(wmsUrlTemplate)],
               tileSize: 256
             }
           },
@@ -412,6 +440,9 @@ async function initializeMap() {
           }
           return tileUrl;
         });
+        
+        // Proxy HTTP URLs
+        tilesArray = proxyTileUrls(tilesArray);
         
         styleUrl = {
           version: 8,
@@ -448,6 +479,9 @@ async function initializeMap() {
           }
           return tileUrl;
         });
+        
+        // Proxy HTTP URLs
+        tilesArray = proxyTileUrls(tilesArray);
         
         styleUrl = {
           version: 8,
