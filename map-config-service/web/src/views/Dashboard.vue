@@ -340,6 +340,7 @@ const OVERLAY_MAPS = [
   'dkm_bev_symbole',
   'flawi',
   'gefahr',
+  'Austria Isolines',
   'NZParcels',
   'NSW BaseMap Overlay',
   'Inspire WMS',
@@ -347,7 +348,7 @@ const OVERLAY_MAPS = [
 ];
 
 // Helper function to determine if a map is an overlay
-// ONLY these 12 maps are overlays, everything else is background
+// ONLY these 13 maps are overlays, everything else is background
 const isOverlay = (config: MapConfig) => {
   return config.map_category === 'overlay' ||
     OVERLAY_MAPS.some(name => name.toLowerCase() === config.name?.toLowerCase());

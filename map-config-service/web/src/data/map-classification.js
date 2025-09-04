@@ -2,14 +2,14 @@
  * Map Classification based on original mapconfig.json
  * 
  * This file contains the DEFINITIVE classification of maps as background or overlay
- * based ONLY on the original mapconfig.json structure.
+ * based on the original mapconfig.json structure.
  * 
  * DO NOT ADD ANY GUESSING LOGIC!
- * Only these 12 maps are overlays. Everything else is background.
+ * Only these 13 maps are overlays. Everything else is background.
  */
 
 // EXACT list of overlay maps from original mapconfig.json overlayMaps section
-// Total: 12 overlay maps (NO MORE, NO LESS)
+// Total: 13 overlay maps (NO MORE, NO LESS)
 export const OVERLAY_MAPS = [
   'Kataster',
   'Kataster BEV',
@@ -19,6 +19,7 @@ export const OVERLAY_MAPS = [
   'dkm_bev_symbole',
   'flawi',
   'gefahr',
+  'Austria Isolines',
   'NZParcels',
   'NSW BaseMap Overlay',
   'Inspire WMS',

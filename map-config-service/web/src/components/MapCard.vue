@@ -174,7 +174,7 @@ const previewUrl = computed(() => {
   return props.config.previewImageUrl || null;
 });
 
-// EXACT list of overlay maps - ONLY these 12!
+// EXACT list of overlay maps - ONLY these 13!
 const OVERLAY_MAPS = [
   'Kataster',
   'Kataster BEV',
@@ -184,6 +184,7 @@ const OVERLAY_MAPS = [
   'dkm_bev_symbole',
   'flawi',
   'gefahr',
+  'Austria Isolines',
   'NZParcels',
   'NSW BaseMap Overlay',
   'Inspire WMS',
