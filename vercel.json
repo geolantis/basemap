@@ -2,6 +2,11 @@
   "buildCommand": "cd map-config-service/web && npm run build",
   "installCommand": "cd map-config-service/web && npm install",
   "outputDirectory": "map-config-service/web/dist",
+  "functions": {
+    "map-config-service/web/api/**/*.js": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     {
       "source": "/styles/:path*",
