@@ -32,7 +32,7 @@ export function useMapPreview(options: UseMapPreviewOptions = {}) {
   const CACHE_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
 
   // Get preview URL for a map with multiple fallback strategies
-  const getPreviewUrl = async (mapId: string, mapName?: string): Promise<string> => {
+  const getPreviewUrl = (mapId: string, mapName?: string): string => {
     // Strategy 1: Check localStorage cache first (fastest)
     if (cacheInLocalStorage) {
       const cached = getFromLocalStorage(mapId);
@@ -52,31 +52,35 @@ export function useMapPreview(options: UseMapPreviewOptions = {}) {
       document.head.appendChild(link);
     }
 
-    // Strategy 3: Generate a client-side placeholder if needed
-    if (fallbackToGenerated) {
-      const placeholder = generatePlaceholder(mapId, mapName);
-      
-      // Cache the result
-      if (cacheInLocalStorage) {
-        saveToLocalStorage(mapId, apiUrl, 'remote');
-      }
-      
-      // Return API URL (will load async) but show placeholder immediately
-      return apiUrl;
-    }
-
     return apiUrl;
   };
 
   // Batch preload multiple preview images
-  const preloadPreviews = async (maps: Array<{ id: string; name?: string }>) => {
+  const preloadPreviews = async (maps: Array<{ id: string; name?: string; preview_image_url?: string }>) => {
     const preloadPromises = maps.map(async (map) => {
-      const url = await getPreviewUrl(map.id, map.name);
+      const url = map.preview_image_url || getPreviewUrl(map.id, map.name);
       
-      // Preload the image
-      if (typeof window !== 'undefined') {
-        const img = new Image();
-        img.src = url;
+      try {
+        // Fetch and cache the image
+        const response = await fetch(url);
+        if (response.ok) {
+          const blob = await response.blob();
+          const reader = new FileReader();
+          
+          return new Promise<string>((resolve) => {
+            reader.onloadend = () => {
+              const base64 = reader.result as string;
+              // Cache in localStorage
+              if (cacheInLocalStorage) {
+                saveToLocalStorage(map.id, base64, 'local');
+              }
+              resolve(base64);
+            };
+            reader.readAsDataURL(blob);
+          });
+        }
+      } catch (error) {
+        console.error(`Failed to preload ${map.id}:`, error);
       }
       
       return url;

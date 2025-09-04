@@ -177,11 +177,12 @@
           >
             <div class="preview-image-container">
               <img 
-                :src="getPreviewUrl(map.id)"
+                :src="getMapPreviewUrl(map)"
                 :alt="map.label"
                 @load="onImageLoad(map.id, $event)"
                 @error="onImageError(map.id, $event)"
                 class="preview-image"
+                loading="lazy"
               />
               <div class="image-overlay">
                 <Tag 
@@ -291,7 +292,8 @@ import Paginator from 'primevue/paginator';
 import PageHeader from '../components/PageHeader.vue';
 import { supabase } from '../lib/supabase';
 import { captureMapPreview } from '../utils/mapCapture';
-import { useMapPreview } from '../hooks/useMapPreview.js';
+import { useMapPreview } from '../hooks/useMapPreview';
+import { getSupabasePreviewUrl, uploadPreviewToSupabase } from '../utils/supabasePreview';
 
 const toast = useToast();
 const { getPreviewUrl, preloadPreviews, generateAndUpdatePreview, clearCache, getCacheStats } = useMapPreview();
@@ -361,6 +363,26 @@ const filteredMaps = computed(() => {
   return result;
 });
 
+// Helper to get the correct preview URL
+const getMapPreviewUrl = (map: any): string => {
+  // Check localStorage cache first
+  const cacheKey = `preview_${map.id}`;
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const data = JSON.parse(cached);
+      if (data.url && Date.now() - data.timestamp < 7 * 24 * 60 * 60 * 1000) {
+        return data.url;
+      }
+    }
+  } catch (e) {
+    console.warn('Cache read error:', e);
+  }
+  
+  // Use direct Supabase URL
+  return getSupabasePreviewUrl(map.id);
+};
+
 // Methods
 const loadAllMaps = async () => {
   loading.value = true;
@@ -374,6 +396,8 @@ const loadAllMaps = async () => {
     
     if (error) throw error;
     maps.value = data || [];
+    
+    // Maps will use Supabase storage URLs directly
     
     toast.add({
       severity: 'success',
@@ -398,14 +422,82 @@ const loadAllMaps = async () => {
 
 const preloadAllPreviews = async () => {
   const startTime = Date.now();
-  await preloadPreviews(maps.value);
-  const duration = Date.now() - startTime;
+  let loaded = 0;
+  let cached = 0;
+  let failed = 0;
   
   toast.add({
     severity: 'info',
+    summary: 'Preloading Images',
+    detail: `Starting to preload ${maps.value.length} images...`,
+    life: 2000
+  });
+  
+  // Preload images in batches
+  const batchSize = 5;
+  for (let i = 0; i < maps.value.length; i += batchSize) {
+    const batch = maps.value.slice(i, i + batchSize);
+    await Promise.all(
+      batch.map(async (map) => {
+        try {
+          const url = getSupabasePreviewUrl(map.id);
+          
+          // Try to fetch from Supabase
+          const response = await fetch(url);
+          if (response.ok) {
+            const blob = await response.blob();
+            
+            // Convert to base64 for localStorage
+            const reader = new FileReader();
+            await new Promise<void>((resolve) => {
+              reader.onloadend = () => {
+                try {
+                  const base64 = reader.result as string;
+                  const cacheKey = `preview_${map.id}`;
+                  localStorage.setItem(cacheKey, JSON.stringify({
+                    url: base64,
+                    timestamp: Date.now(),
+                    type: 'cached'
+                  }));
+                  cached++;
+                } catch (e) {
+                  console.warn('Could not cache to localStorage:', e);
+                }
+                resolve();
+              };
+              reader.readAsDataURL(blob);
+            });
+            
+            loaded++;
+          } else {
+            failed++;
+            console.warn(`Preview not found for ${map.label}`);
+          }
+        } catch (error) {
+          failed++;
+          console.error(`Failed to preload ${map.label}:`, error);
+        }
+      })
+    );
+    
+    // Update progress
+    if (i + batchSize < maps.value.length) {
+      toast.add({
+        severity: 'info',
+        summary: 'Preloading Progress',
+        detail: `Processed ${Math.min(i + batchSize, maps.value.length)} of ${maps.value.length} maps...`,
+        life: 1000
+      });
+    }
+  }
+  
+  const duration = Date.now() - startTime;
+  
+  toast.add({
+    severity: loaded > 0 ? 'success' : 'warning',
     summary: 'Preload Complete',
-    detail: `Preloaded ${maps.value.length} images in ${duration}ms`,
-    life: 3000
+    detail: `Loaded ${loaded} images, ${cached} cached locally, ${failed} failed (${duration}ms)`,
+    life: 5000
   });
   
   updateCacheStats();
@@ -508,24 +600,45 @@ const capturePreview = async () => {
   generatingMap.value = selectedMap.value.id;
   
   try {
-    const newPreviewUrl = await generateAndUpdatePreview(
-      selectedMap.value.id,
-      mapInstance.value
-    );
+    // Capture the map view
+    const dataUrl = await captureMapPreview(mapInstance.value);
     
-    // Force reload the image
-    const mapId = selectedMap.value.id;
-    const img = document.querySelector(`[alt="${selectedMap.value.label}"]`) as HTMLImageElement;
-    if (img) {
-      img.src = newPreviewUrl + '?t=' + Date.now();
+    // Convert to blob
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+    
+    // Upload to Supabase storage
+    const newUrl = await uploadPreviewToSupabase(selectedMap.value.id, blob);
+    
+    if (newUrl) {
+      // Update the database record
+      await supabase
+        .from('map_configs')
+        .update({
+          preview_image_url: newUrl,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', selectedMap.value.id);
+      
+      // Clear local cache for this map
+      const cacheKey = `preview_${selectedMap.value.id}`;
+      localStorage.removeItem(cacheKey);
+      
+      // Force reload the image
+      const img = document.querySelector(`[alt="${selectedMap.value.label}"]`) as HTMLImageElement;
+      if (img) {
+        img.src = newUrl + '?t=' + Date.now();
+      }
+      
+      toast.add({
+        severity: 'success',
+        summary: 'Preview Generated',
+        detail: `New preview created and uploaded for ${selectedMap.value.label}`,
+        life: 3000
+      });
+    } else {
+      throw new Error('Failed to upload preview');
     }
-    
-    toast.add({
-      severity: 'success',
-      summary: 'Preview Generated',
-      detail: `New preview created for ${selectedMap.value.label}`,
-      life: 3000
-    });
     
     showMapDialog.value = false;
     updateCacheStats();
@@ -600,7 +713,7 @@ watch(filteredMaps, () => {
   filteredMaps.value.forEach(map => {
     const img = new Image();
     (img as any)._startTime = performance.now();
-    img.src = getPreviewUrl(map.id);
+    img.src = getMapPreviewUrl(map);
   });
 });
 
