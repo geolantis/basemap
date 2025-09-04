@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSW Basemap with MapLibre GL JS</title>
+    <script src="https://unpkg.com/maplibre-gl@4.1.1/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@4.1.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            max-width: 350px;
+            z-index: 1;
+        }
+        
+        #info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        #info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        
+        #controls button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        #controls button:hover {
+            background: #45a049;
+        }
+        
+        .maplibregl-popup {
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <div id="info">
+        <h3>NSW Basemap - MapLibre GL JS</h3>
+        <p><strong>Data Source:</strong> NSW Spatial Services</p>
+        <p><strong>Style:</strong> Converted from ESRI Vector Tiles</p>
+        <p><strong>Status:</strong> <span id="status">Loading...</span></p>
+        <p><strong>Zoom:</strong> <span id="zoom">-</span></p>
+        <p><strong>Center:</strong> <span id="center">-</span></p>
+    </div>
+    
+    <div id="controls">
+        <button onclick="flyToSydney()">Sydney CBD</button>
+        <button onclick="flyToNewcastle()">Newcastle</button>
+        <button onclick="flyToWollongong()">Wollongong</button>
+        <button onclick="toggleLabels()">Toggle Labels</button>
+        <button onclick="changeBasemap()">Change Style</button>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            // Original ESRI style URL
+            esriStyleUrl: 'https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile_Streets/VectorTileServer/resources/styles/root.json?f=pjson',
+            
+            // Base URL for resources
+            baseUrl: 'https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile_Streets/VectorTileServer/resources',
+            
+            // Tile URL template
+            tileUrl: 'https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile_Streets/VectorTileServer/tile/{z}/{y}/{x}.pbf',
+            
+            // Initial map settings
+            initialCenter: [151.2093, -33.8688], // Sydney
+            initialZoom: 10,
+            
+            // Alternative style for comparison
+            alternativeStyle: 'light'
+        };
+        
+        let map;
+        let labelsVisible = true;
+        let currentStyle = 'nsw';
+        
+        // Create the converted style object
+        function createConvertedStyle() {
+            return {
+                version: 8,
+                name: "NSW Basemap Streets",
+                metadata: {
+                    "maplibre:converted": true,
+                    "maplibre:convertedFrom": "ESRI",
+                    "maplibre:originalUrl": CONFIG.esriStyleUrl
+                },
+                sources: {
+                    "nsw-basemap": {
+                        type: "vector",
+                        tiles: [CONFIG.tileUrl],
+                        minzoom: 3,
+                        maxzoom: 20,
+                        bounds: [140.999, -37.505, 159.516, -28.157],
+                        scheme: "xyz"
+                    }
+                },
+                // Convert relative sprite URL to absolute
+                sprite: `${CONFIG.baseUrl}/sprites/sprite`,
+                
+                // Convert relative glyphs URL to absolute
+                glyphs: `${CONFIG.baseUrl}/fonts/{fontstack}/{range}.pbf`,
+                
+                // We'll load layers dynamically from the ESRI style
+                layers: []
+            };
+        }
+        
+        // Fetch and convert the ESRI style
+        async function fetchAndConvertStyle() {
+            try {
+                const response = await fetch(CONFIG.esriStyleUrl);
+                const esriStyle = await response.json();
+                
+                const convertedStyle = createConvertedStyle();
+                
+                // Process and add layers
+                if (esriStyle.layers) {
+                    convertedStyle.layers = esriStyle.layers.map(layer => {
+                        const converted = { ...layer };
+                        
+                        // Update source reference
+                        if (converted.source === 'esri') {
+                            converted.source = 'nsw-basemap';
+                        }
+                        
+                        // Convert font references
+                        if (converted.layout && converted.layout['text-font']) {
+                            // Map ESRI fonts to common web fonts
+                            const fontMap = {
+                                'Public Sans Regular': 'Open Sans Regular',
+                                'Public Sans Medium': 'Open Sans Semibold',
+                                'Public Sans Bold': 'Open Sans Bold',
+                                'Public Sans Italic': 'Open Sans Italic',
+                                'Public Sans Light': 'Open Sans Light'
+                            };
+                            
+                            converted.layout['text-font'] = converted.layout['text-font'].map(font => 
+                                fontMap[font] || 'Open Sans Regular'
+                            );
+                        }
+                        
+                        return converted;
+                    });
+                }
+                
+                return convertedStyle;
+            } catch (error) {
+                console.error('Error fetching/converting style:', error);
+                // Return a fallback style
+                return createFallbackStyle();
+            }
+        }
+        
+        // Create a simple fallback style
+        function createFallbackStyle() {
+            return {
+                version: 8,
+                name: "NSW Basemap Fallback",
+                sources: {
+                    "nsw-basemap": {
+                        type: "vector",
+                        tiles: [CONFIG.tileUrl],
+                        minzoom: 3,
+                        maxzoom: 20,
+                        scheme: "xyz"
+                    }
+                },
+                glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+                layers: [
+                    {
+                        id: "background",
+                        type: "background",
+                        paint: {
+                            "background-color": "#f8f8f8"
+                        }
+                    },
+                    {
+                        id: "roads",
+                        type: "line",
+                        source: "nsw-basemap",
+                        "source-layer": "roads",
+                        paint: {
+                            "line-color": "#999",
+                            "line-width": 1
+                        }
+                    }
+                ]
+            };
+        }
+        
+        // Initialize the map
+        async function initMap() {
+            try {
+                updateStatus('Fetching and converting style...');
+                const style = await fetchAndConvertStyle();
+                
+                updateStatus('Initializing map...');
+                map = new maplibregl.Map({
+                    container: 'map',
+                    style: style,
+                    center: CONFIG.initialCenter,
+                    zoom: CONFIG.initialZoom,
+                    hash: true
+                });
+                
+                // Add navigation controls
+                map.addControl(new maplibregl.NavigationControl(), 'top-left');
+                
+                // Add scale control
+                map.addControl(new maplibregl.ScaleControl({
+                    maxWidth: 200,
+                    unit: 'metric'
+                }), 'bottom-left');
+                
+                // Add attribution
+                map.addControl(new maplibregl.AttributionControl({
+                    customAttribution: '© NSW Spatial Services'
+                }), 'bottom-right');
+                
+                // Map event handlers
+                map.on('load', () => {
+                    updateStatus('Map loaded successfully');
+                    console.log('Map style loaded:', map.getStyle());
+                });
+                
+                map.on('error', (e) => {
+                    console.error('Map error:', e);
+                    updateStatus(`Error: ${e.error.message || 'Unknown error'}`);
+                });
+                
+                map.on('move', updateMapInfo);
+                map.on('zoom', updateMapInfo);
+                
+                // Initial update
+                updateMapInfo();
+                
+            } catch (error) {
+                console.error('Failed to initialize map:', error);
+                updateStatus(`Failed to initialize: ${error.message}`);
+            }
+        }
+        
+        // Update map info display
+        function updateMapInfo() {
+            if (!map) return;
+            
+            const zoom = map.getZoom().toFixed(2);
+            const center = map.getCenter();
+            
+            document.getElementById('zoom').textContent = zoom;
+            document.getElementById('center').textContent = 
+                `${center.lng.toFixed(4)}, ${center.lat.toFixed(4)}`;
+        }
+        
+        // Update status message
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        // Navigation functions
+        function flyToSydney() {
+            map.flyTo({
+                center: [151.2093, -33.8688],
+                zoom: 12,
+                duration: 2000
+            });
+        }
+        
+        function flyToNewcastle() {
+            map.flyTo({
+                center: [151.7817, -32.9283],
+                zoom: 12,
+                duration: 2000
+            });
+        }
+        
+        function flyToWollongong() {
+            map.flyTo({
+                center: [150.8931, -34.4278],
+                zoom: 12,
+                duration: 2000
+            });
+        }
+        
+        // Toggle label visibility
+        function toggleLabels() {
+            if (!map || !map.getStyle()) return;
+            
+            labelsVisible = !labelsVisible;
+            
+            const style = map.getStyle();
+            style.layers.forEach(layer => {
+                if (layer.type === 'symbol') {
+                    map.setLayoutProperty(
+                        layer.id,
+                        'visibility',
+                        labelsVisible ? 'visible' : 'none'
+                    );
+                }
+            });
+            
+            updateStatus(`Labels ${labelsVisible ? 'shown' : 'hidden'}`);
+        }
+        
+        // Change basemap style
+        async function changeBasemap() {
+            if (currentStyle === 'nsw') {
+                // Switch to a simple light style
+                map.setStyle({
+                    version: 8,
+                    sources: {
+                        "osm": {
+                            type: "raster",
+                            tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+                            tileSize: 256
+                        }
+                    },
+                    layers: [
+                        {
+                            id: "osm",
+                            type: "raster",
+                            source: "osm"
+                        }
+                    ]
+                });
+                currentStyle = 'osm';
+                updateStatus('Switched to OSM style');
+            } else {
+                // Switch back to NSW basemap
+                const style = await fetchAndConvertStyle();
+                map.setStyle(style);
+                currentStyle = 'nsw';
+                updateStatus('Switched to NSW basemap');
+            }
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', initMap);
+    </script>
+</body>
+</html>

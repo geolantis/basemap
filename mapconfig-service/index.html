@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MapConfig - ESRI to MapLibre Converter | Geolantis</title>
+    <script src="https://unpkg.com/maplibre-gl@4.1.1/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@4.1.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a202c;
+        }
+        
+        .logo-subtitle {
+            font-size: 0.875rem;
+            color: #718096;
+            font-weight: 500;
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 100px auto 2rem;
+            padding: 0 2rem;
+        }
+        
+        .converter-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+        }
+        
+        .card-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .converter-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            min-height: 600px;
+        }
+        
+        .controls-panel {
+            background: #f7fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+        
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .control-label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .control-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .control-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .control-textarea {
+            min-height: 100px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.75rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+        
+        .btn-secondary:hover {
+            background: #f7fafc;
+        }
+        
+        .map-container {
+            position: relative;
+            background: #f0f0f0;
+        }
+        
+        #map {
+            width: 100%;
+            height: 600px;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 0.875rem;
+            max-width: 250px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success {
+            background: #48bb78;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-loading {
+            background: #ed8936;
+            animation: pulse 1s infinite;
+        }
+        
+        .status-error {
+            background: #f56565;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 currentColor;
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .examples-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .example-btn {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        
+        .example-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .info-section {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .info-card {
+            padding: 1.5rem;
+            background: #f7fafc;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .info-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
+        }
+        
+        .info-card h3 {
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .info-card p {
+            color: #718096;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        .code-block {
+            background: #1a202c;
+            color: #a0aec0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+        
+        .code-block .keyword {
+            color: #805ad5;
+        }
+        
+        .code-block .string {
+            color: #48bb78;
+        }
+        
+        .code-block .number {
+            color: #ed8936;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 1024px) {
+            .converter-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-panel {
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            #map {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">M</div>
+                <div>
+                    <div class="logo-text">MapConfig</div>
+                    <div class="logo-subtitle">ESRI to MapLibre Converter</div>
+                </div>
+            </div>
+            <div>
+                <span style="color: #718096; font-size: 0.875rem;">by Geolantis.com</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="converter-card">
+            <div class="card-header">
+                <h1>ESRI Vector Tile Style Converter</h1>
+                <p>Convert ESRI ArcGIS vector tile styles to MapLibre GL compatible format with automatic path resolution</p>
+            </div>
+            
+            <div class="converter-content">
+                <div class="controls-panel">
+                    <div class="control-group">
+                        <label class="control-label">ESRI Style URL</label>
+                        <input 
+                            type="text" 
+                            id="styleUrl" 
+                            class="control-input"
+                            placeholder="https://portal.spatial.nsw.gov.au/.../root.json"
+                            value="https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile_Streets/VectorTileServer/resources/styles/root.json?f=pjson"
+                        >
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Custom Sprite URL (Optional)</label>
+                        <input 
+                            type="text" 
+                            id="spriteUrl" 
+                            class="control-input"
+                            placeholder="Leave empty to auto-convert"
+                        >
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Custom Glyphs URL (Optional)</label>
+                        <input 
+                            type="text" 
+                            id="glyphsUrl" 
+                            class="control-input"
+                            placeholder="Leave empty to auto-convert"
+                        >
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Font Mapping (JSON)</label>
+                        <textarea 
+                            id="fontMapping" 
+                            class="control-input control-textarea"
+                            placeholder='{"Public Sans Regular": ["Open Sans Regular"]}'
+                        >{
+  "Public Sans Regular": ["Open Sans Regular"],
+  "Public Sans Bold": ["Open Sans Bold"],
+  "Public Sans Medium": ["Open Sans SemiBold"]
+}</textarea>
+                    </div>
+                    
+                    <button id="convertBtn" class="btn btn-primary" onclick="convertStyle()">
+                        Convert & Preview
+                    </button>
+                    
+                    <button id="downloadBtn" class="btn btn-secondary" onclick="downloadStyle()" disabled>
+                        Download Converted Style
+                    </button>
+                    
+                    <div class="examples-section">
+                        <label class="control-label">Example Styles</label>
+                        <button class="example-btn" onclick="loadExample('nsw')">NSW Basemap Streets</button>
+                        <button class="example-btn" onclick="loadExample('nsw-topo')">NSW Topographic</button>
+                        <button class="example-btn" onclick="loadExample('custom')">Custom ESRI Style</button>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="map-overlay">
+                        <div style="margin-bottom: 8px;">
+                            <span id="statusIndicator" class="status-indicator status-loading"></span>
+                            <strong>Status:</strong> <span id="statusText">Ready</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>Layers:</strong> <span id="layerCount">-</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>Zoom:</strong> <span id="zoomLevel">-</span>
+                        </div>
+                        <div>
+                            <strong>Center:</strong> <span id="centerCoords">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h2 style="color: #2d3748; margin-bottom: 1rem;">How It Works</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🔄 Path Conversion</h3>
+                    <p>Automatically converts relative paths (../sprites/) to absolute URLs that MapLibre can load</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🔤 Font Mapping</h3>
+                    <p>Maps ESRI proprietary fonts to web-compatible alternatives like Open Sans</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🗺️ Live Preview</h3>
+                    <p>Instantly preview your converted style in an interactive MapLibre map</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>💾 Export Ready</h3>
+                    <p>Download the converted style JSON for use in your MapLibre applications</p>
+                </div>
+            </div>
+            
+            <h3 style="color: #2d3748; margin-top: 2rem; margin-bottom: 1rem;">Integration Example</h3>
+            
+            <div class="code-block">
+<span class="keyword">const</span> map = <span class="keyword">new</span> maplibregl.Map({
+    container: <span class="string">'map'</span>,
+    style: <span class="string">'converted-style.json'</span>, <span style="color: #4a5568;">// Your converted style</span>
+    center: [<span class="number">151.2093</span>, <span class="number">-33.8688</span>],
+    zoom: <span class="number">10</span>
+});
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let convertedStyle = null;
+        
+        // Initialize with a basic style
+        function initMap() {
+            map = new maplibregl.Map({
+                container: 'map',
+                style: {
+                    version: 8,
+                    sources: {
+                        'osm': {
+                            type: 'raster',
+                            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                            tileSize: 256
+                        }
+                    },
+                    layers: [{
+                        id: 'osm',
+                        type: 'raster',
+                        source: 'osm'
+                    }]
+                },
+                center: [151.2093, -33.8688], // Sydney
+                zoom: 10
+            });
+            
+            map.addControl(new maplibregl.NavigationControl());
+            
+            map.on('zoom', updateInfo);
+            map.on('move', updateInfo);
+            
+            updateInfo();
+        }
+        
+        function updateInfo() {
+            if (!map) return;
+            
+            const zoom = map.getZoom().toFixed(2);
+            const center = map.getCenter();
+            
+            document.getElementById('zoomLevel').textContent = zoom;
+            document.getElementById('centerCoords').textContent = 
+                `${center.lng.toFixed(3)}, ${center.lat.toFixed(3)}`;
+        }
+        
+        function setStatus(status, message) {
+            const indicator = document.getElementById('statusIndicator');
+            const text = document.getElementById('statusText');
+            
+            indicator.className = 'status-indicator';
+            
+            switch(status) {
+                case 'loading':
+                    indicator.classList.add('status-loading');
+                    break;
+                case 'success':
+                    indicator.classList.add('status-success');
+                    break;
+                case 'error':
+                    indicator.classList.add('status-error');
+                    break;
+            }
+            
+            text.textContent = message;
+        }
+        
+        async function convertStyle() {
+            const styleUrl = document.getElementById('styleUrl').value;
+            const spriteUrl = document.getElementById('spriteUrl').value;
+            const glyphsUrl = document.getElementById('glyphsUrl').value;
+            const fontMappingText = document.getElementById('fontMapping').value;
+            
+            if (!styleUrl) {
+                alert('Please enter an ESRI style URL');
+                return;
+            }
+            
+            setStatus('loading', 'Converting style...');
+            document.getElementById('convertBtn').disabled = true;
+            
+            try {
+                let fontMapping = {};
+                if (fontMappingText) {
+                    fontMapping = JSON.parse(fontMappingText);
+                }
+                
+                // Fetch the ESRI style
+                const response = await fetch(styleUrl);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch style: ${response.status}`);
+                }
+                
+                const esriStyle = await response.json();
+                
+                // Convert the style
+                convertedStyle = convertESRIToMapLibre(esriStyle, styleUrl, {
+                    spriteUrl,
+                    glyphsUrl,
+                    fontMapping
+                });
+                
+                // Apply the converted style to the map
+                map.setStyle(convertedStyle);
+                
+                // Update layer count
+                document.getElementById('layerCount').textContent = 
+                    convertedStyle.layers ? convertedStyle.layers.length : 0;
+                
+                setStatus('success', 'Conversion successful!');
+                document.getElementById('downloadBtn').disabled = false;
+                
+            } catch (error) {
+                console.error('Conversion error:', error);
+                setStatus('error', `Error: ${error.message}`);
+                alert(`Conversion failed: ${error.message}`);
+            } finally {
+                document.getElementById('convertBtn').disabled = false;
+            }
+        }
+        
+        function convertESRIToMapLibre(esriStyle, styleUrl, options = {}) {
+            const converted = { ...esriStyle };
+            
+            // Extract base URL
+            const url = new URL(styleUrl);
+            const pathParts = url.pathname.split('/');
+            const resourcesIndex = pathParts.indexOf('resources');
+            if (resourcesIndex > 0) {
+                pathParts.length = resourcesIndex + 1;
+            }
+            const baseUrl = `${url.protocol}//${url.host}${pathParts.join('/')}`;
+            
+            // Convert sprite URL
+            if (converted.sprite && !options.spriteUrl) {
+                if (converted.sprite.startsWith('../')) {
+                    const spritePath = converted.sprite.replace(/^\.\.\//, '');
+                    converted.sprite = `${baseUrl}/${spritePath}`;
+                }
+            } else if (options.spriteUrl) {
+                converted.sprite = options.spriteUrl;
+            }
+            
+            // Convert glyphs URL
+            if (converted.glyphs && !options.glyphsUrl) {
+                if (converted.glyphs.startsWith('../')) {
+                    const glyphsPath = converted.glyphs.replace(/^\.\.\//, '');
+                    converted.glyphs = `${baseUrl}/${glyphsPath}`;
+                }
+            } else if (options.glyphsUrl) {
+                converted.glyphs = options.glyphsUrl;
+            }
+            
+            // Convert sources
+            if (converted.sources) {
+                for (const [key, source] of Object.entries(converted.sources)) {
+                    if (source.tiles && Array.isArray(source.tiles)) {
+                        source.tiles = source.tiles.map(tileUrl => {
+                            if (tileUrl.startsWith('../')) {
+                                const tilePath = tileUrl.replace(/^\.\.\//, '');
+                                return `${baseUrl}/${tilePath}`;
+                            }
+                            return tileUrl;
+                        });
+                    }
+                    
+                    // Add tile URL if missing
+                    if (!source.tiles && source.type === 'vector') {
+                        // Construct tile URL from style URL
+                        const tileBaseUrl = styleUrl.replace(/\/resources\/styles\/.*$/, '');
+                        source.tiles = [`${tileBaseUrl}/tile/{z}/{y}/{x}.pbf`];
+                    }
+                    
+                    if (source.type === 'vector' && !source.scheme) {
+                        source.scheme = 'xyz';
+                    }
+                }
+            }
+            
+            // Convert layers with font mapping
+            if (converted.layers && options.fontMapping) {
+                converted.layers = converted.layers.map(layer => {
+                    const newLayer = { ...layer };
+                    
+                    if (newLayer.layout && newLayer.layout['text-font']) {
+                        newLayer.layout['text-font'] = newLayer.layout['text-font'].map(font => {
+                            if (options.fontMapping[font]) {
+                                return options.fontMapping[font][0];
+                            }
+                            return font;
+                        });
+                    }
+                    
+                    return newLayer;
+                });
+            }
+            
+            // Add metadata
+            converted.metadata = {
+                ...converted.metadata,
+                'maplibre:converted': true,
+                'maplibre:convertedFrom': 'ESRI',
+                'maplibre:convertedAt': new Date().toISOString()
+            };
+            
+            return converted;
+        }
+        
+        function downloadStyle() {
+            if (!convertedStyle) {
+                alert('No converted style available');
+                return;
+            }
+            
+            const blob = new Blob([JSON.stringify(convertedStyle, null, 2)], 
+                { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted-maplibre-style.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function loadExample(type) {
+            const examples = {
+                'nsw': {
+                    url: 'https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile_Streets/VectorTileServer/resources/styles/root.json?f=pjson',
+                    sprite: '',
+                    glyphs: '',
+                    fonts: {
+                        "Public Sans Regular": ["Open Sans Regular"],
+                        "Public Sans Bold": ["Open Sans Bold"],
+                        "Public Sans Medium": ["Open Sans SemiBold"]
+                    }
+                },
+                'nsw-topo': {
+                    url: 'https://portal.spatial.nsw.gov.au/vectortileservices/rest/services/Hosted/NSW_BaseMap_VectorTile_Topographic/VectorTileServer/resources/styles/root.json?f=pjson',
+                    sprite: '',
+                    glyphs: '',
+                    fonts: {
+                        "Public Sans Regular": ["Open Sans Regular"],
+                        "Public Sans Bold": ["Open Sans Bold"]
+                    }
+                },
+                'custom': {
+                    url: '',
+                    sprite: '',
+                    glyphs: 'https://fonts.openmaptiles.org/{fontstack}/{range}.pbf',
+                    fonts: {}
+                }
+            };
+            
+            const example = examples[type];
+            if (example) {
+                document.getElementById('styleUrl').value = example.url;
+                document.getElementById('spriteUrl').value = example.sprite;
+                document.getElementById('glyphsUrl').value = example.glyphs;
+                document.getElementById('fontMapping').value = JSON.stringify(example.fonts, null, 2);
+                
+                if (example.url) {
+                    convertStyle();
+                }
+            }
+        }
+        
+        // Initialize map on load
+        window.addEventListener('load', initMap);
+    </script>
+</body>
+</html>
