@@ -169,7 +169,7 @@ module.exports = async (req, res) => {
     }
     
     try {
-        const { styleUrl, spriteUrl, glyphsUrl, fontMapping } = req.body;
+        const { styleUrl, spriteUrl, glyphsUrl, fontMapping, useProxy = false } = req.body;
         
         if (!styleUrl) {
             return res.status(400).json({ error: 'Style URL is required' });
@@ -191,6 +191,26 @@ module.exports = async (req, res) => {
             glyphsUrl,
             fontMapping
         });
+        
+        // If useProxy is enabled, wrap tile URLs with our proxy
+        if (useProxy && convertedStyle.sources) {
+            for (const source of Object.values(convertedStyle.sources)) {
+                if (source.tiles && Array.isArray(source.tiles)) {
+                    source.tiles = source.tiles.map(tileUrl => 
+                        `/api/proxy?url=${encodeURIComponent(tileUrl)}`
+                    );
+                }
+            }
+            // Also wrap sprite and glyphs if they're ESRI URLs
+            if (convertedStyle.sprite && convertedStyle.sprite.includes('portal.spatial.nsw.gov.au')) {
+                convertedStyle.sprite = `/api/proxy?url=${encodeURIComponent(convertedStyle.sprite)}`;
+            }
+            if (convertedStyle.glyphs && convertedStyle.glyphs.includes('portal.spatial.nsw.gov.au')) {
+                // Glyphs URL has placeholders, so we need to handle it carefully
+                const glyphBase = convertedStyle.glyphs.replace('{fontstack}', '__FONTSTACK__').replace('{range}', '__RANGE__');
+                convertedStyle.glyphs = `/api/proxy?url=${encodeURIComponent(glyphBase)}`.replace('__FONTSTACK__', '{fontstack}').replace('__RANGE__', '{range}');
+            }
+        }
         
         // Generate statistics
         const statistics = {
