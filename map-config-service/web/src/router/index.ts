@@ -71,7 +71,7 @@ const router = createRouter({
 
 // Navigation guard for authentication
 router.beforeEach(async (to, from, next) => {
-  const publicPages = ['/login'];
+  const publicPages = ['/login', '/preview-test'];
   const authRequired = !publicPages.includes(to.path);
   
   if (authRequired) {
