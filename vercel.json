@@ -1,5 +1,23 @@
 {
   "buildCommand": "cd map-config-service/web && npm run build",
   "installCommand": "cd map-config-service/web && npm install",
-  "outputDirectory": "map-config-service/web/dist"
+  "outputDirectory": "map-config-service/web/dist",
+  "rewrites": [
+    {
+      "source": "/styles/:path*",
+      "destination": "/styles/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/images/:path*",
+      "destination": "/images/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }

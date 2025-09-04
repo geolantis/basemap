@@ -1,5 +1,20 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/styles/:path*",
+      "destination": "/styles/:path*"
+    },
+    {
+      "source": "/api/:path*", 
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/images/:path*",
+      "destination": "/images/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
