@@ -63,7 +63,7 @@ function injectApiKey(url, provider) {
 }
 
 // Sanitize configuration and inject API keys for mobile apps
-function sanitizeConfig(config) {
+function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.com') {
   // First ensure the stored URL is clean (no keys in DB)
   let cleanUrl = stripApiKeys(config.style_url);
   
@@ -74,14 +74,46 @@ function sanitizeConfig(config) {
   const styleUrl = provider 
     ? injectApiKey(cleanUrl, provider)
     : cleanUrl;
+  
+  // Ensure we return absolute URLs for styles
+  let finalStyleUrl = styleUrl || config.public_style_url;
+  
+  // IMPORTANT: Always use mapconfig.geolantis.com for basemap styles
+  // regardless of which domain the request came from (vercel.app, etc)
+  const styleBaseUrl = 'https://mapconfig.geolantis.com';
+  
+  // If no style URL yet, generate one based on the name
+  if (!finalStyleUrl) {
+    // Check if this is a basemap style that exists in /styles/
+    const basemapStyles = ['basemap-ortho', 'basemap-ortho-blue', 'basemap', 'basemap2', 'basemap3', 'basemap4', 'basemap5', 'basemap6', 'basemap7'];
+    const normalizedName = config.name.toLowerCase().replace(/\s+/g, '-');
+    
+    // Special handling for basemapcustom names and known basemap styles
+    if (config.name === 'basemapcustom4' || config.label === 'basemapcustom4') {
+      finalStyleUrl = `${styleBaseUrl}/styles/basemap7.json`;
+    } else if (config.name === 'Basemap Ortho' || normalizedName === 'basemap-ortho') {
+      finalStyleUrl = `${styleBaseUrl}/styles/basemap-ortho.json`;
+    } else if (basemapStyles.includes(normalizedName) || normalizedName.includes('basemap')) {
+      finalStyleUrl = `${styleBaseUrl}/styles/${normalizedName}.json`;
+    } else {
+      finalStyleUrl = `${requestBaseUrl}/api/styles/${config.name}.json`;
+    }
+  } else if (finalStyleUrl.startsWith('/')) {
+    // Make relative URLs absolute - use styleBaseUrl for /styles/, requestBaseUrl for /api/
+    if (finalStyleUrl.startsWith('/styles/')) {
+      finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
+    } else {
+      finalStyleUrl = `${requestBaseUrl}${finalStyleUrl}`;
+    }
+  }
     
   return {
     id: config.id,
     name: config.name,
     label: config.label,
     type: config.type,
-    // Provide the full URL with injected API key for mobile apps
-    style: styleUrl || config.public_style_url || `/api/styles/${config.name}.json`,
+    // Always provide absolute URLs
+    style: finalStyleUrl,
     country: config.country,
     flag: config.flag,
     layers: config.layers?.filter((layer) => !layer.private) || [],
@@ -132,8 +164,13 @@ export default async function handler(req, res) {
       });
     }
 
+    // Get base URL for absolute URLs
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'mapconfig.geolantis.com';
+    const baseUrl = `${protocol}://${host}`;
+    
     // Sanitize all configurations
-    const sanitizedConfigs = configs?.map(sanitizeConfig) || [];
+    const sanitizedConfigs = configs?.map(config => sanitizeConfig(config, baseUrl)) || [];
 
     // Support legacy format for backward compatibility
     if (format === 'legacy') {
@@ -151,11 +188,6 @@ export default async function handler(req, res) {
         'Kataster BEV2': 'bev-kataster',
         'Kataster Light': 'bev-kataster-light'
       };
-      
-      // Get base URL for proxy endpoints
-      const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
-      const host = req.headers['x-forwarded-host'] || req.headers.host || 'mapconfig.geolantis.com';
-      const baseUrl = `${protocol}://${host}`;
       
       // Return the Android app's expected format: backgroundMaps and overlayMaps
       const legacyFormat = {
@@ -191,20 +223,16 @@ export default async function handler(req, res) {
           key = config.name.replace(/[^a-zA-Z0-9]/g, '');
         }
         
-        // Determine the style URL - USE PROXY ENDPOINTS, NOT DIRECT URLS!
+        // Determine the style URL - config.style already has absolute URLs from sanitizeConfig
         let styleUrl = config.style;
         
-        // Check if this is a known map that should use proxy
+        // Check if this is a known map that should use proxy instead
         if (proxyMaps[config.name]) {
           // Use secure proxy endpoint - NO API KEYS EXPOSED!
-          styleUrl = `${baseUrl}/api/proxy/style/${proxyMaps[config.name]}`;
-        } else if (config.style && config.style.startsWith('/api/')) {
-          // For other local styles, use full URL
-          styleUrl = `${baseUrl}${config.style}`;
-        } else if (config.style && !config.style.startsWith('http')) {
-          // For relative styles, make them absolute
-          styleUrl = `${baseUrl}/api/styles/${config.name}.json`;
+          // Always use mapconfig.geolantis.com for consistency
+          styleUrl = `https://mapconfig.geolantis.com/api/proxy/style/${proxyMaps[config.name]}`;
         }
+        // Otherwise use the absolute URL from sanitizeConfig which already handles basemap styles
         
         // Create a clean entry matching the expected format
         const cleanEntry = {
