@@ -3,7 +3,7 @@
   "installCommand": "cd map-config-service/web && npm install",
   "outputDirectory": "map-config-service/web/dist",
   "functions": {
-    "map-config-service/web/api/**/*.js": {
+    "api/**/*.js": {
       "maxDuration": 10
     }
   },
