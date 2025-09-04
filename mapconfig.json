@@ -218,7 +218,7 @@
       },
       "Basemap Ortho": {
         "name": "Basemap Ortho",
-        "style": "https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/basemap-ortho.json",
+        "style": "https://mapconfig.geolantis.com/styles/basemap-ortho.json",
         "country": "Austria",
         "flag": "🇦🇹",
         "label": "Basemap Ortho",
