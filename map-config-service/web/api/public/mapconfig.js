@@ -164,7 +164,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { format = 'json' } = req.query;
+    const { format = 'json', pretty } = req.query;
 
     // Fetch active configurations
     // Note: is_public column might not exist in existing databases
@@ -275,16 +275,28 @@ export default async function handler(req, res) {
         }
       });
 
+      // Return with pretty printing if requested
+      if (pretty === 'true' || pretty === '1') {
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(200).send(JSON.stringify(legacyFormat, null, 2));
+      }
       return res.status(200).json(legacyFormat);
     }
 
     // Return standard format
-    return res.status(200).json({
+    const response = {
       version: '2.0',
       timestamp: new Date().toISOString(),
       configs: sanitizedConfigs,
       total: sanitizedConfigs.length
-    });
+    };
+    
+    // Return with pretty printing if requested
+    if (pretty === 'true' || pretty === '1') {
+      res.setHeader('Content-Type', 'application/json');
+      return res.status(200).send(JSON.stringify(response, null, 2));
+    }
+    return res.status(200).json(response);
 
   } catch (error) {
     console.error('Public API error:', error);
