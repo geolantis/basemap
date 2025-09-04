@@ -9,7 +9,7 @@
     }
   },
   "sprite": "https://kataster.bev.gv.at/styles/sprite",
-  "glyphs": "https://kataster.bev.gv.at/styles/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=ldV32HV5eBdmgfE7vZJI",
   "layers": [
     {
       "id": "Landwirtschaftlich genutzte Grundflächen",
