@@ -67,36 +67,40 @@ async function syncMaps() {
 
 async function upsertMap(key, mapData, category) {
   try {
-    // Prepare the map object
+    // Prepare the map object for map_configs table
     const map = {
       name: mapData.name || key,
       label: mapData.label || mapData.name || key,
       type: mapData.type || 'vtc',
       country: mapData.country || 'Unknown',
       flag: mapData.flag || '🏳️',
-      map_category: category,
       is_active: true,
-      metadata: {}
+      metadata: {
+        category: category  // Store category in metadata
+      }
     };
 
     // Handle style URL - use proxy for known providers
     if (PROXY_MAPS[key]) {
       map.style = `https://mapconfig.geolantis.com/api/proxy/style/${PROXY_MAPS[key]}`;
+      map.original_style = mapData.style;
     } else if (mapData.style) {
       // For other styles, keep the original or create a local style endpoint
       if (mapData.style.includes('api.maptiler.com') || 
           mapData.style.includes('clockworkmicro.com') ||
           mapData.style.includes('kataster.bev.gv.at')) {
         // These should use proxy but aren't configured yet
+        map.original_style = mapData.style;
         map.style = mapData.style.replace(/[?&]key=[^&]+/g, ''); // Remove API keys
       } else {
         map.style = mapData.style;
+        map.original_style = mapData.style;
       }
     }
 
     // Handle raster tiles (WMTS/XYZ)
     if (mapData.tiles) {
-      map.tiles = mapData.tiles;
+      map.metadata.tiles = mapData.tiles;
       map.type = mapData.type || 'wmts';
     }
 
@@ -115,27 +119,27 @@ async function upsertMap(key, mapData, category) {
 
     // Handle zoom limits
     if (mapData.minzoom !== undefined) {
-      map.min_zoom = mapData.minzoom;
+      map.metadata.min_zoom = mapData.minzoom;
     }
     if (mapData.maxzoom !== undefined) {
-      map.max_zoom = mapData.maxzoom;
+      map.metadata.max_zoom = mapData.maxzoom;
     }
 
     // Handle attribution
     if (mapData.attribution) {
-      map.attribution = mapData.attribution;
+      map.metadata.attribution = mapData.attribution;
     }
 
-    // Handle layers (for overlays)
+    // Handle layers (for overlays) - store as array in metadata
     if (mapData.layers) {
-      map.layers = mapData.layers;
+      map.layers = Array.isArray(mapData.layers) ? mapData.layers : [mapData.layers];
     }
 
     console.log(`  ${category === 'background' ? '🗺️' : '🎨'} ${map.name} (${map.country})`);
 
-    // Upsert to Supabase
+    // Upsert to Supabase using correct table name
     const { data, error } = await supabase
-      .from('maps')
+      .from('map_configs')
       .upsert(map, {
         onConflict: 'name',
         ignoreDuplicates: false
