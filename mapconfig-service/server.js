@@ -113,22 +113,31 @@ function convertESRIToMapLibre(esriStyle, styleUrl, options = {}) {
     // Convert sources
     if (converted.sources) {
         for (const [key, source] of Object.entries(converted.sources)) {
-            // Convert tile URLs
-            if (source.tiles && Array.isArray(source.tiles)) {
-                source.tiles = source.tiles.map(tileUrl => 
-                    convertRelativeUrl(tileUrl, baseUrl)
-                );
-            }
-            
             // Add tile URL if missing for vector sources
             if (!source.tiles && source.type === 'vector') {
                 const tileBaseUrl = styleUrl.replace(/\/resources\/styles\/.*$/, '');
                 source.tiles = [`${tileBaseUrl}/tile/{z}/{y}/{x}.pbf`];
             }
             
-            // Convert URL if present
-            if (source.url) {
+            // Convert tile URLs if present
+            if (source.tiles && Array.isArray(source.tiles)) {
+                source.tiles = source.tiles.map(tileUrl => 
+                    convertRelativeUrl(tileUrl, baseUrl)
+                );
+            }
+            
+            // Remove URL field if tiles are present (MapLibre prefers tiles over url)
+            if (source.tiles && source.url) {
+                delete source.url;
+            } else if (source.url && source.url.startsWith('../')) {
+                // Only keep URL if no tiles and it needs conversion
                 source.url = convertRelativeUrl(source.url, baseUrl);
+                // But for vector sources, convert URL to tiles
+                if (source.type === 'vector') {
+                    const tileBaseUrl = styleUrl.replace(/\/resources\/styles\/.*$/, '');
+                    source.tiles = [`${tileBaseUrl}/tile/{z}/{y}/{x}.pbf`];
+                    delete source.url;
+                }
             }
             
             // Add scheme if needed
