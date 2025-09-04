@@ -106,6 +106,10 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
         finalStyleUrl = `${styleBaseUrl}/styles/basemap7.json`;
       } else if (config.name === 'Basemap Ortho' || normalizedName === 'basemap-ortho') {
         finalStyleUrl = `${styleBaseUrl}/styles/basemap-ortho.json`;
+      } else if (config.name === 'Basemapat' || config.name === 'Basemap.at' || normalizedName === 'basemap-at') {
+        finalStyleUrl = `${styleBaseUrl}/styles/basemap.json`;  // Use basemap.json for Basemap.at
+      } else if (config.name === 'BEVLight' || config.name === 'BEV Light' || normalizedName === 'bev-light') {
+        finalStyleUrl = `${styleBaseUrl}/styles/bev-katasterlight.json`;  // Map to actual file
       } else if (basemapStyles.includes(normalizedName) || normalizedName.includes('basemap')) {
         finalStyleUrl = `${styleBaseUrl}/styles/${normalizedName}.json`;
       } else {
