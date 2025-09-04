@@ -77,16 +77,15 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
   // IMPORTANT: Always use mapconfig.geolantis.com for all URLs
   const styleBaseUrl = 'https://mapconfig.geolantis.com';
   
-  // If provider needs API key, use proxy endpoint
-  if (provider) {
+  // If provider needs API key, use proxy endpoint (but not for BEV - use local files)
+  if (provider && provider !== 'bev') {
     // Map providers to proxy endpoints
     const proxyMap = {
       'maptiler': 'maptiler-streets-v2',
-      'clockwork': 'clockwork-streets',
-      'bev': 'bev-kataster'
+      'clockwork': 'clockwork-streets'
     };
     
-    // Use proxy endpoint for commercial providers
+    // Use proxy endpoint for commercial providers (except BEV)
     if (proxyMap[provider]) {
       finalStyleUrl = `${styleBaseUrl}/api/proxy/style/${proxyMap[provider]}`;
     }
