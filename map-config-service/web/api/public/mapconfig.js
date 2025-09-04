@@ -62,7 +62,7 @@ function injectApiKey(url, provider) {
   }
 }
 
-// Sanitize configuration and inject API keys for mobile apps
+// Sanitize configuration - NEVER expose API keys!
 function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.com') {
   // First ensure the stored URL is clean (no keys in DB)
   let cleanUrl = stripApiKeys(config.style_url);
@@ -70,40 +70,54 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
   // Auto-detect provider or use specified one
   const provider = config.requires_api_key || detectProvider(cleanUrl);
   
-  // Then inject API key server-side for mobile apps
-  const styleUrl = provider 
-    ? injectApiKey(cleanUrl, provider)
-    : cleanUrl;
+  // NEVER inject API keys in public responses! Use proxy instead
+  let styleUrl = cleanUrl;
+  let finalStyleUrl = '';
   
-  // Ensure we return absolute URLs for styles
-  let finalStyleUrl = styleUrl || config.public_style_url;
-  
-  // IMPORTANT: Always use mapconfig.geolantis.com for basemap styles
-  // regardless of which domain the request came from (vercel.app, etc)
+  // IMPORTANT: Always use mapconfig.geolantis.com for all URLs
   const styleBaseUrl = 'https://mapconfig.geolantis.com';
   
-  // If no style URL yet, generate one based on the name
-  if (!finalStyleUrl) {
-    // Check if this is a basemap style that exists in /styles/
-    const basemapStyles = ['basemap-ortho', 'basemap-ortho-blue', 'basemap', 'basemap2', 'basemap3', 'basemap4', 'basemap5', 'basemap6', 'basemap7'];
-    const normalizedName = config.name.toLowerCase().replace(/\s+/g, '-');
+  // If provider needs API key, use proxy endpoint
+  if (provider) {
+    // Map providers to proxy endpoints
+    const proxyMap = {
+      'maptiler': 'maptiler-streets-v2',
+      'clockwork': 'clockwork-streets',
+      'bev': 'bev-kataster'
+    };
     
-    // Special handling for basemapcustom names and known basemap styles
-    if (config.name === 'basemapcustom4' || config.label === 'basemapcustom4') {
-      finalStyleUrl = `${styleBaseUrl}/styles/basemap7.json`;
-    } else if (config.name === 'Basemap Ortho' || normalizedName === 'basemap-ortho') {
-      finalStyleUrl = `${styleBaseUrl}/styles/basemap-ortho.json`;
-    } else if (basemapStyles.includes(normalizedName) || normalizedName.includes('basemap')) {
-      finalStyleUrl = `${styleBaseUrl}/styles/${normalizedName}.json`;
-    } else {
-      finalStyleUrl = `${requestBaseUrl}/api/styles/${config.name}.json`;
+    // Use proxy endpoint for commercial providers
+    if (proxyMap[provider]) {
+      finalStyleUrl = `${styleBaseUrl}/api/proxy/style/${proxyMap[provider]}`;
     }
-  } else if (finalStyleUrl.startsWith('/')) {
-    // Make relative URLs absolute - use styleBaseUrl for /styles/, requestBaseUrl for /api/
-    if (finalStyleUrl.startsWith('/styles/')) {
-      finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
-    } else {
-      finalStyleUrl = `${requestBaseUrl}${finalStyleUrl}`;
+  }
+  
+  // If no final style URL yet, determine based on config
+  if (!finalStyleUrl) {
+    finalStyleUrl = styleUrl || config.public_style_url;
+    
+    if (!finalStyleUrl) {
+      // Check if this is a basemap style that exists in /styles/
+      const basemapStyles = ['basemap-ortho', 'basemap-ortho-blue', 'basemap', 'basemap2', 'basemap3', 'basemap4', 'basemap5', 'basemap6', 'basemap7'];
+      const normalizedName = config.name.toLowerCase().replace(/\s+/g, '-');
+      
+      // Special handling for basemapcustom names and known basemap styles
+      if (config.name === 'basemapcustom4' || config.label === 'basemapcustom4') {
+        finalStyleUrl = `${styleBaseUrl}/styles/basemap7.json`;
+      } else if (config.name === 'Basemap Ortho' || normalizedName === 'basemap-ortho') {
+        finalStyleUrl = `${styleBaseUrl}/styles/basemap-ortho.json`;
+      } else if (basemapStyles.includes(normalizedName) || normalizedName.includes('basemap')) {
+        finalStyleUrl = `${styleBaseUrl}/styles/${normalizedName}.json`;
+      } else {
+        finalStyleUrl = `${styleBaseUrl}/api/styles/${config.name}.json`;
+      }
+    } else if (finalStyleUrl.startsWith('/')) {
+      // Make relative URLs absolute
+      if (finalStyleUrl.startsWith('/styles/')) {
+        finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
+      } else {
+        finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
+      }
     }
   }
     
