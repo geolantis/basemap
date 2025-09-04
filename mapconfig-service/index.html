@@ -600,27 +600,35 @@
                     fontMapping = JSON.parse(fontMappingText);
                 }
                 
-                // Fetch the ESRI style
-                const response = await fetch(styleUrl);
+                // Use the API to convert the style
+                const response = await fetch('/api/convert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        styleUrl: styleUrl,
+                        spriteUrl: spriteUrl || undefined,
+                        glyphsUrl: glyphsUrl || undefined,
+                        fontMapping: fontMapping
+                    })
+                });
+                
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch style: ${response.status}`);
+                    const error = await response.text();
+                    throw new Error(`Failed to convert style: ${error}`);
                 }
                 
-                const esriStyle = await response.json();
-                
-                // Convert the style
-                convertedStyle = convertESRIToMapLibre(esriStyle, styleUrl, {
-                    spriteUrl,
-                    glyphsUrl,
-                    fontMapping
-                });
+                const result = await response.json();
+                convertedStyle = result.style;
                 
                 // Apply the converted style to the map
                 map.setStyle(convertedStyle);
                 
-                // Update layer count
+                // Update layer count from statistics
                 document.getElementById('layerCount').textContent = 
-                    convertedStyle.layers ? convertedStyle.layers.length : 0;
+                    result.statistics ? result.statistics.layerCount : 
+                    (convertedStyle.layers ? convertedStyle.layers.length : 0);
                 
                 setStatus('success', 'Conversion successful!');
                 document.getElementById('downloadBtn').disabled = false;
@@ -669,6 +677,14 @@
             // Convert sources
             if (converted.sources) {
                 for (const [key, source] of Object.entries(converted.sources)) {
+                    // Add tile URL if missing for vector sources
+                    if (!source.tiles && source.type === 'vector') {
+                        // Construct tile URL from style URL
+                        const tileBaseUrl = styleUrl.replace(/\/resources\/styles\/.*$/, '');
+                        source.tiles = [`${tileBaseUrl}/tile/{z}/{y}/{x}.pbf`];
+                    }
+                    
+                    // Convert tile URLs if present
                     if (source.tiles && Array.isArray(source.tiles)) {
                         source.tiles = source.tiles.map(tileUrl => {
                             if (tileUrl.startsWith('../')) {
@@ -679,11 +695,9 @@
                         });
                     }
                     
-                    // Add tile URL if missing
-                    if (!source.tiles && source.type === 'vector') {
-                        // Construct tile URL from style URL
-                        const tileBaseUrl = styleUrl.replace(/\/resources\/styles\/.*$/, '');
-                        source.tiles = [`${tileBaseUrl}/tile/{z}/{y}/{x}.pbf`];
+                    // IMPORTANT: Remove URL field if tiles are present (MapLibre doesn't like both)
+                    if (source.tiles && source.url) {
+                        delete source.url;
                     }
                     
                     if (source.type === 'vector' && !source.scheme) {
