@@ -1,1 +1,48 @@
 .vercel
+
+# Node modules - IMPORTANT: Never commit these
+node_modules/
+*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+
+# SSL certificates
+ssl/
+*.pem
+*.key
+*.crt
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Build outputs
+dist/
+build/
+
+# Cache
+.cache/
+.npm/
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# Large generated files
+converted-styles/*.json
+!converted-styles/test-nsw-basemap.html
