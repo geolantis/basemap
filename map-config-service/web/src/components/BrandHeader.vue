@@ -38,6 +38,15 @@
 
           <!-- User Menu -->
           <div class="flex items-center space-x-3">
+            <!-- Help Link -->
+            <router-link 
+              to="/help" 
+              class="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+              title="Help & Documentation"
+            >
+              <i class="pi pi-question-circle text-neutral-600"></i>
+            </router-link>
+
             <!-- WMS Test Link -->
             <router-link 
               to="/wms-test" 

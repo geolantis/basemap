@@ -165,4 +165,5 @@ curl https://api.yourdomain.com/api/admin/config \
 - Authentication events in `auth_logs` table
 - Configuration changes in `config_audit_log` table
 - Rate limiting prevents abuse
-- CDN caching reduces server load
+- CDN caching reduces server load[Error] Failed to load resource: the server responded with a status of 404 () (proxy-tiles, line 0)
+[Error] Failed to load resource: the server responded with a status of 404 () (proxy-tiles, line 0)

@@ -194,7 +194,7 @@
       },
       "GlobalSat": {
         "name": "GlobalSat",
-        "style": "https://api.maptiler.com/maps/satellite/style.json?key=ldV32HV5eBdmgfE7vZJI",
+        "style": "https://api.maptiler.com/maps/satellite/style.json?key= ldV32HV5eBdmgfE7vZJI",
         "label": "Global Satellite",
         "type": "vtc",
         "flag": "🌐",
