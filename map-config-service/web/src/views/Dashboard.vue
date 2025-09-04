@@ -182,68 +182,106 @@
       </div>
       
       <!-- List View with Country Grouping -->
-      <div v-else-if="viewMode === 'list'" class="space-y-6">
-        <div v-for="[country, configs] in groupedConfigs" :key="country" class="card p-6">
-          <h3 class="text-lg font-semibold mb-4 flex items-center">
-            <span class="mr-2">{{ getCountryFlag(country) }}</span>
-            {{ country }}
-            <span class="ml-2 text-sm text-gray-500">({{ configs.length }} maps)</span>
-          </h3>
-          <div class="space-y-2">
+      <div v-else-if="viewMode === 'list'" class="bg-white rounded-lg border border-gray-200">
+        <div v-for="[country, configs] in groupedConfigs" :key="country">
+          <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+            <h3 class="text-sm font-semibold text-gray-900 flex items-center">
+              <span class="mr-2 text-lg">{{ getCountryFlag(country) }}</span>
+              <span class="text-base">{{ country }}</span>
+              <span class="ml-2 text-sm font-normal text-gray-500">({{ configs.length }} maps)</span>
+            </h3>
+          </div>
+          <div class="divide-y divide-gray-200">
             <div
               v-for="config in configs"
               :key="config.id"
-              class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors"
+              class="px-6 py-4 hover:bg-gray-50 transition-colors cursor-pointer"
+              @click="previewConfig(config)"
             >
-              <div class="flex items-center space-x-4">
-                <span class="text-xs font-medium px-2 py-1 bg-gray-100 rounded">
-                  {{ config.type.toUpperCase() }}
-                </span>
-                <div>
-                  <h4 class="font-medium">{{ config.label }}</h4>
-                  <p class="text-sm text-gray-500">{{ config.name }}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4 flex-1">
+                  <!-- Map Type Badge -->
+                  <span 
+                    :class="[
+                      'inline-flex px-2 py-1 text-xs font-semibold rounded uppercase',
+                      config.type === 'vtc' ? 'bg-blue-100 text-blue-800' : 
+                      config.type === 'wmts' ? 'bg-green-100 text-green-800' : 
+                      'bg-purple-100 text-purple-800'
+                    ]"
+                  >
+                    {{ config.type }}
+                  </span>
+                  
+                  <!-- Map Category Badge -->
+                  <span 
+                    :class="[
+                      'inline-flex items-center px-2 py-1 text-xs font-medium rounded-full',
+                      isOverlay(config) 
+                        ? 'bg-purple-100 text-purple-700' 
+                        : 'bg-blue-100 text-blue-700'
+                    ]"
+                  >
+                    <i :class="[
+                      'mr-1',
+                      isOverlay(config) ? 'pi pi-clone' : 'pi pi-map'
+                    ]" style="font-size: 10px;"></i>
+                    {{ isOverlay(config) ? 'Overlay' : 'Background' }}
+                  </span>
+                  
+                  <!-- Map Name and Label -->
+                  <div class="flex-1">
+                    <h4 class="font-medium text-gray-900">{{ config.label }}</h4>
+                    <p class="text-sm text-gray-500">{{ config.name }}</p>
+                  </div>
                 </div>
-              </div>
-              
-              <div class="flex items-center space-x-2">
-                <button
-                  @click="editConfig(config)"
-                  class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Edit"
-                >
-                  <i class="pi pi-pencil text-gray-600"></i>
-                </button>
-                <button
-                  @click="previewConfig(config)"
-                  class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Preview"
-                >
-                  <i class="pi pi-eye text-gray-600"></i>
-                </button>
-                <button
-                  @click="duplicateConfig(config)"
-                  class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Duplicate"
-                >
-                  <i class="pi pi-copy text-gray-600"></i>
-                </button>
-                <button
-                  @click="openInMaputnik(config)"
-                  class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Open in Maputnik"
-                >
-                  <i class="pi pi-external-link text-gray-600"></i>
-                </button>
-                <button
-                  @click="deleteConfig(config)"
-                  class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Delete"
-                >
-                  <i class="pi pi-trash text-red-600"></i>
-                </button>
+                
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-1" @click.stop>
+                  <button
+                    @click="editConfig(config)"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Edit"
+                  >
+                    <i class="pi pi-pencil text-gray-600"></i>
+                  </button>
+                  <button
+                    @click="previewConfig(config)"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Preview"
+                  >
+                    <i class="pi pi-eye text-gray-600"></i>
+                  </button>
+                  <button
+                    @click="duplicateConfig(config)"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Duplicate"
+                  >
+                    <i class="pi pi-copy text-gray-600"></i>
+                  </button>
+                  <button
+                    @click="openInMaputnik(config)"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Open in Maputnik"
+                  >
+                    <i class="pi pi-external-link text-gray-600"></i>
+                  </button>
+                  <button
+                    @click="deleteConfig(config)"
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Delete"
+                  >
+                    <i class="pi pi-trash text-red-600"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+        
+        <!-- Empty state for list view -->
+        <div v-if="categoryFilteredConfigs.length === 0" class="px-6 py-12 text-center text-gray-500">
+          <i class="pi pi-inbox text-4xl mb-2"></i>
+          <p>No maps found. Try adjusting your filters or search query.</p>
         </div>
       </div>
     </div>
