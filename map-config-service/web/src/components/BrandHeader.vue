@@ -38,6 +38,15 @@
 
           <!-- User Menu -->
           <div class="flex items-center space-x-3">
+            <!-- WMS Test Link -->
+            <router-link 
+              to="/wms-test" 
+              class="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+              title="WMS/WMTS Test"
+            >
+              <i class="pi pi-map text-neutral-600"></i>
+            </router-link>
+            
             <!-- Settings Link -->
             <router-link 
               to="/settings" 

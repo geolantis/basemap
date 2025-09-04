@@ -43,6 +43,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/Settings.vue'),
   },
   {
+    path: '/wms-test',
+    name: 'WMSTestPage',
+    component: () => import('../views/WMSTestPage.vue'),
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
