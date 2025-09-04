@@ -55,6 +55,15 @@
             >
               <i class="pi pi-map text-neutral-600"></i>
             </router-link>
+
+            <!-- Preview Test Link -->
+            <router-link 
+              to="/preview-test" 
+              class="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+              title="Preview Image Test"
+            >
+              <i class="pi pi-image text-neutral-600"></i>
+            </router-link>
             
             <!-- Settings Link -->
             <router-link 

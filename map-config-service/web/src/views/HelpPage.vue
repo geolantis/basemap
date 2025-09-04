@@ -302,7 +302,7 @@ function MapComponent() {
     return () => map.remove();
   }, []);
   
-  return &lt;div id="map" style={{ width: '100%', height: '400px' }} /&gt;;
+  return &lt;div id="map" style="width: 100%; height: 400px;" /&gt;;
 }</pre>
 
               <h3>Vue 3 Example</h3>

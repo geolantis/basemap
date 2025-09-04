@@ -30,6 +30,7 @@ const OVERLAY_MAPS = [
     style: 'https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev2.json',
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/kataster-bev',
     metadata: {
       isOverlay: true,
       overlayType: 'cadastral',
@@ -45,6 +46,7 @@ const OVERLAY_MAPS = [
     style: 'https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev.json',
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/kataster-bev2',
     metadata: {
       isOverlay: true,
       overlayType: 'cadastral',
@@ -60,6 +62,7 @@ const OVERLAY_MAPS = [
     style: 'https://gis.ktn.gv.at/osgdi/styles/BEV_kataster_symbole.json',
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/dkm-bev-symbole',
     metadata: {
       isOverlay: true,
       overlayType: 'symbols',
@@ -74,6 +77,7 @@ const OVERLAY_MAPS = [
     style: 'https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/grundstuecke_kataster-ktn-light.json',
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/kataster-ktn-light',
     metadata: {
       isOverlay: true,
       overlayType: 'cadastral',
@@ -88,6 +92,7 @@ const OVERLAY_MAPS = [
     style: 'https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/ovl-kataster.json',
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/kataster-ovl',
     metadata: {
       isOverlay: true,
       overlayType: 'cadastral',
@@ -103,6 +108,7 @@ const OVERLAY_MAPS = [
     style: 'https://gis.ktn.gv.at/osgdi/styles//flaewi_ktn.json',
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/flawi',
     metadata: {
       isOverlay: true,
       overlayType: 'zoning',
@@ -117,6 +123,7 @@ const OVERLAY_MAPS = [
     style: 'https://gis.ktn.gv.at/osgdi/styles/overlaystyle_wasser_schutz.json',
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/gefahr',
     metadata: {
       isOverlay: true,
       overlayType: 'hazard',
@@ -131,6 +138,7 @@ const OVERLAY_MAPS = [
     style: null,
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/inspire-wms',
     metadata: {
       isOverlay: true,
       overlayType: 'wms',
@@ -148,6 +156,7 @@ const OVERLAY_MAPS = [
     style: null,
     country: 'Austria',
     flag: '🇦🇹',
+    preview_image_url: '/api/preview/bev-dkm-gst',
     metadata: {
       isOverlay: true,
       overlayType: 'wms',
@@ -193,6 +202,7 @@ async function addOverlayMaps() {
             style: overlay.style,
             country: overlay.country,
             flag: overlay.flag,
+            preview_image_url: overlay.preview_image_url,
             metadata: overlay.metadata,
             is_active: true,
             updated_at: new Date().toISOString()
@@ -217,6 +227,7 @@ async function addOverlayMaps() {
             style: overlay.style,
             country: overlay.country,
             flag: overlay.flag,
+            preview_image_url: overlay.preview_image_url,
             metadata: overlay.metadata,
             version: 1,
             is_active: true

@@ -96,7 +96,7 @@ export default async function handler(
 
     let query = supabase
       .from('map_configs')
-      .select('id, name, label, type, style_url, country, flag, layers, metadata')
+      .select('id, name, label, type, style_url, country, flag, layers, metadata, preview_image_url')
       .eq('is_active', true)
       .eq('is_public', true); // Only return public configurations
 
@@ -131,7 +131,8 @@ export default async function handler(
         country: config.country,
         flag: config.flag,
         layers: config.layers,
-        metadata: config.metadata
+        metadata: config.metadata,
+        preview_image_url: config.preview_image_url // Preview image for layer switcher
       })) || []
     };
 
