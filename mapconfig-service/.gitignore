@@ -45,3 +45,4 @@ tmp/
 
 # Admin secrets
 admin-secret.txt
+.vercel
