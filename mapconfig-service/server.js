@@ -49,17 +49,18 @@ app.use(express.static(path.join(__dirname)));
 const styleCache = new Map();
 const CACHE_DURATION = 3600000; // 1 hour in milliseconds
 
-// Default font mappings
+// Default font mappings - keep original ESRI fonts to avoid 404s
 const DEFAULT_FONT_MAPPING = {
-    'Public Sans Regular': ['Open Sans Regular', 'Noto Sans Regular', 'Arial Unicode MS Regular'],
-    'Public Sans Medium': ['Open Sans SemiBold', 'Noto Sans Medium', 'Arial Unicode MS Bold'],
-    'Public Sans Bold': ['Open Sans Bold', 'Noto Sans Bold', 'Arial Unicode MS Bold'],
-    'Public Sans Italic': ['Open Sans Italic', 'Noto Sans Italic', 'Arial Unicode MS Regular'],
-    'Public Sans Light': ['Open Sans Light', 'Noto Sans Light', 'Arial Unicode MS Regular'],
-    'Public Sans SemiBold': ['Open Sans SemiBold', 'Noto Sans SemiBold', 'Arial Unicode MS Bold'],
-    'Public Sans ExtraBold': ['Open Sans ExtraBold', 'Noto Sans ExtraBold', 'Arial Unicode MS Bold'],
-    'Public Sans Black': ['Open Sans ExtraBold', 'Noto Sans Black', 'Arial Unicode MS Bold'],
-    'Public Sans Thin': ['Open Sans Light', 'Noto Sans Thin', 'Arial Unicode MS Regular'],
+    // Map to the same font to keep using ESRI's font server
+    'Public Sans Regular': ['Public Sans Regular'],
+    'Public Sans Medium': ['Public Sans Medium'],
+    'Public Sans Bold': ['Public Sans Bold'],
+    'Public Sans Italic': ['Public Sans Italic'],
+    'Public Sans Light': ['Public Sans Light'],
+    'Public Sans SemiBold': ['Public Sans SemiBold'],
+    'Public Sans ExtraBold': ['Public Sans ExtraBold'],
+    'Public Sans Black': ['Public Sans Black'],
+    'Public Sans Thin': ['Public Sans Thin'],
 };
 
 // Helper function to extract base URL

@@ -416,6 +416,22 @@
                             class="control-input"
                             placeholder="Leave empty to auto-convert"
                         >
+                        <button 
+                            type="button" 
+                            class="btn btn-secondary" 
+                            style="margin-top: 8px; font-size: 0.8rem; padding: 6px 12px;"
+                            onclick="document.getElementById('glyphsUrl').value = 'https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=get_your_own_key'"
+                        >
+                            Use MapTiler Fonts (requires API key)
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn btn-secondary" 
+                            style="margin-top: 4px; font-size: 0.8rem; padding: 6px 12px;"
+                            onclick="document.getElementById('glyphsUrl').value = 'https://fonts.openmaptiles.org/{fontstack}/{range}.pbf'"
+                        >
+                            Use OpenMapTiles Fonts (free)
+                        </button>
                     </div>
                     
                     <div class="control-group">
@@ -423,12 +439,11 @@
                         <textarea 
                             id="fontMapping" 
                             class="control-input control-textarea"
-                            placeholder='{"Public Sans Regular": ["Open Sans Regular"]}'
-                        >{
-  "Public Sans Regular": ["Open Sans Regular"],
-  "Public Sans Bold": ["Open Sans Bold"],
-  "Public Sans Medium": ["Open Sans SemiBold"]
-}</textarea>
+                            placeholder='Leave empty to use original ESRI fonts'
+                        ></textarea>
+                        <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">
+                            Leave empty to use original ESRI fonts (recommended) or provide custom mapping
+                        </small>
                     </div>
                     
                     <button id="convertBtn" class="btn btn-primary" onclick="convertStyle()">
