@@ -1054,6 +1054,14 @@
       "flag": "🇦🇹",
       "label": "KTN Gefahrenzonen"
     },
+    "Austria Isolines": {
+      "name": "Austria Isolines",
+      "style": "/styles/austria_isolines.json",
+      "country": "Austria",
+      "flag": "🇦🇹",
+      "label": "Austria Isolines",
+      "type": "vtc"
+    },
     "NZParcels": {
       "name": "NZParcels",
       "tileset": "https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/tile.json?api=c01j9kgtq3hq9yb59c22gnr6k64",

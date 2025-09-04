@@ -36,8 +36,8 @@ const PROXY_MAPS = {
 
 async function syncMaps() {
   try {
-    // Read the original mapconfig.json
-    const configPath = '/Users/michael/Development/basemap/mapconfig.json';
+    // Read the mapconfig-full.json from the web/src/data directory
+    const configPath = path.join(__dirname, '../src/data/mapconfig-full.json');
     const configData = await fs.readFile(configPath, 'utf8');
     const config = JSON.parse(configData);
 
