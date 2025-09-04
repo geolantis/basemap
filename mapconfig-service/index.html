@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MapConfig - ESRI to MapLibre Converter | Geolantis</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI2IiBmaWxsPSIjNjY3ZWVhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5NPC90ZXh0Pjwvc3ZnPg==">
     <script src="https://unpkg.com/maplibre-gl@4.1.1/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@4.1.1/dist/maplibre-gl.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -516,16 +517,23 @@
                 style: {
                     version: 8,
                     sources: {
-                        'osm': {
+                        'carto-light': {
                             type: 'raster',
-                            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-                            tileSize: 256
+                            tiles: [
+                                'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+                                'https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+                                'https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+                            ],
+                            tileSize: 256,
+                            attribution: '© CARTO © OpenStreetMap contributors'
                         }
                     },
                     layers: [{
-                        id: 'osm',
+                        id: 'carto-base',
                         type: 'raster',
-                        source: 'osm'
+                        source: 'carto-light',
+                        minzoom: 0,
+                        maxzoom: 22
                     }]
                 },
                 center: [151.2093, -33.8688], // Sydney
