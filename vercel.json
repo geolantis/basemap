@@ -1,29 +1,5 @@
 {
-  "installCommand": "cd map-config-service/web && npm ci",
   "buildCommand": "cd map-config-service/web && npm run build",
-  "outputDirectory": "map-config-service/web/dist",
-  "framework": "vue",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, X-API-Key"
-        }
-      ]
-    }
-  ]
+  "installCommand": "cd map-config-service/web && npm install",
+  "outputDirectory": "map-config-service/web/dist"
 }
