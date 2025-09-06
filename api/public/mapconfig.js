@@ -139,7 +139,14 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
       attribution: config.metadata?.attribution,
       description: config.metadata?.description,
       version: config.metadata?.version,
-      lastUpdated: config.updated_at
+      lastUpdated: config.updated_at,
+      isOverlay: config.metadata?.isOverlay,
+      overlayType: config.metadata?.overlayType,
+      provider: config.metadata?.provider,
+      officialStyle: config.metadata?.officialStyle,
+      optimizedFor: config.metadata?.optimizedFor,
+      coloring: config.metadata?.coloring,
+      style: config.metadata?.style
     }
     // Never include: api_keys, tokens, internal_urls, credentials
   };
@@ -186,7 +193,7 @@ export default async function handler(req, res) {
     const host = req.headers['x-forwarded-host'] || req.headers.host || 'mapconfig.geolantis.com';
     const baseUrl = `${protocol}://${host}`;
     
-    // Sanitize all configurations
+    // Sanitize all configurations (this will be used for standard format)
     const sanitizedConfigs = configs?.map(config => sanitizeConfig(config, baseUrl)) || [];
 
     // Support legacy format for backward compatibility
@@ -212,18 +219,25 @@ export default async function handler(req, res) {
         overlayMaps: {}
       };
 
+      // EXACT list of overlay maps from original mapconfig.json plus new BEV overlays
+      const OVERLAY_MAPS = [
+        'Kataster', 'Kataster BEV', 'Kataster BEV2', 'KatasterKTNLight',
+        'Kataster OVL', 'dkm_bev_symbole', 'flawi', 'gefahr',
+        'NZParcels', 'NSW BaseMap Overlay', 'Inspire WMS', 'BEV DKM GST',
+        // New official BEV overlays
+        'bev_kataster_amtlich', 'bev_symbole_amtlich', 'bev_kataster_orthophoto',
+        'bev_symbole_orthophoto', 'bev_kataster_light', 'bev_kataster_gis', 'bev_symbole_gis'
+      ];
+
       // Process each configuration
-      sanitizedConfigs.forEach(config => {
-        // EXACT list of overlay maps from original mapconfig.json
-        const OVERLAY_MAPS = [
-          'Kataster', 'Kataster BEV', 'Kataster BEV2', 'KatasterKTNLight',
-          'Kataster OVL', 'dkm_bev_symbole', 'flawi', 'gefahr',
-          'NZParcels', 'NSW BaseMap Overlay', 'Inspire WMS', 'BEV DKM GST'
-        ];
-        
-        // Determine if it's an overlay - ONLY check exact list!
-        const isOverlay = config.map_category === 'overlay' ||
-          OVERLAY_MAPS.some(name => name.toLowerCase() === config.name?.toLowerCase());
+      configs.forEach(originalConfig => {
+        // Determine if it's an overlay BEFORE sanitization - check original metadata!
+        const isOverlay = originalConfig.metadata?.isOverlay === true ||
+          originalConfig.metadata?.category === 'overlay' ||
+          OVERLAY_MAPS.some(name => name.toLowerCase() === originalConfig.name?.toLowerCase());
+
+        // Now sanitize the config
+        const config = sanitizeConfig(originalConfig, baseUrl);
         
         // Generate a key for the map
         let key = config.name;
