@@ -9,12 +9,16 @@
   },
   "rewrites": [
     {
-      "source": "/api/styles/:name",
-      "destination": "/map-config-service/web/api/styles/[name]"
+      "source": "/api/styles/:name.json",
+      "destination": "/map-config-service/web/api/styles/[name].js?name=:name.json"
     },
     {
-      "source": "/api/:path*",
-      "destination": "/map-config-service/web/api/:path*"
+      "source": "/api/styles/:name",
+      "destination": "/map-config-service/web/api/styles/[name].js?name=:name"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/map-config-service/web/api/$1"
     },
     {
       "source": "/(.*)",
