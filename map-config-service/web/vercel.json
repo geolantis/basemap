@@ -6,10 +6,6 @@
   },
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
       "src": "/styles/(.*)",
       "dest": "/styles/$1"
     },
@@ -18,7 +14,7 @@
       "dest": "/images/$1"
     },
     {
-      "src": "/(.*)",
+      "src": "/(?!api)(.*)$",
       "dest": "/index.html"
     }
   ]
