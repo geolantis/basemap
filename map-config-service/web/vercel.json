@@ -3,15 +3,5 @@
     "api/**/*.js": {
       "maxDuration": 30
     }
-  },
-  "routes": [
-    {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/(?!api)(.*)$",
-      "dest": "/index.html"
-    }
-  ]
+  }
 }

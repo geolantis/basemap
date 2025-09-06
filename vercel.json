@@ -7,22 +7,10 @@
       "maxDuration": 30
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/map-config-service/web/api/$1"
-    },
-    {
-      "src": "/styles/(.*)",
-      "dest": "/styles/$1"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/api/:path*",
+      "destination": "/map-config-service/web/api/:path*"
     }
   ]
 }

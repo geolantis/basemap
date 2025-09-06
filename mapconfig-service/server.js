@@ -375,6 +375,85 @@ app.get('/api/examples', (req, res) => {
     });
 });
 
+// Public mapconfig endpoint for external apps
+app.get('/api/public/mapconfig', (req, res) => {
+    try {
+        const fs = require('fs');
+        const path = require('path');
+        
+        // Try to load mapconfig.backup.json first, then fallback to generating from basemap files
+        let mapConfig = null;
+        const configPath = path.join(__dirname, '..', 'mapconfig.backup.json');
+        
+        if (fs.existsSync(configPath)) {
+            const configData = fs.readFileSync(configPath, 'utf8');
+            mapConfig = JSON.parse(configData);
+        } else {
+            // Generate basic config from available basemap style files
+            const stylesDir = path.join(__dirname, '..', 'styles');
+            mapConfig = { backgroundMaps: {} };
+            
+            if (fs.existsSync(stylesDir)) {
+                const styleFiles = fs.readdirSync(stylesDir).filter(file => file.endsWith('.json'));
+                
+                styleFiles.forEach(file => {
+                    const baseName = file.replace('.json', '');
+                    const styleUrl = `http://localhost:3000/styles/${file}`;
+                    
+                    mapConfig.backgroundMaps[baseName] = {
+                        name: baseName,
+                        style: styleUrl,
+                        label: baseName.charAt(0).toUpperCase() + baseName.slice(1),
+                        type: 'vtc',
+                        flag: '🗺️',
+                        country: 'Local'
+                    };
+                });
+            }
+        }
+        
+        // Check for format parameter (legacy format)
+        const format = req.query.format;
+        if (format === 'legacy') {
+            // Return in legacy format expected by old applications
+            res.json(mapConfig);
+        } else {
+            // Return in new format
+            res.json({
+                version: '2.0.0',
+                timestamp: new Date().toISOString(),
+                ...mapConfig
+            });
+        }
+        
+    } catch (error) {
+        console.error('Error serving mapconfig:', error);
+        res.status(500).json({ 
+            error: 'Failed to load map configuration',
+            message: error.message 
+        });
+    }
+});
+
+// Serve style files from the styles directory  
+app.get('/styles/:filename', (req, res) => {
+    try {
+        const filename = req.params.filename;
+        const stylePath = path.join(__dirname, '..', 'styles', filename);
+        
+        if (fs.existsSync(stylePath)) {
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.sendFile(stylePath);
+        } else {
+            res.status(404).json({ error: 'Style file not found' });
+        }
+    } catch (error) {
+        console.error('Error serving style file:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({
