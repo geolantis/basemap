@@ -233,7 +233,7 @@ export default async function handler(req, res) {
       configs.forEach(originalConfig => {
         // Determine if it's an overlay BEFORE sanitization - check original metadata!
         const isOverlay = originalConfig.metadata?.isOverlay === true ||
-          originalConfig.map_category === 'overlay' ||
+          originalConfig.metadata?.category === 'overlay' ||
           OVERLAY_MAPS.some(name => name.toLowerCase() === originalConfig.name?.toLowerCase());
 
         // Now sanitize the config
