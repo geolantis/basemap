@@ -139,7 +139,14 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
       attribution: config.metadata?.attribution,
       description: config.metadata?.description,
       version: config.metadata?.version,
-      lastUpdated: config.updated_at
+      lastUpdated: config.updated_at,
+      isOverlay: config.metadata?.isOverlay,
+      overlayType: config.metadata?.overlayType,
+      provider: config.metadata?.provider,
+      officialStyle: config.metadata?.officialStyle,
+      optimizedFor: config.metadata?.optimizedFor,
+      coloring: config.metadata?.coloring,
+      style: config.metadata?.style
     }
     // Never include: api_keys, tokens, internal_urls, credentials
   };
@@ -214,15 +221,19 @@ export default async function handler(req, res) {
 
       // Process each configuration
       sanitizedConfigs.forEach(config => {
-        // EXACT list of overlay maps from original mapconfig.json
+        // EXACT list of overlay maps from original mapconfig.json plus new BEV overlays
         const OVERLAY_MAPS = [
           'Kataster', 'Kataster BEV', 'Kataster BEV2', 'KatasterKTNLight',
           'Kataster OVL', 'dkm_bev_symbole', 'flawi', 'gefahr',
-          'NZParcels', 'NSW BaseMap Overlay', 'Inspire WMS', 'BEV DKM GST'
+          'NZParcels', 'NSW BaseMap Overlay', 'Inspire WMS', 'BEV DKM GST',
+          // New official BEV overlays
+          'bev_kataster_amtlich', 'bev_symbole_amtlich', 'bev_kataster_orthophoto',
+          'bev_symbole_orthophoto', 'bev_kataster_light', 'bev_kataster_gis', 'bev_symbole_gis'
         ];
         
-        // Determine if it's an overlay - ONLY check exact list!
-        const isOverlay = config.map_category === 'overlay' ||
+        // Determine if it's an overlay - check metadata first, then exact list!
+        const isOverlay = config.metadata?.isOverlay === true ||
+          config.map_category === 'overlay' ||
           OVERLAY_MAPS.some(name => name.toLowerCase() === config.name?.toLowerCase());
         
         // Generate a key for the map

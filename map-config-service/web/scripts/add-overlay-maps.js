@@ -23,9 +23,146 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 // Overlay maps to add/update
 const OVERLAY_MAPS = [
+  // Official BEV Layers
+  {
+    name: 'bev_kataster_amtlich',
+    label: 'BEV Kataster amtlich (Vermessungsverordnung)',
+    type: 'vtc', 
+    style: 'https://kataster.bev.gv.at/styles/kataster/style_vermv.json',
+    country: 'Austria',
+    flag: '🇦🇹',
+    preview_image_url: '/api/preview/bev-kataster-amtlich',
+    metadata: {
+      isOverlay: true,
+      overlayType: 'cadastral',
+      description: 'Official cadastral map according to Austrian surveying regulations',
+      tileset: 'https://kataster.bev.gv.at/styles/kataster/tiles.json',
+      extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
+      selectLayer: 'Grundstücke - Flächen',
+      provider: 'BEV Austria',
+      officialStyle: true
+    }
+  },
+  {
+    name: 'bev_symbole_amtlich', 
+    label: 'BEV Symbole amtlich (Vermessungsverordnung)',
+    type: 'vtc',
+    style: 'https://kataster.bev.gv.at/styles/symbole/style_vermv.json',
+    country: 'Austria',
+    flag: '🇦🇹',
+    preview_image_url: '/api/preview/bev-symbole-amtlich',
+    metadata: {
+      isOverlay: true,
+      overlayType: 'symbols',
+      description: 'Official cadastral symbols according to Austrian surveying regulations',
+      tileset: 'https://kataster.bev.gv.at/styles/symbole/tiles.json',
+      extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
+      provider: 'BEV Austria',
+      officialStyle: true
+    }
+  },
+  {
+    name: 'bev_kataster_orthophoto',
+    label: 'BEV Kataster + Orthophoto optimiert',
+    type: 'vtc',
+    style: 'https://kataster.bev.gv.at/styles/kataster/style_ortho.json',
+    country: 'Austria', 
+    flag: '🇦🇹',
+    preview_image_url: '/api/preview/bev-kataster-orthophoto',
+    metadata: {
+      isOverlay: true,
+      overlayType: 'cadastral',
+      description: 'Cadastral overlay optimized for combination with orthophotos',
+      tileset: 'https://kataster.bev.gv.at/styles/kataster/tiles.json',
+      extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
+      selectLayer: 'Grundstücke - Flächen',
+      provider: 'BEV Austria',
+      optimizedFor: 'orthophoto',
+      officialStyle: true
+    }
+  },
+  {
+    name: 'bev_symbole_orthophoto',
+    label: 'BEV Symbole + Orthophoto optimiert',
+    type: 'vtc',
+    style: 'https://kataster.bev.gv.at/styles/symbole/style_ortho.json',
+    country: 'Austria',
+    flag: '🇦🇹', 
+    preview_image_url: '/api/preview/bev-symbole-orthophoto',
+    metadata: {
+      isOverlay: true,
+      overlayType: 'symbols',
+      description: 'Cadastral symbols optimized for combination with orthophotos',
+      tileset: 'https://kataster.bev.gv.at/styles/symbole/tiles.json',
+      extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
+      provider: 'BEV Austria',
+      optimizedFor: 'orthophoto',
+      officialStyle: true
+    }
+  },
+  {
+    name: 'bev_kataster_light',
+    label: 'BEV Kataster light (Pastelltöne)',
+    type: 'vtc',
+    style: 'https://kataster.bev.gv.at/styles/kataster/style_basic.json',
+    country: 'Austria',
+    flag: '🇦🇹',
+    preview_image_url: '/api/preview/bev-kataster-light',
+    metadata: {
+      isOverlay: true,
+      overlayType: 'cadastral',
+      description: 'Simple cadastral display with pastel colors and highlighted border cadastre properties',
+      tileset: 'https://kataster.bev.gv.at/styles/kataster/tiles.json',
+      extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
+      selectLayer: 'Grundstücke - Flächen',
+      provider: 'BEV Austria',
+      style: 'light',
+      officialStyle: true
+    }
+  },
+  {
+    name: 'bev_kataster_gis',
+    label: 'BEV Kataster BEV (GIS-Färbung)',
+    type: 'vtc', 
+    style: 'https://kataster.bev.gv.at/styles/kataster/style_gis.json',
+    country: 'Austria',
+    flag: '🇦🇹',
+    preview_image_url: '/api/preview/bev-kataster-gis',
+    metadata: {
+      isOverlay: true,
+      overlayType: 'cadastral',
+      description: 'Cadastral map with BEV-GIS usage area coloring according to surveying regulations',
+      tileset: 'https://kataster.bev.gv.at/styles/kataster/tiles.json',
+      extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
+      selectLayer: 'Grundstücke - Flächen',
+      provider: 'BEV Austria',
+      coloring: 'gis',
+      officialStyle: true
+    }
+  },
+  {
+    name: 'bev_symbole_gis',
+    label: 'BEV Symbole BEV (GIS-Färbung)',
+    type: 'vtc',
+    style: 'https://kataster.bev.gv.at/styles/symbole/style_gis.json',
+    country: 'Austria',
+    flag: '🇦🇹',
+    preview_image_url: '/api/preview/bev-symbole-gis',
+    metadata: {
+      isOverlay: true,
+      overlayType: 'symbols',
+      description: 'Cadastral symbols with BEV-GIS coloring according to surveying regulations',
+      tileset: 'https://kataster.bev.gv.at/styles/symbole/tiles.json',
+      extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
+      provider: 'BEV Austria',
+      coloring: 'gis',
+      officialStyle: true
+    }
+  },
+  // Legacy/Existing overlays (keeping for compatibility)
   {
     name: 'Kataster BEV',
-    label: 'BEV Kataster',
+    label: 'BEV Kataster (Legacy)',
     type: 'vtc',
     style: 'https://raw.githubusercontent.com/geolantis/basemap/refs/heads/main/kataster-bev2.json',
     country: 'Austria',
@@ -36,7 +173,8 @@ const OVERLAY_MAPS = [
       overlayType: 'cadastral',
       tileset: 'https://kataster.bev.gv.at/styles/kataster/tiles.json',
       extra_sprite: 'https://kataster.bev.gv.at/styles/sprite',
-      selectLayer: 'Grundstücke - Flächen'
+      selectLayer: 'Grundstücke - Flächen',
+      legacy: true
     }
   },
   {
