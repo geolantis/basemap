@@ -301,4 +301,4 @@ export default async function handler(req, res) {
       details: error.message
     });
   }
-}
+}// Force rebuild Sun Sep  7 20:05:24 CEST 2025
