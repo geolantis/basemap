@@ -109,21 +109,14 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
         finalStyleUrl = `${styleBaseUrl}/styles/basemap.json`;  // Use basemap.json for Basemap.at
       } else if (config.name === 'BEVLight' || config.name === 'BEV Light' || normalizedName === 'bev-light') {
         finalStyleUrl = `${styleBaseUrl}/styles/bev-katasterlight.json`;  // Map to actual file
+      } else if (config.name === 'Austria Isolines') {
+        // Special case: Austria Isolines maps to austria_isolines.json
+        finalStyleUrl = `${styleBaseUrl}/styles/austria_isolines.json`;
       } else if (basemapStyles.includes(normalizedName) || normalizedName.includes('basemap')) {
         finalStyleUrl = `${styleBaseUrl}/styles/${normalizedName}.json`;
       } else {
-        // For other styles, check if we need to use the styles directory
-        // Convert name to URL-safe format: spaces to underscores, lowercase
-        const urlSafeName = config.name.toLowerCase().replace(/\s+/g, '_');
-        
-        // Check if this is likely a style that exists in /styles/
-        if (config.name.includes('Isolines') || config.name.includes('isolines')) {
-          // Austria Isolines should map to austria_isolines.json
-          finalStyleUrl = `${styleBaseUrl}/styles/${urlSafeName}.json`;
-        } else {
-          // For truly dynamic/unknown styles, use the api/styles endpoint with URL encoding
-          finalStyleUrl = `${styleBaseUrl}/api/styles/${encodeURIComponent(config.name)}.json`;
-        }
+        // For other styles, use the api/styles endpoint with URL encoding
+        finalStyleUrl = `${styleBaseUrl}/api/styles/${encodeURIComponent(config.name)}.json`;
       }
     } else if (finalStyleUrl.startsWith('/')) {
       // Make relative URLs absolute
