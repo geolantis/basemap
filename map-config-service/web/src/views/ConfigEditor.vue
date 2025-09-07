@@ -141,11 +141,12 @@
                 v-model="formData.style"
                 rows="3"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://api.maptiler.com/maps/streets/style.json"
+                placeholder="https://api.maptiler.com/maps/streets/style.json or paste JSON directly"
                 @input="validateForm"
               ></textarea>
               <p class="text-xs text-gray-500 mt-1">
-                Enter the style.json URL (without API keys - they'll be added server-side)
+                Enter a style URL, paste JSON directly, or use templates below. 
+                Custom styles will be saved to /styles/ on Vercel.
               </p>
 
               <!-- Style URL Templates -->
@@ -478,14 +479,91 @@ async function saveConfig() {
   saveResult.value = null;
   
   try {
+    // Check if we need to save a custom style file
+    let finalStyleUrl = formData.value.style;
+    
+    // If it's a VTC map with a custom style URL (not a template)
+    if (formData.value.type === 'vtc' && formData.value.style) {
+      // Check if it's a custom style (not from known providers)
+      const isCustomStyle = !formData.value.style.includes('maptiler.com') &&
+                           !formData.value.style.includes('mapbox.com') &&
+                           !formData.value.style.includes('githubusercontent.com');
+      
+      // If user provided a raw style JSON or wants to create a custom style
+      if (isCustomStyle || formData.value.style.startsWith('{')) {
+        try {
+          // Parse style if it's JSON string
+          let styleContent = formData.value.style;
+          if (formData.value.style.startsWith('{')) {
+            styleContent = JSON.parse(formData.value.style);
+          } else {
+            // Fetch the style from URL if provided
+            try {
+              const response = await fetch(formData.value.style);
+              if (response.ok) {
+                styleContent = await response.json();
+              }
+            } catch {
+              // If fetch fails, assume it's a path to be created
+              styleContent = {
+                version: 8,
+                name: formData.value.name,
+                sources: {},
+                layers: []
+              };
+            }
+          }
+          
+          // Save style file to /styles directory
+          const filename = `${formData.value.name.replace(/[^a-zA-Z0-9_-]/g, '_')}.json`;
+          // Use relative URL for production compatibility
+          const apiUrl = import.meta.env.VITE_API_URL || '';
+          const saveUrl = apiUrl ? `${apiUrl}/api/styles/save` : '/api/styles/save';
+          
+          const saveResponse = await fetch(saveUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              filename: filename,
+              content: styleContent,
+              metadata: {
+                name: formData.value.name,
+                label: formData.value.label,
+                country: formData.value.country,
+                createdFrom: 'dashboard'
+              }
+            })
+          });
+          
+          if (saveResponse.ok) {
+            const result = await saveResponse.json();
+            // Update the style URL to point to the saved file
+            finalStyleUrl = result.path || `/styles/${filename}`;
+            console.log('Style file saved:', finalStyleUrl);
+          }
+        } catch (err) {
+          console.warn('Could not save custom style file:', err);
+          // Continue with the original URL
+        }
+      }
+    }
+    
+    // Update formData with the final style URL
+    const configData = {
+      ...formData.value,
+      style: finalStyleUrl
+    };
+    
     if (isEditMode.value) {
-      await configStore.updateConfig(route.params.id as string, formData.value);
+      await configStore.updateConfig(route.params.id as string, configData);
       saveResult.value = {
         success: true,
         message: 'Configuration updated successfully!'
       };
     } else {
-      await configStore.createConfig(formData.value);
+      await configStore.createConfig(configData);
       saveResult.value = {
         success: true,
         message: 'Configuration created successfully!'

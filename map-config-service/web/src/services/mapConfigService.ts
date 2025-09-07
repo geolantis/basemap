@@ -384,7 +384,12 @@ export class MapConfigService {
   // Upload a custom style file
   async uploadStyle(formData: FormData): Promise<any> {
     try {
-      const response = await fetch('http://localhost:3001/api/styles/upload', {
+      // Use relative URL for production compatibility
+      // In dev, this will use the dev server; in production, it will use the same domain
+      const baseUrl = import.meta.env.VITE_API_URL || '';
+      const uploadUrl = baseUrl ? `${baseUrl}/api/styles/upload` : '/api/styles/upload';
+      
+      const response = await fetch(uploadUrl, {
         method: 'POST',
         body: formData,
       });

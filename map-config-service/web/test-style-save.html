@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Style Save API</title>
+</head>
+<body>
+    <h1>Test Style Save to /styles/</h1>
+    <button onclick="testSave()">Test Save Style</button>
+    <div id="result"></div>
+
+    <script>
+    async function testSave() {
+        const testStyle = {
+            version: 8,
+            name: "test-custom-style",
+            sources: {
+                "test-source": {
+                    type: "vector",
+                    url: "https://example.com/tiles.json"
+                }
+            },
+            layers: [
+                {
+                    id: "background",
+                    type: "background",
+                    paint: {
+                        "background-color": "#f0f0f0"
+                    }
+                }
+            ]
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/api/styles/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    filename: 'test-custom-style',
+                    content: testStyle,
+                    metadata: {
+                        name: 'Test Custom Style',
+                        label: 'Test Style',
+                        country: 'Global',
+                        createdFrom: 'test'
+                    }
+                })
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerHTML = `
+                <h3>Result:</h3>
+                <pre>${JSON.stringify(result, null, 2)}</pre>
+                <p>Style should be saved at: ${result.path}</p>
+            `;
+        } catch (error) {
+            document.getElementById('result').innerHTML = `
+                <h3>Error:</h3>
+                <pre>${error.message}</pre>
+            `;
+        }
+    }
+    </script>
+</body>
+</html>
