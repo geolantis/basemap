@@ -112,13 +112,27 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
       }
     }
     
-    if (finalStyleUrl && finalStyleUrl.startsWith('/')) {
-      // Make relative URLs absolute
-      if (finalStyleUrl.startsWith('/styles/')) {
+    // URL-encode any spaces in the path (but not the domain or protocol)
+    if (finalStyleUrl) {
+      // Split URL into parts to properly encode just the path
+      if (finalStyleUrl.startsWith('/')) {
+        // For relative URLs, encode spaces in the path
+        const parts = finalStyleUrl.split('/');
+        const encodedParts = parts.map((part, index) => {
+          // Skip empty parts (from leading slash or double slashes)
+          if (part === '') return part;
+          // Encode spaces in each path segment
+          return part.replace(/ /g, '%20');
+        });
+        finalStyleUrl = encodedParts.join('/');
+        
+        // Make relative URLs absolute
         finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
-      } else {
-        finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
+      } else if (!finalStyleUrl.startsWith('http')) {
+        // For non-http URLs that don't start with /, treat as relative
+        finalStyleUrl = `${styleBaseUrl}/${finalStyleUrl.replace(/ /g, '%20')}`;
       }
+      // For absolute HTTP URLs, they should already be properly encoded
     }
   }
     
