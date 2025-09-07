@@ -3,6 +3,12 @@
   "installCommand": "cd map-config-service/web && npm install",
   "outputDirectory": "map-config-service/web/dist",
   "functions": {
+    "api/**/*.ts": {
+      "maxDuration": 30
+    },
+    "api/**/*.js": {
+      "maxDuration": 30
+    },
     "map-config-service/web/api/**/*.ts": {
       "maxDuration": 30
     },
@@ -12,16 +18,20 @@
   },
   "rewrites": [
     {
+      "source": "/api/layers",
+      "destination": "/api/layers/index"
+    },
+    {
+      "source": "/api/preview/:mapId",
+      "destination": "/api/preview/[mapId]"
+    },
+    {
       "source": "/api/styles/:name.json",
       "destination": "/api/styles/[name]?name=:name.json"
     },
     {
       "source": "/api/styles/:name",
       "destination": "/api/styles/[name]?name=:name"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
     },
     {
       "source": "/(.*)",
