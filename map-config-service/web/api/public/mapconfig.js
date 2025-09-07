@@ -136,12 +136,17 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
     }
   }
     
+  // FINAL SAFETY CHECK: Ensure no spaces in URL before returning
+  if (finalStyleUrl && typeof finalStyleUrl === 'string') {
+    finalStyleUrl = finalStyleUrl.replace(/ /g, '%20');
+  }
+  
   return {
     id: config.id,
     name: config.name,
     label: config.label,
     type: config.type,
-    // Always provide absolute URLs
+    // Always provide absolute URLs with properly encoded spaces
     style: finalStyleUrl,
     country: config.country,
     flag: config.flag,
@@ -233,10 +238,11 @@ export default async function handler(req, res) {
         let key = config.name.replace(/[^a-zA-Z0-9]/g, '');
         
         // Use the style URL from sanitizeConfig (which gets it from database)
-        // Ensure spaces are always encoded as %20 in URLs
+        // CRITICAL: Ensure spaces are ALWAYS encoded as %20 in the final output
         let styleUrl = config.style;
         if (styleUrl && typeof styleUrl === 'string') {
-          // Only encode spaces, not other characters
+          // Replace any spaces with %20 (in case something decoded them)
+          // This is safe because valid URLs should never have literal spaces
           styleUrl = styleUrl.replace(/ /g, '%20');
         }
         
