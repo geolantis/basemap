@@ -48,10 +48,16 @@ function injectApiKey(url, provider) {
   
   switch(provider) {
     case 'maptiler':
-      const maptilerKey = process.env.MAPTILER_API_KEY || 'ldV32HV5eBdmgfE7vZJI';
+      const maptilerKey = process.env.MAPTILER_API_KEY;
+      if (!maptilerKey) {
+        console.error('WARNING: MAPTILER_API_KEY not set in environment variables');
+      }
       return maptilerKey ? `${cleanUrl}${separator}key=${maptilerKey}` : cleanUrl;
     case 'clockwork':
-      const clockworkKey = process.env.CLOCKWORK_API_KEY || '9G4F5b99xO28esL8tArIO2Bbp8sGhURW5qIieYTy';
+      const clockworkKey = process.env.CLOCKWORK_API_KEY;
+      if (!clockworkKey) {
+        console.error('WARNING: CLOCKWORK_API_KEY not set in environment variables');
+      }
       // Clockwork uses x-api-key parameter
       return clockworkKey ? `${cleanUrl}${separator}x-api-key=${clockworkKey}` : cleanUrl;
     case 'bev':
@@ -64,72 +70,50 @@ function injectApiKey(url, provider) {
 
 // Sanitize configuration - NEVER expose API keys!
 function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.com') {
-  // First ensure the stored URL is clean (no keys in DB)
-  let cleanUrl = stripApiKeys(config.style_url);
-  
-  // Auto-detect provider or use specified one
-  const provider = config.requires_api_key || detectProvider(cleanUrl);
-  
-  // NEVER inject API keys in public responses! Use proxy instead
-  let styleUrl = cleanUrl;
-  let finalStyleUrl = '';
-  
   // IMPORTANT: Always use mapconfig.geolantis.com for all URLs
   const styleBaseUrl = 'https://mapconfig.geolantis.com';
   
-  // If provider needs API key, use proxy endpoint (but not for BEV - use local files)
-  if (provider && provider !== 'bev') {
-    // Map providers to proxy endpoints
-    const proxyMap = {
-      'maptiler': 'maptiler-streets-v2',
-      'clockwork': 'clockwork-streets'
-    };
-    
-    // Use proxy endpoint for commercial providers (except BEV)
-    if (proxyMap[provider]) {
-      finalStyleUrl = `${styleBaseUrl}/api/proxy/style/${proxyMap[provider]}`;
-    }
+  // Debug specific maps
+  if (config.name === 'Agrar' || config.name === 'AustriaIsolines') {
+    console.log(`DEBUG ${config.name}:`, {
+      style: config.style,
+      original_style: config.original_style,
+      hasStyle: !!config.style,
+      styleType: typeof config.style
+    });
   }
   
-  // If no final style URL yet, determine based on config
-  if (!finalStyleUrl) {
-    finalStyleUrl = styleUrl || config.public_style_url;
+  // First check if we have a style URL from the database
+  let finalStyleUrl = config.style || config.original_style || '';
+  
+  // If we have a database value, use it (might need to make it absolute)
+  if (finalStyleUrl) {
+    // Strip any API keys if present
+    finalStyleUrl = stripApiKeys(finalStyleUrl);
     
-    if (!finalStyleUrl) {
-      // Check if this is a basemap style that exists in /styles/
-      const basemapStyles = ['basemap-ortho', 'basemap-ortho-blue', 'basemap', 'basemap2', 'basemap3', 'basemap4', 'basemap5', 'basemap6', 'basemap7'];
-      const normalizedName = config.name.toLowerCase().replace(/\s+/g, '-');
-      
-      // Special handling for basemapcustom names and known basemap styles
-      if (config.name === 'basemapcustom4' || config.label === 'basemapcustom4') {
-        finalStyleUrl = `${styleBaseUrl}/styles/basemap7.json`;
-      } else if (config.name === 'Basemap Ortho' || normalizedName === 'basemap-ortho') {
-        finalStyleUrl = `${styleBaseUrl}/styles/basemap-ortho.json`;
-      } else if (config.name === 'Basemapat' || config.name === 'Basemap.at' || normalizedName === 'basemap-at') {
-        finalStyleUrl = `${styleBaseUrl}/styles/basemap.json`;  // Use basemap.json for Basemap.at
-      } else if (config.name === 'BEVLight' || config.name === 'BEV Light' || normalizedName === 'bev-light') {
-        finalStyleUrl = `${styleBaseUrl}/styles/bev-katasterlight.json`;  // Map to actual file
-      } else if (basemapStyles.includes(normalizedName) || normalizedName.includes('basemap')) {
-        finalStyleUrl = `${styleBaseUrl}/styles/${normalizedName}.json`;
-      } else {
-        finalStyleUrl = `${styleBaseUrl}/api/styles/${config.name}.json`;
-      }
-    } else if (finalStyleUrl.startsWith('/')) {
-      // Make relative URLs absolute
-      if (finalStyleUrl.startsWith('/styles/')) {
-        finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
-      } else {
-        finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
-      }
+    // Make relative URLs absolute
+    if (finalStyleUrl.startsWith('/')) {
+      finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
+    } else if (!finalStyleUrl.startsWith('http')) {
+      finalStyleUrl = `${styleBaseUrl}/${finalStyleUrl}`;
     }
+  } else {
+    // No database value, generate default based on name
+    finalStyleUrl = `${styleBaseUrl}/api/styles/${encodeURIComponent(config.name)}.json`;
   }
-    
+  
+  // FINAL SAFETY CHECK: Ensure no spaces in URL before returning
+  // Force encoding of any spaces to %20
+  if (finalStyleUrl && typeof finalStyleUrl === 'string') {
+    finalStyleUrl = finalStyleUrl.replace(/ /g, '%20');
+  }
+  
   return {
     id: config.id,
     name: config.name,
     label: config.label,
     type: config.type,
-    // Always provide absolute URLs
+    // Always provide absolute URLs with properly encoded spaces
     style: finalStyleUrl,
     country: config.country,
     flag: config.flag,
@@ -198,20 +182,7 @@ export default async function handler(req, res) {
 
     // Support legacy format for backward compatibility
     if (format === 'legacy') {
-      // Map known providers to proxy endpoints (NO API KEYS!)
-      const proxyMaps = {
-        'Global': 'maptiler-streets-v2',
-        'Global2': 'clockwork-streets',
-        'Landscape': 'maptiler-landscape',
-        'Ocean': 'maptiler-ocean',
-        'Outdoor': 'maptiler-outdoor-v2',
-        'Dataviz': 'maptiler-dataviz',
-        'BasemapDEGlobal': 'basemap-de-global',
-        'Kataster': 'bev-kataster',
-        'Kataster BEV': 'bev-kataster',
-        'Kataster BEV2': 'bev-kataster',
-        'Kataster Light': 'bev-kataster-light'
-      };
+      // Don't hardcode proxy maps - let the database style URL handle it!
       
       // Return the Android app's expected format: backgroundMaps and overlayMaps
       const legacyFormat = {
@@ -219,51 +190,28 @@ export default async function handler(req, res) {
         overlayMaps: {}
       };
 
-      // EXACT list of overlay maps from original mapconfig.json plus new BEV overlays
-      const OVERLAY_MAPS = [
-        'Kataster', 'Kataster BEV', 'Kataster BEV2', 'KatasterKTNLight',
-        'Kataster OVL', 'dkm_bev_symbole', 'flawi', 'gefahr',
-        'NZParcels', 'NSW BaseMap Overlay', 'Inspire WMS', 'BEV DKM GST',
-        // New official BEV overlays
-        'bev_kataster_amtlich', 'bev_symbole_amtlich', 'bev_kataster_orthophoto',
-        'bev_symbole_orthophoto', 'bev_kataster_light', 'bev_kataster_gis', 'bev_symbole_gis'
-      ];
-
       // Process each configuration
       configs.forEach(originalConfig => {
-        // Determine if it's an overlay BEFORE sanitization - check original metadata!
+        // Determine if it's an overlay from DATABASE metadata - no hardcoded lists!
         const isOverlay = originalConfig.metadata?.isOverlay === true ||
           originalConfig.metadata?.category === 'overlay' ||
-          OVERLAY_MAPS.some(name => name.toLowerCase() === originalConfig.name?.toLowerCase());
+          originalConfig.metadata?.overlayType !== undefined ||
+          originalConfig.type === 'overlay';
 
         // Now sanitize the config
         const config = sanitizeConfig(originalConfig, baseUrl);
         
-        // Generate a key for the map
-        let key = config.name;
+        // Transform key to remove spaces and special characters for compatibility
+        let key = config.name.replace(/[^a-zA-Z0-9]/g, '');
         
-        // Special handling for known map names to maintain compatibility
-        if (config.name === 'Global' || config.label === 'Global') {
-          key = 'Global';
-        } else if (config.name === 'Global 2' || config.label === 'Global 2') {
-          key = 'Global2';
-        } else if (config.name.includes('Basemap.de') || config.name.includes('BasemapDE')) {
-          key = 'BasemapDEGlobal';
-        } else {
-          // For others, create a clean key
-          key = config.name.replace(/[^a-zA-Z0-9]/g, '');
-        }
-        
-        // Determine the style URL - config.style already has absolute URLs from sanitizeConfig
+        // Use the style URL from sanitizeConfig (which gets it from database)
+        // CRITICAL: Ensure spaces are ALWAYS encoded as %20 in the final output
         let styleUrl = config.style;
-        
-        // Check if this is a known map that should use proxy instead
-        if (proxyMaps[config.name]) {
-          // Use secure proxy endpoint - NO API KEYS EXPOSED!
-          // Always use mapconfig.geolantis.com for consistency
-          styleUrl = `https://mapconfig.geolantis.com/api/proxy/style/${proxyMaps[config.name]}`;
+        if (styleUrl && typeof styleUrl === 'string') {
+          // Replace any spaces with %20 (in case something decoded them)
+          // This is safe because valid URLs should never have literal spaces
+          styleUrl = styleUrl.replace(/ /g, '%20');
         }
-        // Otherwise use the absolute URL from sanitizeConfig which already handles basemap styles
         
         // Create a clean entry matching the expected format
         const cleanEntry = {
