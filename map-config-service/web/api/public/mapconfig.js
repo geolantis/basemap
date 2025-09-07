@@ -137,6 +137,7 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
   }
     
   // FINAL SAFETY CHECK: Ensure no spaces in URL before returning
+  // Force encoding of any spaces to %20
   if (finalStyleUrl && typeof finalStyleUrl === 'string') {
     finalStyleUrl = finalStyleUrl.replace(/ /g, '%20');
   }
