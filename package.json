@@ -2,7 +2,6 @@
   "name": "basemap-config-api",
   "version": "1.0.0",
   "description": "Basemap Configuration Service API",
-  "type": "module",
   "dependencies": {
     "formidable": "^3.5.1",
     "@supabase/supabase-js": "^2.39.0"

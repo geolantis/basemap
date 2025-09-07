@@ -1,21 +1,6 @@
-import formidable from 'formidable';
-import fs from 'fs';
-import path from 'path';
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client if configured
-const supabase = process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY
-  ? createClient(
-      process.env.VITE_SUPABASE_URL,
-      process.env.VITE_SUPABASE_ANON_KEY
-    )
-  : null;
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+const formidable = require('formidable');
+const fs = require('fs');
+const path = require('path');
 
 // Validate Mapbox/MapLibre style
 function validateMapboxStyle(styleObject) {
@@ -52,7 +37,7 @@ function validateMapboxStyle(styleObject) {
   }
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -74,15 +59,15 @@ export default async function handler(req, res) {
     const form = formidable({
       maxFileSize: 10 * 1024 * 1024, // 10MB
       filter: function ({ mimetype }) {
-        // Only accept JSON files
-        return mimetype === 'application/json';
+        // Only accept JSON files or undefined mimetype (for some browsers)
+        return !mimetype || mimetype === 'application/json' || mimetype === 'text/plain';
       }
     });
 
     const [fields, files] = await form.parse(req);
     
     // Get the uploaded file
-    const uploadedFile = files.styleFile?.[0] || files.style?.[0];
+    const uploadedFile = files.styleFile?.[0] || files.style?.[0] || files.file?.[0];
     
     if (!uploadedFile) {
       return res.status(400).json({
@@ -168,8 +153,14 @@ export default async function handler(req, res) {
     };
 
     // If Supabase is configured, save to database
-    if (supabase) {
+    if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY) {
       try {
+        const { createClient } = require('@supabase/supabase-js');
+        const supabase = createClient(
+          process.env.VITE_SUPABASE_URL,
+          process.env.VITE_SUPABASE_ANON_KEY
+        );
+
         const { data, error } = await supabase
           .from('map_configs')
           .insert({
@@ -182,16 +173,21 @@ export default async function handler(req, res) {
 
         if (error) {
           console.error('Supabase error:', error);
-        } else {
+        } else if (data) {
           config.id = data.id;
         }
       } catch (dbError) {
         console.error('Database save error:', dbError);
+        // Continue without database save
       }
     }
 
     // Clean up temporary file
-    fs.unlinkSync(uploadedFile.filepath);
+    try {
+      fs.unlinkSync(uploadedFile.filepath);
+    } catch (cleanupError) {
+      console.error('Error cleaning up temp file:', cleanupError);
+    }
 
     // Return success response
     return res.status(200).json({
@@ -207,10 +203,10 @@ export default async function handler(req, res) {
     return res.status(500).json({
       success: false,
       error: 'Internal server error during upload',
-      details: error.message
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
-}
+};
 
 function getCountryFlag(country) {
   const flags = {
@@ -228,3 +224,10 @@ function getCountryFlag(country) {
   };
   return flags[country] || '🌍';
 }
+
+// Export config for Vercel
+module.exports.config = {
+  api: {
+    bodyParser: false,
+  },
+};
