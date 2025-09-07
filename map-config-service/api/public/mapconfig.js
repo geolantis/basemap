@@ -73,6 +73,16 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
   // IMPORTANT: Always use mapconfig.geolantis.com for all URLs
   const styleBaseUrl = 'https://mapconfig.geolantis.com';
   
+  // Debug specific maps
+  if (config.name === 'Agrar' || config.name === 'AustriaIsolines') {
+    console.log(`DEBUG ${config.name}:`, {
+      style: config.style,
+      original_style: config.original_style,
+      hasStyle: !!config.style,
+      styleType: typeof config.style
+    });
+  }
+  
   // First check if we have a style URL from the database
   let finalStyleUrl = config.style || config.original_style || '';
   
