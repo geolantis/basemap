@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Third-Party API Integration Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #718096;
+        }
+        
+        .api-info {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 4px;
+        }
+        
+        .api-url {
+            font-family: 'Courier New', monospace;
+            background: #2d3748;
+            color: #48bb78;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+        }
+        
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+        
+        select {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .stats {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #718096;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .layers-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .layer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .layer-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .layer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .layer-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+        
+        .layer-info {
+            padding: 1rem;
+        }
+        
+        .layer-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .layer-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-type {
+            background: #e6fffa;
+            color: #00897b;
+        }
+        
+        .badge-country {
+            background: #fef5e7;
+            color: #f39c12;
+        }
+        
+        .badge-overlay {
+            background: #f3e5f5;
+            color: #8e24aa;
+        }
+        
+        .badge-cache {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+            font-size: 1.25rem;
+        }
+        
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .cache-info {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.75rem;
+            color: #718096;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗺️ Third-Party API Integration Test</h1>
+            <p class="subtitle">Testing the Map Layers API with cached preview images</p>
+            
+            <div class="api-info">
+                <strong>API Endpoint:</strong>
+                <div class="api-url" id="apiUrl">Loading...</div>
+                <p style="margin-top: 1rem;">
+                    This page demonstrates how a third-party application can consume the layers API 
+                    to get all available maps with their cached preview images.
+                </p>
+            </div>
+        </header>
+        
+        <div class="controls">
+            <button onclick="fetchLayers()">🔄 Fetch All Layers</button>
+            <button onclick="fetchLayers('?overlay=false')">🗺️ Basemaps Only</button>
+            <button onclick="fetchLayers('?overlay=true')">📍 Overlays Only</button>
+            <select onchange="filterByCountry(this.value)">
+                <option value="">All Countries</option>
+                <option value="Austria">🇦🇹 Austria</option>
+                <option value="Global">🌍 Global</option>
+            </select>
+            <select onchange="filterByType(this.value)">
+                <option value="">All Types</option>
+                <option value="vtc">VTC</option>
+                <option value="wms">WMS</option>
+                <option value="wmts">WMTS</option>
+            </select>
+        </div>
+        
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-value" id="totalMaps">0</div>
+                <div class="stat-label">Total Maps</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="basemapsCount">0</div>
+                <div class="stat-label">Basemaps</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="overlaysCount">0</div>
+                <div class="stat-label">Overlays</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="cachedCount">0</div>
+                <div class="stat-label">Cached Images</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="loadTime">0</div>
+                <div class="stat-label">Load Time (ms)</div>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading layers...</p>
+        </div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="basemaps" class="layers-section" style="display: none;">
+            <h2 class="section-title">🗺️ Basemaps</h2>
+            <div class="layer-grid" id="basemapsGrid"></div>
+        </div>
+        
+        <div id="overlays" class="layers-section" style="display: none;">
+            <h2 class="section-title">📍 Overlay Layers</h2>
+            <div class="layer-grid" id="overlaysGrid"></div>
+        </div>
+    </div>
+    
+    <script>
+        // API configuration
+        const API_BASE = window.location.origin;
+        const API_ENDPOINT = '/api/layers';
+        
+        // Update API URL display
+        document.getElementById('apiUrl').textContent = `${API_BASE}${API_ENDPOINT}`;
+        
+        // Cache for loaded images
+        const imageCache = new Map();
+        let cachedImages = 0;
+        
+        // Fetch layers from API
+        async function fetchLayers(queryString = '') {
+            const startTime = performance.now();
+            
+            // Show loading state
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('basemaps').style.display = 'none';
+            document.getElementById('overlays').style.display = 'none';
+            document.getElementById('stats').style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_BASE}${API_ENDPOINT}${queryString}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const loadTime = Math.round(performance.now() - startTime);
+                
+                console.log('API Response:', data);
+                
+                // Update statistics
+                updateStats(data, loadTime);
+                
+                // Render layers
+                renderLayers(data.layers.basemaps, 'basemapsGrid');
+                renderLayers(data.layers.overlays, 'overlaysGrid');
+                
+                // Show sections
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('stats').style.display = 'grid';
+                
+                if (data.layers.basemaps.length > 0) {
+                    document.getElementById('basemaps').style.display = 'block';
+                }
+                
+                if (data.layers.overlays.length > 0) {
+                    document.getElementById('overlays').style.display = 'block';
+                }
+                
+                // Preload images for performance testing
+                preloadImages([...data.layers.basemaps, ...data.layers.overlays]);
+                
+            } catch (error) {
+                console.error('Error fetching layers:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        // Update statistics display
+        function updateStats(data, loadTime) {
+            document.getElementById('totalMaps').textContent = data.summary.totalMaps;
+            document.getElementById('basemapsCount').textContent = data.summary.basemaps;
+            document.getElementById('overlaysCount').textContent = data.summary.overlays;
+            document.getElementById('loadTime').textContent = loadTime;
+            document.getElementById('cachedCount').textContent = cachedImages;
+        }
+        
+        // Render layers grid
+        function renderLayers(layers, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            layers.forEach(layer => {
+                const card = createLayerCard(layer);
+                container.appendChild(card);
+            });
+        }
+        
+        // Create a layer card element
+        function createLayerCard(layer) {
+            const card = document.createElement('div');
+            card.className = 'layer-card';
+            
+            // Check if image is in cache
+            const isCached = imageCache.has(layer.id);
+            
+            card.innerHTML = `
+                <img 
+                    src="${layer.previewImage.url}" 
+                    alt="${layer.label}"
+                    class="layer-preview"
+                    loading="lazy"
+                    onerror="this.src='${layer.previewImage.fallbackUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2U1ZTdlYiIvPjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNmI3MjgwIiBmb250LXNpemU9IjE4Ij5ObyBQcmV2aWV3PC90ZXh0Pjwvc3ZnPg=='}'"
+                    data-layer-id="${layer.id}"
+                />
+                <div class="layer-info">
+                    <div class="layer-title">
+                        <span>${layer.flag || ''}</span>
+                        <span>${layer.label}</span>
+                    </div>
+                    <div class="layer-meta">
+                        <span class="badge badge-type">${layer.type.toUpperCase()}</span>
+                        <span class="badge badge-country">${layer.country}</span>
+                        ${layer.metadata.isOverlay ? '<span class="badge badge-overlay">Overlay</span>' : ''}
+                        ${isCached ? '<span class="badge badge-cache">Cached</span>' : ''}
+                    </div>
+                    <div class="cache-info">
+                        <strong>Cache:</strong> ${layer.previewImage.cacheControl}<br>
+                        <strong>URL:</strong> <code style="font-size: 0.65rem;">${layer.previewImage.url}</code>
+                    </div>
+                </div>
+            `;
+            
+            // Track image loading
+            const img = card.querySelector('img');
+            img.addEventListener('load', () => {
+                imageCache.set(layer.id, true);
+                cachedImages = imageCache.size;
+                document.getElementById('cachedCount').textContent = cachedImages;
+            });
+            
+            return card;
+        }
+        
+        // Preload images for caching
+        function preloadImages(layers) {
+            layers.forEach(layer => {
+                const img = new Image();
+                img.src = layer.previewImage.url;
+                img.onload = () => {
+                    imageCache.set(layer.id, true);
+                    cachedImages = imageCache.size;
+                    document.getElementById('cachedCount').textContent = cachedImages;
+                };
+            });
+        }
+        
+        // Filter by country
+        function filterByCountry(country) {
+            if (country) {
+                fetchLayers(`?country=${encodeURIComponent(country)}`);
+            } else {
+                fetchLayers();
+            }
+        }
+        
+        // Filter by type
+        function filterByType(type) {
+            if (type) {
+                fetchLayers(`?type=${type}`);
+            } else {
+                fetchLayers();
+            }
+        }
+        
+        // Load layers on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchLayers();
+        });
+    </script>
+</body>
+</html>
