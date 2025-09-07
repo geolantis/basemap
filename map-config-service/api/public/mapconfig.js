@@ -70,72 +70,28 @@ function injectApiKey(url, provider) {
 
 // Sanitize configuration - NEVER expose API keys!
 function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.com') {
-  // First ensure the stored URL is clean (no keys in DB)
-  let cleanUrl = stripApiKeys(config.style || config.style_url);
-  
-  // Auto-detect provider or use specified one
-  const provider = config.requires_api_key || detectProvider(cleanUrl);
-  
-  // NEVER inject API keys in public responses! Use proxy instead
-  let styleUrl = cleanUrl;
-  let finalStyleUrl = '';
-  
   // IMPORTANT: Always use mapconfig.geolantis.com for all URLs
   const styleBaseUrl = 'https://mapconfig.geolantis.com';
   
-  // If provider needs API key, use proxy endpoint (but not for BEV - use local files)
-  if (provider && provider !== 'bev') {
-    // Map providers to proxy endpoints
-    const proxyMap = {
-      'maptiler': 'maptiler-streets-v2',
-      'clockwork': 'clockwork-streets'
-    };
+  // First check if we have a style URL from the database
+  let finalStyleUrl = config.style || config.original_style || '';
+  
+  // If we have a database value, use it (might need to make it absolute)
+  if (finalStyleUrl) {
+    // Strip any API keys if present
+    finalStyleUrl = stripApiKeys(finalStyleUrl);
     
-    // Use proxy endpoint for commercial providers (except BEV)
-    if (proxyMap[provider]) {
-      finalStyleUrl = `${styleBaseUrl}/api/proxy/style/${proxyMap[provider]}`;
+    // Make relative URLs absolute
+    if (finalStyleUrl.startsWith('/')) {
+      finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
+    } else if (!finalStyleUrl.startsWith('http')) {
+      finalStyleUrl = `${styleBaseUrl}/${finalStyleUrl}`;
     }
+  } else {
+    // No database value, generate default based on name
+    finalStyleUrl = `${styleBaseUrl}/api/styles/${encodeURIComponent(config.name)}.json`;
   }
   
-  // If no final style URL yet, determine based on config
-  if (!finalStyleUrl) {
-    finalStyleUrl = styleUrl || config.public_style_url;
-    
-    if (!finalStyleUrl) {
-      // Use the database value - no hardcoded mappings!
-      finalStyleUrl = config.style || config.style_url || config.public_style_url;
-      
-      // If still no URL, generate a default one based on name
-      if (!finalStyleUrl) {
-        // Default fallback: use the name as the style file
-        finalStyleUrl = `/api/styles/${encodeURIComponent(config.name)}.json`;
-      }
-    }
-    
-    // URL-encode any spaces in the path (but not the domain or protocol)
-    if (finalStyleUrl) {
-      // Split URL into parts to properly encode just the path
-      if (finalStyleUrl.startsWith('/')) {
-        // For relative URLs, encode spaces in the path
-        const parts = finalStyleUrl.split('/');
-        const encodedParts = parts.map((part, index) => {
-          // Skip empty parts (from leading slash or double slashes)
-          if (part === '') return part;
-          // Encode spaces in each path segment
-          return part.replace(/ /g, '%20');
-        });
-        finalStyleUrl = encodedParts.join('/');
-        
-        // Make relative URLs absolute
-        finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
-      } else if (!finalStyleUrl.startsWith('http')) {
-        // For non-http URLs that don't start with /, treat as relative
-        finalStyleUrl = `${styleBaseUrl}/${finalStyleUrl.replace(/ /g, '%20')}`;
-      }
-      // For absolute HTTP URLs, they should already be properly encoded
-    }
-  }
-    
   // FINAL SAFETY CHECK: Ensure no spaces in URL before returning
   // Force encoding of any spaces to %20
   if (finalStyleUrl && typeof finalStyleUrl === 'string') {
