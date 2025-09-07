@@ -144,7 +144,7 @@ jobs:
     
     environment:
       name: production
-      url: https://basemap-config-editor.vercel.app
+      url: https://mapconfig.geolantis.com
     
     steps:
     - name: 📥 Checkout code
@@ -160,8 +160,7 @@ jobs:
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         working-directory: ./
         alias-domains: |
-          basemap-config-editor.vercel.app
-          basemap-editor.vercel.app
+          mapconfig.geolantis.com
           
     - name: 🏷️ Create release tag
       if: success()
@@ -192,7 +191,7 @@ jobs:
       uses: treosh/lighthouse-ci-action@v10
       with:
         urls: |
-          https://basemap-config-editor.vercel.app
+          https://mapconfig.geolantis.com
         configPath: '.lighthouserc.json'
         uploadArtifacts: true
         temporaryPublicStorage: true
@@ -209,7 +208,7 @@ jobs:
       if: needs.deploy-production.result == 'success'
       run: |
         echo "✅ Deployment to production successful!"
-        echo "🌐 URL: https://basemap-config-editor.vercel.app"
+        echo "🌐 URL: https://mapconfig.geolantis.com"
         
     - name: 📢 Deployment Failure Notification  
       if: needs.deploy-production.result == 'failure'

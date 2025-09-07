@@ -387,7 +387,12 @@ export class MapConfigService {
       // Use relative URL for production compatibility
       // In dev, this will use the dev server; in production, it will use the same domain
       const baseUrl = import.meta.env.VITE_API_URL || '';
-      const uploadUrl = baseUrl ? `${baseUrl}/api/styles/upload` : '/api/styles/upload';
+      // Check if baseUrl already ends with /api to avoid duplication
+      const uploadUrl = baseUrl 
+        ? (baseUrl.endsWith('/api') 
+            ? `${baseUrl}/styles/upload` 
+            : `${baseUrl}/api/styles/upload`)
+        : '/api/styles/upload';
       
       const response = await fetch(uploadUrl, {
         method: 'POST',
