@@ -48,10 +48,16 @@ function injectApiKey(url, provider) {
   
   switch(provider) {
     case 'maptiler':
-      const maptilerKey = process.env.MAPTILER_API_KEY || 'ldV32HV5eBdmgfE7vZJI';
+      const maptilerKey = process.env.MAPTILER_API_KEY;
+      if (!maptilerKey) {
+        console.error('WARNING: MAPTILER_API_KEY not set in environment variables');
+      }
       return maptilerKey ? `${cleanUrl}${separator}key=${maptilerKey}` : cleanUrl;
     case 'clockwork':
-      const clockworkKey = process.env.CLOCKWORK_API_KEY || '9G4F5b99xO28esL8tArIO2Bbp8sGhURW5qIieYTy';
+      const clockworkKey = process.env.CLOCKWORK_API_KEY;
+      if (!clockworkKey) {
+        console.error('WARNING: CLOCKWORK_API_KEY not set in environment variables');
+      }
       // Clockwork uses x-api-key parameter
       return clockworkKey ? `${cleanUrl}${separator}x-api-key=${clockworkKey}` : cleanUrl;
     case 'bev':
@@ -96,29 +102,17 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
     finalStyleUrl = styleUrl || config.public_style_url;
     
     if (!finalStyleUrl) {
-      // Check if this is a basemap style that exists in /styles/
-      const basemapStyles = ['basemap-ortho', 'basemap-ortho-blue', 'basemap', 'basemap2', 'basemap3', 'basemap4', 'basemap5', 'basemap6', 'basemap7'];
-      const normalizedName = config.name.toLowerCase().replace(/\s+/g, '-');
+      // Use the database value - no hardcoded mappings!
+      finalStyleUrl = config.style_url || config.style || config.public_style_url;
       
-      // Special handling for basemapcustom names and known basemap styles
-      if (config.name === 'basemapcustom4' || config.label === 'basemapcustom4') {
-        finalStyleUrl = `${styleBaseUrl}/styles/basemap7.json`;
-      } else if (config.name === 'Basemap Ortho' || normalizedName === 'basemap-ortho') {
-        finalStyleUrl = `${styleBaseUrl}/styles/basemap-ortho.json`;
-      } else if (config.name === 'Basemapat' || config.name === 'Basemap.at' || normalizedName === 'basemap-at') {
-        finalStyleUrl = `${styleBaseUrl}/styles/basemap.json`;  // Use basemap.json for Basemap.at
-      } else if (config.name === 'BEVLight' || config.name === 'BEV Light' || normalizedName === 'bev-light') {
-        finalStyleUrl = `${styleBaseUrl}/styles/bev-katasterlight.json`;  // Map to actual file
-      } else if (config.name === 'Austria Isolines') {
-        // Special case: Austria Isolines maps to austria_isolines.json
-        finalStyleUrl = `${styleBaseUrl}/styles/austria_isolines.json`;
-      } else if (basemapStyles.includes(normalizedName) || normalizedName.includes('basemap')) {
-        finalStyleUrl = `${styleBaseUrl}/styles/${normalizedName}.json`;
-      } else {
-        // For other styles, use the api/styles endpoint with URL encoding
-        finalStyleUrl = `${styleBaseUrl}/api/styles/${encodeURIComponent(config.name)}.json`;
+      // If still no URL, generate a default one based on name
+      if (!finalStyleUrl) {
+        // Default fallback: use the name as the style file
+        finalStyleUrl = `/api/styles/${encodeURIComponent(config.name)}.json`;
       }
-    } else if (finalStyleUrl.startsWith('/')) {
+    }
+    
+    if (finalStyleUrl && finalStyleUrl.startsWith('/')) {
       // Make relative URLs absolute
       if (finalStyleUrl.startsWith('/styles/')) {
         finalStyleUrl = `${styleBaseUrl}${finalStyleUrl}`;
