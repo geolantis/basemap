@@ -71,7 +71,7 @@ function injectApiKey(url, provider) {
 // Sanitize configuration - NEVER expose API keys!
 function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.com') {
   // First ensure the stored URL is clean (no keys in DB)
-  let cleanUrl = stripApiKeys(config.style_url);
+  let cleanUrl = stripApiKeys(config.style || config.style_url);
   
   // Auto-detect provider or use specified one
   const provider = config.requires_api_key || detectProvider(cleanUrl);
@@ -103,7 +103,7 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
     
     if (!finalStyleUrl) {
       // Use the database value - no hardcoded mappings!
-      finalStyleUrl = config.style_url || config.style || config.public_style_url;
+      finalStyleUrl = config.style || config.style_url || config.public_style_url;
       
       // If still no URL, generate a default one based on name
       if (!finalStyleUrl) {
