@@ -20,6 +20,10 @@
       "destination": "/api/preview/[mapId]"
     },
     {
+      "source": "/api/styles/upload",
+      "destination": "/api/styles/upload"
+    },
+    {
       "source": "/api/styles/:name.json",
       "destination": "/api/styles/[name]?name=:name.json"
     },
