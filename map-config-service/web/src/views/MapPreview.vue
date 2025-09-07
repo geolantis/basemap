@@ -42,6 +42,17 @@
               <span>Edit in Maputnik</span>
             </button>
             <button
+              @click="toggleTileInspector"
+              :class="[
+                'flex items-center space-x-2',
+                tileInspectorEnabled ? 'btn-primary' : 'btn-secondary'
+              ]"
+              title="Toggle Tile Inspector"
+            >
+              <i class="pi pi-th-large"></i>
+              <span>{{ tileInspectorEnabled ? 'Hide' : 'Show' }} Tiles</span>
+            </button>
+            <button
               @click="downloadStyleJson"
               class="btn-secondary flex items-center space-x-2"
               title="Download Style JSON"
@@ -267,6 +278,8 @@ const positionSaved = ref(false);
 const positionChanged = ref(false);
 const savingPreview = ref(false);
 const previewSaved = ref(false);
+const tileInspectorEnabled = ref(false);
+const tileInspectorLayer = ref<any>(null);
 
 // Helper function to proxy URLs through our CORS proxy when needed
 function proxyTileUrl(url: string): string {
@@ -905,6 +918,300 @@ async function savePreviewImage() {
 
 function retryLoad() {
   initializeMap();
+}
+
+function toggleTileInspector() {
+  if (!map.value) return;
+  
+  tileInspectorEnabled.value = !tileInspectorEnabled.value;
+  
+  if (tileInspectorEnabled.value) {
+    // Add tile debug layer
+    if (!map.value.getSource('tile-boundaries')) {
+      // Create a custom source that shows tile boundaries
+      map.value.addSource('tile-boundaries', {
+        type: 'vector',
+        tiles: ['https://a.tiles.mapbox.com/v4/mapbox.mapbox-streets-v8/{z}/{x}/{y}.mvt?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'],
+        maxzoom: 14
+      });
+    }
+    
+    // Add debug layers to show tile boundaries and coordinates
+    if (!map.value.getLayer('tile-boundaries-lines')) {
+      // Add tile boundary lines
+      map.value.addLayer({
+        id: 'tile-boundaries-lines',
+        type: 'line',
+        source: 'tile-boundaries',
+        'source-layer': 'admin',
+        layout: {},
+        paint: {
+          'line-color': '#ff0000',
+          'line-width': 2,
+          'line-opacity': 0.7
+        }
+      });
+      
+      // Add a custom canvas source for tile coordinates
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      
+      // Function to draw tile info on canvas
+      const drawTileInfo = () => {
+        const ctx = canvas.getContext('2d');
+        if (!ctx || !map.value) return;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.strokeStyle = '#ff0000';
+        ctx.lineWidth = 2;
+        
+        // Draw border
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+        
+        // Get current zoom level and center
+        const z = Math.floor(map.value.getZoom());
+        const bounds = map.value.getBounds();
+        
+        // Calculate tile coordinates
+        const n = Math.pow(2, z);
+        const centerLng = (bounds.getWest() + bounds.getEast()) / 2;
+        const centerLat = (bounds.getNorth() + bounds.getSouth()) / 2;
+        
+        const x = Math.floor(((centerLng + 180) / 360) * n);
+        const latRad = (centerLat * Math.PI) / 180;
+        const y = Math.floor(((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2) * n);
+        
+        // Draw tile info text
+        ctx.font = 'bold 16px monospace';
+        ctx.fillStyle = '#ff0000';
+        ctx.fillRect(5, 5, 150, 60);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(`Zoom: ${z}`, 10, 25);
+        ctx.fillText(`Tile: ${x}, ${y}`, 10, 45);
+        ctx.fillText(`Total: ${n}x${n}`, 10, 65);
+      };
+      
+      // Update on map move
+      map.value.on('move', drawTileInfo);
+      map.value.on('zoom', drawTileInfo);
+      
+      // Initial draw
+      drawTileInfo();
+      
+      // Create image source from canvas
+      map.value.addSource('tile-info-overlay', {
+        type: 'canvas',
+        canvas: canvas,
+        coordinates: [
+          [bounds.getWest(), bounds.getNorth()],
+          [bounds.getEast(), bounds.getNorth()],
+          [bounds.getEast(), bounds.getSouth()],
+          [bounds.getWest(), bounds.getSouth()]
+        ],
+        animate: true
+      });
+    }
+    
+    // Add grid overlay showing tile boundaries
+    const bounds = map.value.getBounds();
+    const z = Math.floor(map.value.getZoom());
+    const tileSize = 256 * Math.pow(2, map.value.getZoom() - z);
+    
+    // Create GeoJSON for tile grid
+    const features = [];
+    const n = Math.pow(2, z);
+    
+    for (let x = 0; x < n; x++) {
+      for (let y = 0; y < n; y++) {
+        // Convert tile coordinates to lat/lng
+        const nw = {
+          lng: (x / n) * 360 - 180,
+          lat: Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI
+        };
+        const se = {
+          lng: ((x + 1) / n) * 360 - 180,
+          lat: Math.atan(Math.sinh(Math.PI * (1 - 2 * (y + 1) / n))) * 180 / Math.PI
+        };
+        
+        // Only add tiles in current viewport
+        if (se.lng >= bounds.getWest() && nw.lng <= bounds.getEast() &&
+            nw.lat >= bounds.getSouth() && se.lat <= bounds.getNorth()) {
+          features.push({
+            type: 'Feature',
+            properties: {
+              tile: `${z}/${x}/${y}`
+            },
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [nw.lng, nw.lat],
+                [se.lng, nw.lat],
+                [se.lng, se.lat],
+                [nw.lng, se.lat],
+                [nw.lng, nw.lat]
+              ]
+            }
+          });
+          
+          // Add label for tile coordinates
+          features.push({
+            type: 'Feature',
+            properties: {
+              tile: `${z}/${x}/${y}`,
+              x: x,
+              y: y,
+              z: z
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [(nw.lng + se.lng) / 2, (nw.lat + se.lat) / 2]
+            }
+          });
+        }
+      }
+    }
+    
+    // Add or update the tile grid source
+    if (map.value.getSource('tile-grid')) {
+      (map.value.getSource('tile-grid') as any).setData({
+        type: 'FeatureCollection',
+        features: features
+      });
+    } else {
+      map.value.addSource('tile-grid', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: features
+        }
+      });
+      
+      // Add tile boundary lines
+      map.value.addLayer({
+        id: 'tile-grid-lines',
+        type: 'line',
+        source: 'tile-grid',
+        filter: ['==', '$type', 'LineString'],
+        paint: {
+          'line-color': '#ff0000',
+          'line-width': 2,
+          'line-opacity': 0.7,
+          'line-dasharray': [2, 2]
+        }
+      });
+      
+      // Add tile coordinate labels
+      map.value.addLayer({
+        id: 'tile-grid-labels',
+        type: 'symbol',
+        source: 'tile-grid',
+        filter: ['==', '$type', 'Point'],
+        layout: {
+          'text-field': '{tile}',
+          'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+          'text-size': 14,
+          'text-anchor': 'center'
+        },
+        paint: {
+          'text-color': '#ff0000',
+          'text-halo-color': '#ffffff',
+          'text-halo-width': 2
+        }
+      });
+    }
+    
+    // Update grid on map move
+    const updateTileGrid = () => {
+      if (!map.value || !map.value.getSource('tile-grid')) return;
+      
+      const bounds = map.value.getBounds();
+      const z = Math.floor(map.value.getZoom());
+      const features = [];
+      const n = Math.pow(2, z);
+      
+      // Limit the number of tiles shown to prevent performance issues
+      const minX = Math.max(0, Math.floor(((bounds.getWest() + 180) / 360) * n) - 1);
+      const maxX = Math.min(n - 1, Math.ceil(((bounds.getEast() + 180) / 360) * n) + 1);
+      const minY = Math.max(0, Math.floor(((1 - Math.log(Math.tan((bounds.getNorth() * Math.PI) / 180) + 1 / Math.cos((bounds.getNorth() * Math.PI) / 180)) / Math.PI) / 2) * n) - 1);
+      const maxY = Math.min(n - 1, Math.ceil(((1 - Math.log(Math.tan((bounds.getSouth() * Math.PI) / 180) + 1 / Math.cos((bounds.getSouth() * Math.PI) / 180)) / Math.PI) / 2) * n) + 1);
+      
+      for (let x = minX; x <= maxX; x++) {
+        for (let y = minY; y <= maxY; y++) {
+          const nw = {
+            lng: (x / n) * 360 - 180,
+            lat: Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI
+          };
+          const se = {
+            lng: ((x + 1) / n) * 360 - 180,
+            lat: Math.atan(Math.sinh(Math.PI * (1 - 2 * (y + 1) / n))) * 180 / Math.PI
+          };
+          
+          features.push({
+            type: 'Feature',
+            properties: {
+              tile: `${z}/${x}/${y}`
+            },
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [nw.lng, nw.lat],
+                [se.lng, nw.lat],
+                [se.lng, se.lat],
+                [nw.lng, se.lat],
+                [nw.lng, nw.lat]
+              ]
+            }
+          });
+          
+          features.push({
+            type: 'Feature',
+            properties: {
+              tile: `${z}/${x}/${y}`,
+              x: x,
+              y: y,
+              z: z
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [(nw.lng + se.lng) / 2, (nw.lat + se.lat) / 2]
+            }
+          });
+        }
+      }
+      
+      (map.value.getSource('tile-grid') as any).setData({
+        type: 'FeatureCollection',
+        features: features
+      });
+    };
+    
+    map.value.on('moveend', updateTileGrid);
+    map.value.on('zoomend', updateTileGrid);
+    
+  } else {
+    // Remove tile debug layers
+    if (map.value.getLayer('tile-grid-labels')) {
+      map.value.removeLayer('tile-grid-labels');
+    }
+    if (map.value.getLayer('tile-grid-lines')) {
+      map.value.removeLayer('tile-grid-lines');
+    }
+    if (map.value.getSource('tile-grid')) {
+      map.value.removeSource('tile-grid');
+    }
+    if (map.value.getLayer('tile-boundaries-lines')) {
+      map.value.removeLayer('tile-boundaries-lines');
+    }
+    if (map.value.getSource('tile-boundaries')) {
+      map.value.removeSource('tile-boundaries');
+    }
+    
+    // Remove event listeners
+    map.value.off('moveend', () => {});
+    map.value.off('zoomend', () => {});
+  }
 }
 
 // Handle location selection from search
