@@ -229,11 +229,16 @@ export default async function handler(req, res) {
         // Now sanitize the config
         const config = sanitizeConfig(originalConfig, baseUrl);
         
-        // Use the name from database as the key - no transformations!
-        let key = config.name;
+        // Transform key to remove spaces and special characters for compatibility
+        let key = config.name.replace(/[^a-zA-Z0-9]/g, '');
         
         // Use the style URL from sanitizeConfig (which gets it from database)
+        // Ensure spaces are always encoded as %20 in URLs
         let styleUrl = config.style;
+        if (styleUrl && typeof styleUrl === 'string') {
+          // Only encode spaces, not other characters
+          styleUrl = styleUrl.replace(/ /g, '%20');
+        }
         
         // Create a clean entry matching the expected format
         const cleanEntry = {
