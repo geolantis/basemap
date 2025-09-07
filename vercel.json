@@ -8,12 +8,6 @@
     },
     "api/**/*.js": {
       "maxDuration": 30
-    },
-    "map-config-service/web/api/**/*.ts": {
-      "maxDuration": 30
-    },
-    "map-config-service/web/api/**/*.js": {
-      "maxDuration": 30
     }
   },
   "rewrites": [
