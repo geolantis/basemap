@@ -1,6 +1,62 @@
-const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
+
+// Helper to parse multipart form data manually
+async function parseMultipartForm(req) {
+  return new Promise((resolve, reject) => {
+    let data = Buffer.alloc(0);
+    
+    req.on('data', chunk => {
+      data = Buffer.concat([data, chunk]);
+    });
+    
+    req.on('end', () => {
+      try {
+        const boundary = req.headers['content-type'].split('boundary=')[1];
+        if (!boundary) {
+          throw new Error('No boundary found in multipart form');
+        }
+        
+        const parts = data.toString('binary').split(`--${boundary}`);
+        const result = { fields: {}, files: {} };
+        
+        for (const part of parts) {
+          if (part.includes('Content-Disposition: form-data')) {
+            const nameMatch = part.match(/name="([^"]+)"/);
+            const filenameMatch = part.match(/filename="([^"]+)"/);
+            
+            if (nameMatch) {
+              const fieldName = nameMatch[1];
+              const contentStart = part.indexOf('\r\n\r\n') + 4;
+              const contentEnd = part.lastIndexOf('\r\n');
+              
+              if (contentEnd > contentStart) {
+                const content = part.substring(contentStart, contentEnd);
+                
+                if (filenameMatch) {
+                  // It's a file
+                  result.files[fieldName] = {
+                    filename: filenameMatch[1],
+                    content: content
+                  };
+                } else {
+                  // It's a regular field
+                  result.fields[fieldName] = content;
+                }
+              }
+            }
+          }
+        }
+        
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+    
+    req.on('error', reject);
+  });
+}
 
 // Validate Mapbox/MapLibre style
 function validateMapboxStyle(styleObject) {
@@ -24,20 +80,32 @@ function validateMapboxStyle(styleObject) {
       return { valid: false, error: 'Layers must be an array' };
     }
 
-    for (let i = 0; i < styleObject.layers.length; i++) {
-      const layer = styleObject.layers[i];
-      if (!layer.id || !layer.type) {
-        return { valid: false, error: `Layer ${i} missing required 'id' or 'type' property` };
-      }
-    }
-
     return { valid: true };
   } catch (error) {
     return { valid: false, error: `Style validation error: ${error.message}` };
   }
 }
 
+function getCountryFlag(country) {
+  const flags = {
+    'Global': '🌍',
+    'Austria': '🇦🇹',
+    'Switzerland': '🇨🇭',
+    'Germany': '🇩🇪',
+    'France': '🇫🇷',
+    'Italy': '🇮🇹',
+    'United States': '🇺🇸',
+    'United Kingdom': '🇬🇧',
+    'Canada': '🇨🇦',
+    'Australia': '🇦🇺',
+    'New Zealand': '🇳🇿',
+  };
+  return flags[country] || '🌍';
+}
+
 module.exports = async function handler(req, res) {
+  console.log('Upload endpoint called:', req.method);
+  
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -55,34 +123,35 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Parse multipart form data
-    const form = formidable({
-      maxFileSize: 10 * 1024 * 1024, // 10MB
-      filter: function ({ mimetype }) {
-        // Only accept JSON files or undefined mimetype (for some browsers)
-        return !mimetype || mimetype === 'application/json' || mimetype === 'text/plain';
-      }
-    });
-
-    const [fields, files] = await form.parse(req);
+    console.log('Parsing multipart form...');
     
-    // Get the uploaded file
-    const uploadedFile = files.styleFile?.[0] || files.style?.[0] || files.file?.[0];
+    // Parse the multipart form data
+    const formData = await parseMultipartForm(req);
+    console.log('Form fields:', Object.keys(formData.fields));
+    console.log('Files:', Object.keys(formData.files));
     
-    if (!uploadedFile) {
+    // Find the uploaded file (try different field names)
+    const fileData = formData.files.styleFile || 
+                    formData.files.style || 
+                    formData.files.file ||
+                    Object.values(formData.files)[0]; // Get first file if field name is different
+    
+    if (!fileData) {
+      console.log('No file found in upload');
       return res.status(400).json({
         success: false,
         error: 'No file uploaded. Please upload a JSON file.'
       });
     }
 
-    // Read and parse the file
-    const fileContent = fs.readFileSync(uploadedFile.filepath, 'utf8');
-    let styleObject;
+    console.log('Processing file:', fileData.filename);
     
+    // Parse the JSON content
+    let styleObject;
     try {
-      styleObject = JSON.parse(fileContent);
+      styleObject = JSON.parse(fileData.content);
     } catch (parseError) {
+      console.log('JSON parse error:', parseError.message);
       return res.status(400).json({
         success: false,
         error: 'Invalid JSON file. Please ensure the file contains valid JSON.'
@@ -92,19 +161,21 @@ module.exports = async function handler(req, res) {
     // Validate the style
     const validation = validateMapboxStyle(styleObject);
     if (!validation.valid) {
+      console.log('Style validation failed:', validation.error);
       return res.status(400).json({
         success: false,
         error: `Invalid Mapbox/MapLibre style: ${validation.error}`
       });
     }
 
-    // Extract form fields
-    const name = fields.name?.[0] || uploadedFile.originalFilename?.replace('.json', '') || 'custom-style';
-    const label = fields.label?.[0] || name;
-    const country = fields.country?.[0] || 'Global';
-    const type = fields.type?.[0] || 'vtc';
-    const mapCategory = fields.map_category?.[0] || 'background';
-    const description = fields.description?.[0] || '';
+    // Extract form fields with defaults
+    const originalFilename = fileData.filename || 'style.json';
+    const name = formData.fields.name || originalFilename.replace('.json', '') || 'custom-style';
+    const label = formData.fields.label || name;
+    const country = formData.fields.country || 'Global';
+    const type = formData.fields.type || 'vtc';
+    const mapCategory = formData.fields.map_category || 'background';
+    const description = formData.fields.description || '';
 
     // Generate filename
     const timestamp = Date.now();
@@ -116,6 +187,7 @@ module.exports = async function handler(req, res) {
     
     // Ensure directory exists
     if (!fs.existsSync(stylesDir)) {
+      console.log('Creating styles directory:', stylesDir);
       fs.mkdirSync(stylesDir, { recursive: true });
     }
     
@@ -131,6 +203,7 @@ module.exports = async function handler(req, res) {
     };
     
     // Write the file
+    console.log('Writing file to:', filePath);
     fs.writeFileSync(filePath, JSON.stringify(styleObject, null, 2));
     
     // Create map configuration object
@@ -152,43 +225,8 @@ module.exports = async function handler(req, res) {
       version: '1.0.0'
     };
 
-    // If Supabase is configured, save to database
-    if (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY) {
-      try {
-        const { createClient } = require('@supabase/supabase-js');
-        const supabase = createClient(
-          process.env.VITE_SUPABASE_URL,
-          process.env.VITE_SUPABASE_ANON_KEY
-        );
-
-        const { data, error } = await supabase
-          .from('map_configs')
-          .insert({
-            ...config,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
-          .select()
-          .single();
-
-        if (error) {
-          console.error('Supabase error:', error);
-        } else if (data) {
-          config.id = data.id;
-        }
-      } catch (dbError) {
-        console.error('Database save error:', dbError);
-        // Continue without database save
-      }
-    }
-
-    // Clean up temporary file
-    try {
-      fs.unlinkSync(uploadedFile.filepath);
-    } catch (cleanupError) {
-      console.error('Error cleaning up temp file:', cleanupError);
-    }
-
+    console.log('Upload successful:', filename);
+    
     // Return success response
     return res.status(200).json({
       success: true,
@@ -203,27 +241,10 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({
       success: false,
       error: 'Internal server error during upload',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: error.message
     });
   }
 };
-
-function getCountryFlag(country) {
-  const flags = {
-    'Global': '🌍',
-    'Austria': '🇦🇹',
-    'Switzerland': '🇨🇭',
-    'Germany': '🇩🇪',
-    'France': '🇫🇷',
-    'Italy': '🇮🇹',
-    'United States': '🇺🇸',
-    'United Kingdom': '🇬🇧',
-    'Canada': '🇨🇦',
-    'Australia': '🇦🇺',
-    'New Zealand': '🇳🇿',
-  };
-  return flags[country] || '🌍';
-}
 
 // Export config for Vercel
 module.exports.config = {
