@@ -205,5 +205,5 @@ function serveGeneratedPlaceholder(
 }
 
 export const config = {
-  runtime: 'edge', // Use Vercel Edge Runtime for better performance
+  runtime: 'nodejs', // Use Node.js runtime for Supabase compatibility
 };

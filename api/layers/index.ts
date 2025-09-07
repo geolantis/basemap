@@ -198,5 +198,5 @@ export default async function handler(
 }
 
 export const config = {
-  runtime: 'edge', // Use Vercel Edge Runtime for global distribution
+  runtime: 'nodejs', // Use Node.js runtime for Supabase compatibility
 };
