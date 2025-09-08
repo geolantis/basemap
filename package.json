@@ -4,6 +4,9 @@
   "description": "Basemap Configuration API",
   "private": true,
   "type": "module",
+  "scripts": {
+    "build": "echo 'No build required for API functions'"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
     "formidable": "^3.5.1"
