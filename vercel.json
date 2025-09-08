@@ -30,6 +30,14 @@
       "destination": "/api/styles/[name]?name=:name"
     },
     {
+      "source": "/api/version",
+      "destination": "/api/version"
+    },
+    {
+      "source": "/api/test-deploy",
+      "destination": "/api/test-deploy"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
