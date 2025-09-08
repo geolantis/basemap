@@ -75,6 +75,7 @@ function getCountryFlag(country) {
 
 export default async function handler(req, res) {
   console.log('=== UPLOAD HANDLER START (map-config-service/web) ===');
+  console.log('Handler Version: v4-2025-01-10-final');
   console.log('Method:', req.method);
   console.log('Environment variables present:', {
     VITE_SUPABASE_URL: !!process.env.VITE_SUPABASE_URL,
@@ -88,6 +89,21 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // Add GET method for version check
+  if (req.method === 'GET') {
+    return res.status(200).json({
+      handler: 'upload.js',
+      version: 'v4-2025-01-10-final',
+      location: 'map-config-service/web/api/styles/upload.js',
+      features: {
+        countryConversion: true,
+        correctStylePath: true,
+        reducedMetadata: true,
+        fileStorage: 'public/styles/'
+      }
+    });
   }
 
   if (req.method !== 'POST') {
