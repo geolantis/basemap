@@ -1,4 +1,6 @@
 {
+  "buildCommand": "cd map-config-service/web && npm install && npm run build",
+  "outputDirectory": "map-config-service/web/dist",
   "functions": {
     "api/**/*.js": {
       "maxDuration": 30
@@ -6,36 +8,12 @@
   },
   "rewrites": [
     {
-      "source": "/api/layers",
-      "destination": "/api/layers/index"
-    },
-    {
-      "source": "/api/preview/:mapId",
-      "destination": "/api/preview/[mapId]"
-    },
-    {
-      "source": "/api/styles/upload",
-      "destination": "/api/styles/upload"
-    },
-    {
-      "source": "/api/styles/:name.json",
-      "destination": "/api/styles/[name]?name=:name.json"
-    },
-    {
-      "source": "/api/styles/:name",
-      "destination": "/api/styles/[name]?name=:name"
-    },
-    {
-      "source": "/api/version",
-      "destination": "/api/version"
-    },
-    {
-      "source": "/api/test-deploy",
-      "destination": "/api/test-deploy"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/$1"
     }
   ]
 }
