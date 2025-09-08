@@ -368,28 +368,18 @@ const tabs = computed(() => {
   return countryTabs;
 });
 
-// EXACT list of overlay maps from original mapconfig.json
-const OVERLAY_MAPS = [
-  'Kataster',
-  'Kataster BEV',
-  'Kataster BEV2',
-  'KatasterKTNLight',
-  'Kataster OVL',
-  'dkm_bev_symbole',
-  'flawi',
-  'gefahr',
-  'Austria Isolines',
-  'NZParcels',
-  'NSW BaseMap Overlay',
-  'Inspire WMS',
-  'BEV DKM GST'
-];
-
 // Helper function to determine if a map is an overlay
-// ONLY these 13 maps are overlays, everything else is background
+// Check metadata.isOverlay first, then map_category as fallback
 const isOverlay = (config: MapConfig) => {
-  return config.map_category === 'overlay' ||
-    OVERLAY_MAPS.some(name => name.toLowerCase() === config.name?.toLowerCase());
+  // Check if metadata has isOverlay flag
+  if (config.metadata && typeof config.metadata === 'object') {
+    if ('isOverlay' in config.metadata) {
+      return config.metadata.isOverlay === true;
+    }
+  }
+  
+  // Fallback to map_category field
+  return config.map_category === 'overlay';
 };
 
 // Category counts

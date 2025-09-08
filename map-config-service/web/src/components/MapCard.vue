@@ -174,27 +174,18 @@ const previewUrl = computed(() => {
   return props.config.previewImageUrl || null;
 });
 
-// EXACT list of overlay maps - ONLY these 13!
-const OVERLAY_MAPS = [
-  'Kataster',
-  'Kataster BEV',
-  'Kataster BEV2',
-  'KatasterKTNLight',
-  'Kataster OVL',
-  'dkm_bev_symbole',
-  'flawi',
-  'gefahr',
-  'Austria Isolines',
-  'NZParcels',
-  'NSW BaseMap Overlay',
-  'Inspire WMS',
-  'BEV DKM GST'
-];
-
 // Determine if this is an overlay map
+// Check metadata.isOverlay first, then map_category as fallback
 const isOverlay = computed(() => {
-  return props.config.map_category === 'overlay' ||
-    OVERLAY_MAPS.some(name => name.toLowerCase() === props.config.name?.toLowerCase());
+  // Check if metadata has isOverlay flag
+  if (props.config.metadata && typeof props.config.metadata === 'object') {
+    if ('isOverlay' in props.config.metadata) {
+      return props.config.metadata.isOverlay === true;
+    }
+  }
+  
+  // Fallback to map_category field
+  return props.config.map_category === 'overlay';
 });
 
 // Handle image loading errors
