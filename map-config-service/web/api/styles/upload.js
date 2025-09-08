@@ -153,7 +153,23 @@ export default async function handler(req, res) {
     // Extract form fields with defaults from style object
     const name = fields.name?.[0] || styleObject.name || `custom-style-${Date.now()}`;
     const label = fields.label?.[0] || styleObject.name || 'Custom Style';
-    const country = fields.country?.[0] || 'Global';
+    let country = fields.country?.[0] || 'Global';
+    
+    // Convert country codes to full names
+    const countryMap = {
+      'at': 'Austria',
+      'de': 'Germany',
+      'ch': 'Switzerland',
+      'fr': 'France',
+      'it': 'Italy',
+      'us': 'USA',
+      'uk': 'UK',
+      'global': 'Global'
+    };
+    if (countryMap[country.toLowerCase()]) {
+      country = countryMap[country.toLowerCase()];
+    }
+    
     const type = fields.type?.[0] || 'vtc';
     const mapCategory = fields.map_category?.[0] || 'background';
     const description = fields.description?.[0] || '';
@@ -161,7 +177,7 @@ export default async function handler(req, res) {
     // Generate unique filename
     const timestamp = Date.now();
     const filename = `${name.replace(/[^a-z0-9]/gi, '-')}-${timestamp}.json`;
-    const styleUrl = `/styles/${filename}`;
+    const styleUrl = `/styles/${filename}`;  // This should match where other styles are stored
 
     // Ensure unique name for database
     const uniqueName = `${name}-${timestamp}`;
@@ -179,8 +195,11 @@ export default async function handler(req, res) {
         uploadedAt: new Date().toISOString(),
         filename: filename,
         description: description,
-        styleData: styleObject,
-        map_category: mapCategory
+        map_category: mapCategory,
+        // Don't store the full style in metadata - it's too large and stored as a file
+        style_name: styleObject.name || label,
+        sources_count: Object.keys(styleObject.sources || {}).length,
+        layers_count: (styleObject.layers || []).length
       },
       is_active: true,
       version: 1,
@@ -249,7 +268,19 @@ export default async function handler(req, res) {
     }
     
     const stylePath = path.join(stylesDir, filename);
-    fs.writeFileSync(stylePath, JSON.stringify(styleObject, null, 2));
+    
+    // Ensure the style object has all required fields for MapLibre
+    const finalStyleObject = {
+      ...styleObject,
+      name: styleObject.name || label,
+      metadata: {
+        ...(styleObject.metadata || {}),
+        generated: new Date().toISOString(),
+        source: 'upload'
+      }
+    };
+    
+    fs.writeFileSync(stylePath, JSON.stringify(finalStyleObject, null, 2));
     console.log('Style file saved to:', stylePath);
 
     // Clean up temporary file
