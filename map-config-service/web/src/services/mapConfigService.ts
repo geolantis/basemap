@@ -21,6 +21,33 @@ export class MapConfigService {
     return MapConfigService.instance;
   }
 
+  // Helper function to transform database record to frontend format
+  private transformDbToFrontend(item: any): MapConfig {
+    return {
+      id: item.id,
+      name: item.name,
+      label: item.label,
+      type: item.type,
+      style: item.style,
+      originalStyle: item.original_style,
+      country: item.country,
+      flag: item.flag,
+      layers: item.layers || [],
+      metadata: item.metadata || {},
+      version: item.version,
+      isActive: item.is_active,
+      createdAt: item.created_at,
+      updatedAt: item.updated_at,
+      createdBy: item.created_by,
+      previewImageUrl: item.preview_image_url,
+      center: item.center,
+      zoom: item.zoom,
+      bearing: item.bearing,
+      pitch: item.pitch,
+      map_category: item.map_category // Include map_category field
+    };
+  }
+
   // Get all map configurations
   async getAll(): Promise<MapConfig[]> {
     if (!this.useSupabase) {
@@ -57,28 +84,7 @@ export class MapConfigService {
       }
       
       // Transform database fields to match frontend expectations
-      const transformedData = data.map((item: any) => ({
-        id: item.id,
-        name: item.name,
-        label: item.label,
-        type: item.type,
-        style: item.style,
-        originalStyle: item.original_style, // Convert snake_case to camelCase
-        country: item.country,
-        flag: item.flag,
-        layers: item.layers || [],
-        metadata: item.metadata || {},
-        version: item.version,
-        isActive: item.is_active, // Convert snake_case to camelCase
-        createdAt: item.created_at, // Convert snake_case to camelCase
-        updatedAt: item.updated_at, // Convert snake_case to camelCase
-        createdBy: item.created_by, // Convert snake_case to camelCase
-        previewImageUrl: item.preview_image_url, // Convert snake_case to camelCase
-        center: item.center,
-        zoom: item.zoom,
-        bearing: item.bearing,
-        pitch: item.pitch
-      }));
+      const transformedData = data.map((item: any) => this.transformDbToFrontend(item));
       
       console.log('First transformed config:', transformedData[0]);
       
@@ -109,28 +115,7 @@ export class MapConfigService {
       
       // Transform the response to camelCase
       if (data) {
-        return {
-          id: data.id,
-          name: data.name,
-          label: data.label,
-          type: data.type,
-          style: data.style,
-          originalStyle: data.original_style,
-          country: data.country,
-          flag: data.flag,
-          layers: data.layers || [],
-          metadata: data.metadata || {},
-          version: data.version,
-          isActive: data.is_active,
-          createdAt: data.created_at,
-          updatedAt: data.updated_at,
-          createdBy: data.created_by,
-          previewImageUrl: data.preview_image_url,
-          center: data.center,
-          zoom: data.zoom,
-          bearing: data.bearing,
-          pitch: data.pitch
-        };
+        return this.transformDbToFrontend(data);
       }
       
       return null;
@@ -160,7 +145,7 @@ export class MapConfigService {
 
       if (error) throw error;
       
-      return data;
+      return data ? this.transformDbToFrontend(data) : null;
     } catch (error) {
       console.error('Error creating config:', error);
       throw error;
@@ -219,6 +204,7 @@ export class MapConfigService {
       if (updates.zoom !== undefined) dbUpdates.zoom = updates.zoom;
       if (updates.bearing !== undefined) dbUpdates.bearing = updates.bearing;
       if (updates.pitch !== undefined) dbUpdates.pitch = updates.pitch;
+      if (updates.map_category !== undefined) dbUpdates.map_category = updates.map_category;
       
       const { data, error } = await supabase
         .from('map_configs')
@@ -231,28 +217,7 @@ export class MapConfigService {
       
       // Transform the response back to camelCase
       if (data) {
-        return {
-          id: data.id,
-          name: data.name,
-          label: data.label,
-          type: data.type,
-          style: data.style,
-          originalStyle: data.original_style,
-          country: data.country,
-          flag: data.flag,
-          layers: data.layers || [],
-          metadata: data.metadata || {},
-          version: data.version,
-          isActive: data.is_active,
-          createdAt: data.created_at,
-          updatedAt: data.updated_at,
-          createdBy: data.created_by,
-          previewImageUrl: data.preview_image_url,
-          center: data.center,
-          zoom: data.zoom,
-          bearing: data.bearing,
-          pitch: data.pitch
-        };
+        return this.transformDbToFrontend(data);
       }
       
       return null;
@@ -349,7 +314,7 @@ export class MapConfigService {
 
       if (error) throw error;
       
-      return data || [];
+      return (data || []).map((item: any) => this.transformDbToFrontend(item));
     } catch (error) {
       console.error('Error searching configs:', error);
       return [];
@@ -374,7 +339,7 @@ export class MapConfigService {
 
       if (error) throw error;
       
-      return data || [];
+      return (data || []).map((item: any) => this.transformDbToFrontend(item));
     } catch (error) {
       console.error('Error fetching configs by country:', error);
       return [];
