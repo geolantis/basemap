@@ -1,12 +1,10 @@
 {
-  "buildCommand": "cd map-config-service/web && npm run build",
-  "installCommand": "cd map-config-service/web && npm install",
-  "outputDirectory": "map-config-service/web/dist",
+  "root": "map-config-service/web",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": "dist",
   "functions": {
-    "map-config-service/web/api/**/*.ts": {
-      "maxDuration": 30
-    },
-    "map-config-service/web/api/**/*.js": {
+    "api/**/*.js": {
       "maxDuration": 30
     }
   },
