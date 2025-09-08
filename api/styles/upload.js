@@ -78,7 +78,9 @@ function getCountryFlag(country) {
 }
 
 export default async function handler(req, res) {
-  console.log('Upload handler called with method:', req.method);
+  console.log('=== UPLOAD HANDLER START ===');
+  console.log('Method:', req.method);
+  console.log('Headers:', req.headers);
   
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -107,7 +109,9 @@ export default async function handler(req, res) {
 
     const [fields, files] = await form.parse(req);
     
-    console.log('Form parsed. Fields:', Object.keys(fields), 'Files:', Object.keys(files));
+    console.log('Form parsed successfully');
+    console.log('Fields received:', Object.keys(fields));
+    console.log('Files received:', Object.keys(files));
     
     // Get the uploaded file
     const uploadedFile = files.styleFile?.[0] || files.style?.[0] || files.file?.[0];
@@ -120,17 +124,24 @@ export default async function handler(req, res) {
       });
     }
 
-    console.log('File found:', uploadedFile.originalFilename);
+    console.log('File found:', {
+      originalFilename: uploadedFile.originalFilename,
+      filepath: uploadedFile.filepath,
+      mimetype: uploadedFile.mimetype,
+      size: uploadedFile.size
+    });
 
     // Read the file content
     const { readFileSync } = await import('fs');
     const fileContent = readFileSync(uploadedFile.filepath, 'utf8');
+    console.log('File content length:', fileContent.length);
     
     // Parse JSON
     let styleObject;
     try {
       styleObject = JSON.parse(fileContent);
       console.log('JSON parsed successfully');
+      console.log('Style name from JSON:', styleObject.name);
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       return res.status(400).json({
@@ -159,13 +170,22 @@ export default async function handler(req, res) {
     const mapCategory = fields.map_category?.[0] || 'background';
     const description = fields.description?.[0] || '';
 
+    console.log('Form field values:', {
+      name: name,
+      label: label,
+      country: country,
+      type: type,
+      mapCategory: mapCategory
+    });
+
     const timestamp = Date.now();
     const filename = `${name.replace(/[^a-z0-9]/gi, '-')}-${timestamp}.json`;
     const styleUrl = `/api/styles/temp/${filename}`;
 
-    // Prepare the configuration object
-    const config = {
-      name: name,
+    // Prepare the configuration object - ensure unique name
+    const uniqueName = `${name}-${timestamp}`;
+    const insertData = {
+      name: uniqueName,
       label: label,
       type: type,
       style: styleUrl,
@@ -177,60 +197,64 @@ export default async function handler(req, res) {
         filename: filename,
         description: description,
         styleData: styleObject,
-        // Store map_category in metadata since the column doesn't exist
         map_category: mapCategory
       },
       is_active: true,
-      version: '1.0.0'
+      version: 1,  // Use number, not string
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
 
-    console.log('Attempting to save to Supabase map_configs table...');
-    console.log('Config to save:', {
-      name: config.name,
-      label: config.label,
-      type: config.type,
-      country: config.country
-    });
+    console.log('=== ATTEMPTING DATABASE INSERT ===');
+    console.log('Supabase URL:', supabaseUrl);
+    console.log('Insert data:', JSON.stringify(insertData, null, 2));
 
-    // Save to Supabase map_configs table (the correct and only table)
+    // Save to Supabase map_configs table
     let saveSuccessful = false;
     let savedData = null;
+    let dbError = null;
     
     try {
       const { data, error } = await supabase
         .from('map_configs')
-        .insert([{
-          name: config.name,
-          label: config.label,
-          type: config.type,
-          style: config.style,
-          original_style: config.original_style,
-          country: config.country,
-          flag: config.flag,
-          metadata: config.metadata,
-          is_active: config.is_active,
-          version: config.version,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }])
+        .insert([insertData])
         .select()
         .single();
 
       if (error) {
-        console.error('Supabase insert error:', error);
-        console.error('Error details:', JSON.stringify(error, null, 2));
+        dbError = error;
+        console.error('=== SUPABASE INSERT ERROR ===');
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+        console.error('Error details:', error.details);
+        console.error('Error hint:', error.hint);
+        console.error('Full error object:', JSON.stringify(error, null, 2));
+        
+        // Return error response if database save fails
+        return res.status(500).json({
+          success: false,
+          error: 'Database save failed',
+          details: error.message,
+          hint: error.hint,
+          code: error.code
+        });
       } else if (data) {
-        console.log('Successfully saved to Supabase with ID:', data.id);
+        console.log('=== DATABASE INSERT SUCCESSFUL ===');
+        console.log('Saved record ID:', data.id);
+        console.log('Saved record name:', data.name);
         savedData = data;
         saveSuccessful = true;
       }
     } catch (dbError) {
-      console.error('Database save error:', dbError);
-      console.error('Error stack:', dbError.stack);
-    }
-
-    if (saveSuccessful && savedData) {
-      config.id = savedData.id;
+      console.error('=== DATABASE EXCEPTION ===');
+      console.error('Exception:', dbError);
+      console.error('Stack:', dbError.stack);
+      
+      return res.status(500).json({
+        success: false,
+        error: 'Database exception occurred',
+        details: dbError.message
+      });
     }
 
     // Clean up temporary file
@@ -242,23 +266,37 @@ export default async function handler(req, res) {
       console.error('Failed to clean up temporary file:', cleanupError);
     }
 
-    // Return success response
-    console.log('Returning response. Database save successful:', saveSuccessful);
-    return res.status(200).json({
-      success: true,
-      config: config,
-      url: styleUrl,
-      filename: filename,
-      message: saveSuccessful 
-        ? 'Style uploaded and saved successfully to database!' 
-        : 'Style uploaded successfully! (Note: Database save may have failed, check logs)',
-      styleData: styleObject,
-      databaseSaved: saveSuccessful
-    });
+    // Only return success if database save was successful
+    if (saveSuccessful && savedData) {
+      console.log('=== RETURNING SUCCESS RESPONSE ===');
+      const responseData = {
+        success: true,
+        config: {
+          ...insertData,
+          id: savedData.id
+        },
+        url: styleUrl,
+        filename: filename,
+        message: 'Style uploaded and saved successfully!',
+        styleData: styleObject,
+        databaseSaved: true,
+        recordId: savedData.id
+      };
+      console.log('Response data:', JSON.stringify(responseData, null, 2));
+      return res.status(200).json(responseData);
+    } else {
+      // This shouldn't happen if we handle errors above, but just in case
+      return res.status(500).json({
+        success: false,
+        error: 'Upload processed but database save status unknown',
+        databaseSaved: false
+      });
+    }
 
   } catch (error) {
-    console.error('Upload handler error:', error);
-    console.error('Error stack:', error.stack);
+    console.error('=== HANDLER EXCEPTION ===');
+    console.error('Error:', error);
+    console.error('Stack:', error.stack);
     return res.status(500).json({
       success: false,
       error: 'Failed to process upload',
