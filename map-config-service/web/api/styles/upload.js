@@ -3,13 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client if configured
-const supabase = process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY
-  ? createClient(
-      process.env.VITE_SUPABASE_URL,
-      process.env.VITE_SUPABASE_ANON_KEY
-    )
-  : null;
+// Initialize Supabase client - use hardcoded values as fallback
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://wphrytrrikfkwehwahqc.supabase.co';
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaHJ5dHJyaWtma3dlaHdhaHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NTI5NzUsImV4cCI6MjA3MjEyODk3NX0.8E7_6gTc4guWSB2lI-hFQfGSEs6ziLmIT3P8xPbmz_k';
+
+console.log('Initializing Supabase with URL:', supabaseUrl);
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const config = {
   api: {
@@ -52,7 +51,36 @@ function validateMapboxStyle(styleObject) {
   }
 }
 
+function getCountryFlag(country) {
+  const flags = {
+    'global': '🌍',
+    'Global': '🌍',
+    'at': '🇦🇹',
+    'Austria': '🇦🇹',
+    'ch': '🇨🇭',
+    'Switzerland': '🇨🇭',
+    'de': '🇩🇪',
+    'Germany': '🇩🇪',
+    'fr': '🇫🇷',
+    'France': '🇫🇷',
+    'it': '🇮🇹',
+    'Italy': '🇮🇹',
+    'us': '🇺🇸',
+    'USA': '🇺🇸',
+    'uk': '🇬🇧',
+    'UK': '🇬🇧'
+  };
+  return flags[country] || '🌍';
+}
+
 export default async function handler(req, res) {
+  console.log('=== UPLOAD HANDLER START (map-config-service/web) ===');
+  console.log('Method:', req.method);
+  console.log('Environment variables present:', {
+    VITE_SUPABASE_URL: !!process.env.VITE_SUPABASE_URL,
+    VITE_SUPABASE_ANON_KEY: !!process.env.VITE_SUPABASE_ANON_KEY
+  });
+  
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -70,26 +98,30 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('Starting form parsing...');
+    
     // Parse multipart form data
     const form = formidable({
       maxFileSize: 10 * 1024 * 1024, // 10MB
-      filter: function ({ mimetype }) {
-        // Only accept JSON files
-        return mimetype === 'application/json';
-      }
+      keepExtensions: true
     });
 
     const [fields, files] = await form.parse(req);
     
+    console.log('Form parsed. Fields:', Object.keys(fields), 'Files:', Object.keys(files));
+    
     // Get the uploaded file
-    const uploadedFile = files.styleFile?.[0] || files.style?.[0];
+    const uploadedFile = files.styleFile?.[0] || files.style?.[0] || files.file?.[0];
     
     if (!uploadedFile) {
+      console.error('No file found in upload');
       return res.status(400).json({
         success: false,
         error: 'No file uploaded. Please upload a JSON file.'
       });
     }
+
+    console.log('File found:', uploadedFile.originalFilename);
 
     // Read and parse the file
     const fileContent = fs.readFileSync(uploadedFile.filepath, 'utf8');
@@ -97,134 +129,167 @@ export default async function handler(req, res) {
     
     try {
       styleObject = JSON.parse(fileContent);
+      console.log('JSON parsed successfully');
     } catch (parseError) {
+      console.error('JSON parse error:', parseError);
       return res.status(400).json({
         success: false,
-        error: 'Invalid JSON file. Please ensure the file contains valid JSON.'
+        error: 'Invalid JSON file. Please check the file format.'
       });
     }
 
     // Validate the style
     const validation = validateMapboxStyle(styleObject);
     if (!validation.valid) {
+      console.error('Style validation failed:', validation.error);
       return res.status(400).json({
         success: false,
-        error: `Invalid Mapbox/MapLibre style: ${validation.error}`
+        error: validation.error
       });
     }
 
-    // Extract form fields
-    const name = fields.name?.[0] || uploadedFile.originalFilename?.replace('.json', '') || 'custom-style';
-    const label = fields.label?.[0] || name;
+    console.log('Style validated successfully');
+
+    // Extract form fields with defaults from style object
+    const name = fields.name?.[0] || styleObject.name || `custom-style-${Date.now()}`;
+    const label = fields.label?.[0] || styleObject.name || 'Custom Style';
     const country = fields.country?.[0] || 'Global';
     const type = fields.type?.[0] || 'vtc';
     const mapCategory = fields.map_category?.[0] || 'background';
     const description = fields.description?.[0] || '';
 
-    // Generate filename
+    // Generate unique filename
     const timestamp = Date.now();
-    const sanitizedName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
-    const filename = `${sanitizedName}-${timestamp}.json`;
-    
-    // Save to public/styles directory
-    const stylesDir = path.join(process.cwd(), 'public', 'styles');
-    
-    // Ensure directory exists
-    if (!fs.existsSync(stylesDir)) {
-      fs.mkdirSync(stylesDir, { recursive: true });
-    }
-    
-    const filePath = path.join(stylesDir, filename);
-    
-    // Add metadata to style
-    styleObject.metadata = {
-      ...styleObject.metadata,
-      uploadedAt: new Date().toISOString(),
-      name: name,
-      label: label,
-      country: country
-    };
-    
-    // Write the file
-    fs.writeFileSync(filePath, JSON.stringify(styleObject, null, 2));
-    
-    // Create map configuration object
-    const config = {
-      name: sanitizedName,
+    const filename = `${name.replace(/[^a-z0-9]/gi, '-')}-${timestamp}.json`;
+    const styleUrl = `/styles/${filename}`;
+
+    // Ensure unique name for database
+    const uniqueName = `${name}-${timestamp}`;
+
+    // Prepare data for database insert
+    const insertData = {
+      name: uniqueName,
       label: label,
       type: type,
-      style: `/styles/${filename}`,
-      originalStyle: `/styles/${filename}`,
+      style: styleUrl,
+      original_style: styleUrl,
       country: country,
       flag: getCountryFlag(country),
-      map_category: mapCategory,
       metadata: {
-        description: description,
         uploadedAt: new Date().toISOString(),
-        filename: filename
+        filename: filename,
+        description: description,
+        styleData: styleObject,
+        map_category: mapCategory
       },
-      isActive: true,
-      version: '1.0.0'
+      is_active: true,
+      version: 1,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
 
-    // If Supabase is configured, save to database
+    console.log('=== ATTEMPTING DATABASE INSERT ===');
+    console.log('Data to insert:', {
+      name: insertData.name,
+      label: insertData.label,
+      type: insertData.type,
+      country: insertData.country
+    });
+
+    // Try to save to Supabase
+    let saveSuccessful = false;
+    let savedData = null;
+    
     if (supabase) {
       try {
         const { data, error } = await supabase
           .from('map_configs')
-          .insert({
-            ...config,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
+          .insert([insertData])
           .select()
           .single();
 
         if (error) {
-          console.error('Supabase error:', error);
-        } else {
-          config.id = data.id;
+          console.error('=== SUPABASE INSERT ERROR ===');
+          console.error('Error:', error);
+          console.error('Error message:', error.message);
+          console.error('Error details:', error.details);
+          console.error('Error hint:', error.hint);
+          
+          // Return error response
+          return res.status(500).json({
+            success: false,
+            error: 'Database save failed',
+            details: error.message,
+            hint: error.hint
+          });
+        } else if (data) {
+          console.log('=== DATABASE INSERT SUCCESSFUL ===');
+          console.log('Saved with ID:', data.id);
+          savedData = data;
+          saveSuccessful = true;
         }
       } catch (dbError) {
-        console.error('Database save error:', dbError);
+        console.error('=== DATABASE EXCEPTION ===');
+        console.error('Exception:', dbError);
+        
+        return res.status(500).json({
+          success: false,
+          error: 'Database exception occurred',
+          details: dbError.message
+        });
       }
+    } else {
+      console.warn('Supabase client not initialized - skipping database save');
     }
+
+    // Save the style file to public/styles directory
+    const stylesDir = path.join(process.cwd(), 'public', 'styles');
+    if (!fs.existsSync(stylesDir)) {
+      fs.mkdirSync(stylesDir, { recursive: true });
+    }
+    
+    const stylePath = path.join(stylesDir, filename);
+    fs.writeFileSync(stylePath, JSON.stringify(styleObject, null, 2));
+    console.log('Style file saved to:', stylePath);
 
     // Clean up temporary file
     fs.unlinkSync(uploadedFile.filepath);
 
-    // Return success response
-    return res.status(200).json({
-      success: true,
-      config: config,
-      url: `/styles/${filename}`,
-      filename: filename,
-      message: 'Style uploaded successfully!'
-    });
+    // Return response based on save status
+    if (saveSuccessful && savedData) {
+      return res.status(200).json({
+        success: true,
+        config: {
+          ...insertData,
+          id: savedData.id
+        },
+        url: styleUrl,
+        filename: filename,
+        message: 'Style uploaded and saved to database successfully!',
+        databaseSaved: true,
+        recordId: savedData.id
+      });
+    } else {
+      // Still return success if file was saved but database failed
+      return res.status(200).json({
+        success: true,
+        config: insertData,
+        url: styleUrl,
+        filename: filename,
+        message: 'Style uploaded successfully! (Database save may have failed)',
+        databaseSaved: false
+      });
+    }
 
   } catch (error) {
-    console.error('Upload error:', error);
+    console.error('=== UPLOAD HANDLER ERROR ===');
+    console.error('Error:', error);
+    console.error('Stack:', error.stack);
+    
     return res.status(500).json({
       success: false,
       error: 'Internal server error during upload',
       details: error.message
     });
   }
-}
-
-function getCountryFlag(country) {
-  const flags = {
-    'Global': '🌍',
-    'Austria': '🇦🇹',
-    'Switzerland': '🇨🇭',
-    'Germany': '🇩🇪',
-    'France': '🇫🇷',
-    'Italy': '🇮🇹',
-    'United States': '🇺🇸',
-    'United Kingdom': '🇬🇧',
-    'Canada': '🇨🇦',
-    'Australia': '🇦🇺',
-    'New Zealand': '🇳🇿',
-  };
-  return flags[country] || '🌍';
 }
