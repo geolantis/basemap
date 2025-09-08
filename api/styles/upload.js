@@ -1,6 +1,5 @@
 import formidable from 'formidable';
 import fs from 'fs';
-import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client - use hardcoded values as fallback
@@ -95,7 +94,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     return res.status(200).json({
       handler: 'upload.js',
-      version: 'v5-2025-01-10-production',
+      version: 'v6-2025-01-10-db-storage',
       location: 'api/styles/upload.js',
       deployedAt: new Date().toISOString(),
       features: {
@@ -198,6 +197,17 @@ export default async function handler(req, res) {
 
     // Ensure unique name for database
     const uniqueName = `${name}-${timestamp}`;
+    
+    // Ensure the style object has all required fields for MapLibre
+    const finalStyleObject = {
+      ...styleObject,
+      name: styleObject.name || label,
+      metadata: {
+        ...(styleObject.metadata || {}),
+        generated: new Date().toISOString(),
+        source: 'upload'
+      }
+    };
 
     // Prepare data for database insert
     const insertData = {
@@ -213,7 +223,8 @@ export default async function handler(req, res) {
         filename: filename,
         description: description,
         map_category: mapCategory,
-        // Don't store the full style in metadata - it's too large and stored as a file
+        // Store the actual style JSON for serving
+        styleJson: finalStyleObject,
         style_name: styleObject.name || label,
         sources_count: Object.keys(styleObject.sources || {}).length,
         layers_count: (styleObject.layers || []).length
@@ -278,27 +289,9 @@ export default async function handler(req, res) {
       console.warn('Supabase client not initialized - skipping database save');
     }
 
-    // Save the style file to public/styles directory
-    const stylesDir = path.join(process.cwd(), 'public', 'styles');
-    if (!fs.existsSync(stylesDir)) {
-      fs.mkdirSync(stylesDir, { recursive: true });
-    }
-    
-    const stylePath = path.join(stylesDir, filename);
-    
-    // Ensure the style object has all required fields for MapLibre
-    const finalStyleObject = {
-      ...styleObject,
-      name: styleObject.name || label,
-      metadata: {
-        ...(styleObject.metadata || {}),
-        generated: new Date().toISOString(),
-        source: 'upload'
-      }
-    };
-    
-    fs.writeFileSync(stylePath, JSON.stringify(finalStyleObject, null, 2));
-    console.log('Style file saved to:', stylePath);
+    // On Vercel, we can't save files to the filesystem
+    // The style JSON is stored in the database metadata
+    console.log('Style prepared for database storage');
 
     // Clean up temporary file
     fs.unlinkSync(uploadedFile.filepath);
