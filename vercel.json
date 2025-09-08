@@ -1,8 +1,4 @@
 {
-  "root": "map-config-service/web",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": "dist",
   "functions": {
     "api/**/*.js": {
       "maxDuration": 30
