@@ -3,7 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://wphrytrrikfkwehwahqc.supabase.co';
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaHJ5dHJyaWtma3dlaHdhaHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU1MjcyMzQsImV4cCI6MjA1MTEwMzIzNH0.vLy34J5PQmK82UIMnAuYQN0_z-5V7agDe8gnPtTL-tA';
+// Updated to use the current valid anon key
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwaHJ5dHJyaWtma3dlaHdhaHFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NTI5NzUsImV4cCI6MjA3MjEyODk3NX0.8E7_6gTc4guWSB2lI-hFQfGSEs6ziLmIT3P8xPbmz_k';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Configuration for Vercel
@@ -160,13 +161,15 @@ export default async function handler(req, res) {
 
     const timestamp = Date.now();
     const filename = `${name.replace(/[^a-z0-9]/gi, '-')}-${timestamp}.json`;
+    const styleUrl = `/api/styles/temp/${filename}`;
 
     // Prepare the configuration object
     const config = {
       name: name,
       label: label,
       type: type,
-      style: `/api/styles/temp/${filename}`,
+      style: styleUrl,
+      original_style: styleUrl,
       country: country,
       flag: getCountryFlag(country),
       metadata: {
@@ -174,14 +177,14 @@ export default async function handler(req, res) {
         filename: filename,
         description: description,
         styleData: styleObject,
-        // Store map_category in metadata since the column might not exist
+        // Store map_category in metadata since the column doesn't exist
         map_category: mapCategory
       },
       is_active: true,
       version: '1.0.0'
     };
 
-    console.log('Attempting to save to Supabase...');
+    console.log('Attempting to save to Supabase map_configs table...');
     console.log('Config to save:', {
       name: config.name,
       label: config.label,
@@ -189,12 +192,11 @@ export default async function handler(req, res) {
       country: config.country
     });
 
-    // Try to save to Supabase - first try map_configs table
+    // Save to Supabase map_configs table (the correct and only table)
     let saveSuccessful = false;
     let savedData = null;
     
     try {
-      console.log('Trying to save to map_configs table...');
       const { data, error } = await supabase
         .from('map_configs')
         .insert([{
@@ -202,6 +204,7 @@ export default async function handler(req, res) {
           label: config.label,
           type: config.type,
           style: config.style,
+          original_style: config.original_style,
           country: config.country,
           flag: config.flag,
           metadata: config.metadata,
@@ -214,37 +217,10 @@ export default async function handler(req, res) {
         .single();
 
       if (error) {
-        console.error('map_configs insert error:', error);
-        
-        // If map_configs fails, try maps table
-        console.log('Trying maps table instead...');
-        const mapsResult = await supabase
-          .from('maps')
-          .insert([{
-            name: config.name,
-            label: config.label,
-            type: config.type,
-            style: config.style,
-            country: config.country,
-            flag: config.flag,
-            metadata: config.metadata,
-            active: config.is_active,  // Note: using 'active' for maps table
-            version: config.version,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          }])
-          .select()
-          .single();
-          
-        if (mapsResult.error) {
-          console.error('maps table insert error:', mapsResult.error);
-        } else if (mapsResult.data) {
-          console.log('Successfully saved to maps table with ID:', mapsResult.data.id);
-          savedData = mapsResult.data;
-          saveSuccessful = true;
-        }
+        console.error('Supabase insert error:', error);
+        console.error('Error details:', JSON.stringify(error, null, 2));
       } else if (data) {
-        console.log('Successfully saved to map_configs table with ID:', data.id);
+        console.log('Successfully saved to Supabase with ID:', data.id);
         savedData = data;
         saveSuccessful = true;
       }
@@ -266,15 +242,15 @@ export default async function handler(req, res) {
       console.error('Failed to clean up temporary file:', cleanupError);
     }
 
-    // Return success response (even if database save failed, the upload was processed)
+    // Return success response
     console.log('Returning response. Database save successful:', saveSuccessful);
     return res.status(200).json({
       success: true,
       config: config,
-      url: `/api/styles/temp/${filename}`,
+      url: styleUrl,
       filename: filename,
       message: saveSuccessful 
-        ? 'Style uploaded and saved successfully!' 
+        ? 'Style uploaded and saved successfully to database!' 
         : 'Style uploaded successfully! (Note: Database save may have failed, check logs)',
       styleData: styleObject,
       databaseSaved: saveSuccessful
