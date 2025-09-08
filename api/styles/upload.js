@@ -95,8 +95,9 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     return res.status(200).json({
       handler: 'upload.js',
-      version: 'v4-2025-01-10-final',
-      location: 'map-config-service/web/api/styles/upload.js',
+      version: 'v5-2025-01-10-production',
+      location: 'api/styles/upload.js',
+      deployedAt: new Date().toISOString(),
       features: {
         countryConversion: true,
         correctStylePath: true,
