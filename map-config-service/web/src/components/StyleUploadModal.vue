@@ -148,17 +148,17 @@
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Select country...</option>
-                <option value="global">🌍 Global</option>
-                <option value="at">🇦🇹 Austria</option>
-                <option value="ch">🇨🇭 Switzerland</option>
-                <option value="de">🇩🇪 Germany</option>
-                <option value="fr">🇫🇷 France</option>
-                <option value="it">🇮🇹 Italy</option>
-                <option value="us">🇺🇸 United States</option>
-                <option value="uk">🇬🇧 United Kingdom</option>
-                <option value="ca">🇨🇦 Canada</option>
-                <option value="au">🇦🇺 Australia</option>
-                <option value="nz">🇳🇿 New Zealand</option>
+                <option value="Global">🌍 Global</option>
+                <option value="Austria">🇦🇹 Austria</option>
+                <option value="Switzerland">🇨🇭 Switzerland</option>
+                <option value="Germany">🇩🇪 Germany</option>
+                <option value="France">🇫🇷 France</option>
+                <option value="Italy">🇮🇹 Italy</option>
+                <option value="USA">🇺🇸 United States</option>
+                <option value="UK">🇬🇧 United Kingdom</option>
+                <option value="Canada">🇨🇦 Canada</option>
+                <option value="Australia">🇦🇺 Australia</option>
+                <option value="New Zealand">🇳🇿 New Zealand</option>
               </select>
             </div>
             
