@@ -42,19 +42,21 @@
       <div class="flex justify-between items-center py-4">
         <div class="flex items-center space-x-6">
           <!-- Country Tabs -->
-          <div class="flex space-x-6">
+          <div class="flex space-x-3">
             <button
               v-for="tab in tabs"
               :key="tab.value"
               @click="selectedCountry = tab.value"
+              :title="tab.tooltip || tab.value"
               :class="[
-                'pb-2 px-1 border-b-2 font-medium text-sm transition-colors',
+                'pb-2 px-2 border-b-2 font-medium text-sm transition-colors flex items-center space-x-1',
                 selectedCountry === tab.value
                   ? 'border-blue-600 text-blue-600'
                   : 'border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral-300'
               ]"
             >
-              {{ tab.label }} ({{ getCountryCount(tab.value) }})
+              <span class="text-lg">{{ tab.label }}</span>
+              <span class="text-xs">({{ tab.count || getCountryCount(tab.value) }})</span>
             </button>
           </div>
           
@@ -351,17 +353,37 @@ const showStyleUpload = ref(false);
 const viewMode = ref<'grid' | 'list'>('grid');
 const selectedCategory = ref<'all' | 'background' | 'overlay'>('all');
 
+// Country flag mappings
+const countryFlags: Record<string, string> = {
+  'Global': '🌐',
+  'Austria': '🇦🇹',
+  'Germany': '🇩🇪',
+  'Switzerland': '🇨🇭',
+  'France': '🇫🇷',
+  'Italy': '🇮🇹',
+  'Spain': '🇪🇸',
+  'Netherlands': '🇳🇱',
+  'Australia': '🇦🇺',
+  'New Zealand': '🇳🇿'
+};
+
 const tabs = computed(() => {
   const countries = new Set(configs.value.map(c => c.country));
   const countryTabs = [
-    { label: 'All Maps', value: 'all' }
+    { label: 'All', value: 'all', flag: '🗺️' }
   ];
   
   // Add tabs for countries with maps
   const priorityCountries = ['Global', 'Austria', 'Germany', 'Switzerland', 'France', 'Italy', 'Spain', 'Netherlands', 'Australia', 'New Zealand'];
   priorityCountries.forEach(country => {
     if (countries.has(country)) {
-      countryTabs.push({ label: country, value: country });
+      const flag = countryFlags[country] || getCountryFlag(country);
+      countryTabs.push({ 
+        label: flag, 
+        value: country,
+        tooltip: country,
+        count: getCountryCount(country)
+      });
     }
   });
   
