@@ -358,7 +358,7 @@ const tabs = computed(() => {
   ];
   
   // Add tabs for countries with maps
-  const priorityCountries = ['Global', 'Austria', 'Germany', 'Switzerland', 'France', 'Italy', 'Spain', 'Netherlands'];
+  const priorityCountries = ['Global', 'Austria', 'Germany', 'Switzerland', 'France', 'Italy', 'Spain', 'Netherlands', 'Australia', 'New Zealand'];
   priorityCountries.forEach(country => {
     if (countries.has(country)) {
       countryTabs.push({ label: country, value: country });
