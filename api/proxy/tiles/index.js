@@ -41,6 +41,31 @@ const TILE_PATTERNS = {
   // Basemap.de
   'basemap-de-global': {
     'default': 'https://sgx.geodatenzentrum.de/gdz_basemapworld_vektor/tiles/{z}/{x}/{y}.pbf'
+  },
+  
+  // LINZ New Zealand
+  'nz-basemap-topographic': {
+    'LINZ Basemaps': 'https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/{z}/{x}/{y}.pbf',
+    'LINZ-Texture-Relief': 'https://basemaps.linz.govt.nz/v1/tiles/texturereliefshade/EPSG:3857/{z}/{x}/{y}.webp',
+    'LINZ-Terrain': 'https://basemaps.linz.govt.nz/v1/tiles/elevation/WebMercatorQuad/{z}/{x}/{y}.png',
+    'LINZAerial': 'https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/{z}/{x}/{y}.webp',
+    'default': 'https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/{z}/{x}/{y}.pbf'
+  },
+  'nz-basemap-topolite': {
+    'LINZ Basemaps': 'https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/{z}/{x}/{y}.pbf',
+    'LINZ-Texture-Relief': 'https://basemaps.linz.govt.nz/v1/tiles/texturereliefshade/EPSG:3857/{z}/{x}/{y}.webp',
+    'LINZ-Terrain': 'https://basemaps.linz.govt.nz/v1/tiles/elevation/WebMercatorQuad/{z}/{x}/{y}.png',
+    'LINZAerial': 'https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/{z}/{x}/{y}.webp',
+    'default': 'https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/{z}/{x}/{y}.pbf'
+  },
+  'nz-basemap-aerial': {
+    'LINZAerial': 'https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/{z}/{x}/{y}.webp',
+    'default': 'https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/{z}/{x}/{y}.webp'
+  },
+  'nz-basemap-aerial-hybrid': {
+    'LINZ Basemaps': 'https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/{z}/{x}/{y}.pbf',
+    'LINZAerial': 'https://basemaps.linz.govt.nz/v1/tiles/aerial/WebMercatorQuad/{z}/{x}/{y}.webp',
+    'default': 'https://basemaps.linz.govt.nz/v1/tiles/topographic/EPSG:3857/{z}/{x}/{y}.pbf'
   }
 };
 
@@ -61,6 +86,10 @@ const PROVIDER_KEYS = {
   'basemap.de': {
     key: null,
     param: null
+  },
+  'linz': {
+    key: process.env.LINZ_API_KEY || 'c01j9kgtq3hq9yb59c22gnr6k64',
+    param: 'api'
   }
 };
 
@@ -70,6 +99,7 @@ function getProvider(styleId) {
   if (styleId.startsWith('clockwork-')) return 'clockwork';
   if (styleId.startsWith('bev-')) return 'bev';
   if (styleId.startsWith('basemap-')) return 'basemap.de';
+  if (styleId.startsWith('nz-')) return 'linz';
   return null;
 }
 
@@ -91,6 +121,11 @@ function buildTileUrl(styleId, sourceId, z, x, y) {
     .replace('{z}', z)
     .replace('{x}', x)
     .replace('{y}', y);
+  
+  // Special handling for LINZ terrain-rgb pipeline
+  if (styleId.startsWith('nz-') && sourceId === 'LINZ-Terrain') {
+    url = url + '?pipeline=terrain-rgb';
+  }
   
   // Add API key if needed
   const provider = getProvider(styleId);

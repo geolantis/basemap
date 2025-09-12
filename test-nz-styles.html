@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>LINZ New Zealand Styles Test - No API Keys Exposed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #container { display: flex; height: 100vh; }
+        #sidebar { 
+            width: 300px; 
+            padding: 20px; 
+            background: #f0f0f0; 
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        #map { flex: 1; }
+        h2 { margin-top: 0; color: #333; }
+        .style-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .style-button:hover {
+            background: #f8f8f8;
+            border-color: #999;
+        }
+        .style-button.active {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+        .api-status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+        .api-status.secure {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .api-status.exposed {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #004085;
+        }
+        #network-log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 11px;
+            margin-top: 20px;
+        }
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .log-entry.error {
+            color: #dc3545;
+        }
+        .log-entry.success {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="sidebar">
+            <h2>🗺️ NZ Map Styles</h2>
+            
+            <div class="info-box">
+                <strong>Secure Proxy Test</strong><br>
+                Testing LINZ styles through secure proxy.<br>
+                API keys are protected server-side.
+            </div>
+
+            <div id="api-status" class="api-status">
+                Checking API key security...
+            </div>
+
+            <h3>Available Styles:</h3>
+            <button class="style-button active" data-style="nz-basemap-topographic">
+                🏔️ NZ Topographic
+            </button>
+            <button class="style-button" data-style="nz-basemap-topolite">
+                🗺️ NZ Topolite (NEW)
+            </button>
+            <button class="style-button" data-style="nz-basemap-aerial">
+                🛰️ NZ Aerial
+            </button>
+            <button class="style-button" data-style="nz-basemap-aerial-hybrid">
+                🌍 NZ Aerial Hybrid
+            </button>
+
+            <h3>Network Activity:</h3>
+            <div id="network-log"></div>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script>
+        // Configuration - Update this URL to match your deployment
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000'  // Local development
+            : 'https://mapconfig.geolantis.com';  // Production
+        
+        // Initialize map centered on New Zealand
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: `${API_BASE_URL}/api/proxy/style/nz-basemap-topographic`,
+            center: [174.7633, -36.8485], // Auckland
+            zoom: 10
+        });
+
+        // Add navigation controls
+        map.addControl(new maplibregl.NavigationControl());
+
+        // Network logging
+        const networkLog = document.getElementById('network-log');
+        let logCounter = 0;
+
+        function addLogEntry(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${++logCounter}] ${new Date().toLocaleTimeString()}: ${message}`;
+            networkLog.insertBefore(entry, networkLog.firstChild);
+            
+            // Keep only last 10 entries
+            while (networkLog.children.length > 10) {
+                networkLog.removeChild(networkLog.lastChild);
+            }
+        }
+
+        // Check for API key exposure
+        async function checkApiSecurity() {
+            const statusElement = document.getElementById('api-status');
+            
+            try {
+                // Fetch a style through the proxy
+                const response = await fetch(`${API_BASE_URL}/api/proxy/style/nz-basemap-topographic`);
+                const styleJson = await response.json();
+                
+                // Convert to string to search for API keys
+                const styleString = JSON.stringify(styleJson);
+                
+                // Check if any API keys are exposed (this is the key we're protecting)
+                const knownApiKey = 'c01j9kgtq3hq9yb59c22gnr6k64';
+                const hasExposedKey = styleString.includes(knownApiKey);
+                
+                if (hasExposedKey) {
+                    statusElement.className = 'api-status exposed';
+                    statusElement.innerHTML = `
+                        <strong>⚠️ Security Issue Detected!</strong><br>
+                        API keys are exposed in the response.<br>
+                        This needs to be fixed immediately.
+                    `;
+                    addLogEntry('WARNING: API key found in response!', 'error');
+                } else {
+                    statusElement.className = 'api-status secure';
+                    statusElement.innerHTML = `
+                        <strong>✅ API Keys Protected</strong><br>
+                        All requests are proxied securely.<br>
+                        No API keys exposed to client.
+                    `;
+                    addLogEntry('API keys are properly protected', 'success');
+                }
+                
+                // Log proxy URLs being used
+                if (styleJson.sources) {
+                    Object.entries(styleJson.sources).forEach(([name, source]) => {
+                        if (source.tiles && source.tiles[0]) {
+                            const tileUrl = source.tiles[0];
+                            if (tileUrl.includes('/api/proxy/')) {
+                                addLogEntry(`✓ Proxied: ${name}`, 'success');
+                            } else if (tileUrl.includes('api=')) {
+                                addLogEntry(`✗ Direct API call: ${name}`, 'error');
+                            }
+                        }
+                    });
+                }
+                
+            } catch (error) {
+                statusElement.className = 'api-status exposed';
+                statusElement.innerHTML = `
+                    <strong>❌ Error</strong><br>
+                    Failed to check security: ${error.message}
+                `;
+                addLogEntry(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Style switcher
+        document.querySelectorAll('.style-button').forEach(button => {
+            button.addEventListener('click', async function() {
+                // Update active state
+                document.querySelectorAll('.style-button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Load new style
+                const styleId = this.dataset.style;
+                const styleUrl = `${API_BASE_URL}/api/proxy/style/${styleId}`;
+                
+                addLogEntry(`Loading style: ${styleId}`);
+                
+                try {
+                    // Fetch the style first to check it
+                    const response = await fetch(styleUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const styleJson = await response.json();
+                    
+                    // Check for exposed keys
+                    const styleString = JSON.stringify(styleJson);
+                    if (styleString.includes('c01j9kgtq3hq9yb59c22gnr6k64')) {
+                        addLogEntry(`Warning: API key exposed in ${styleId}!`, 'error');
+                    } else {
+                        addLogEntry(`Style ${styleId} loaded securely`, 'success');
+                    }
+                    
+                    // Apply style to map
+                    map.setStyle(styleJson);
+                    
+                } catch (error) {
+                    addLogEntry(`Failed to load ${styleId}: ${error.message}`, 'error');
+                    alert(`Failed to load style: ${error.message}`);
+                }
+            });
+        });
+
+        // Monitor network requests (for debugging)
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            const url = args[0];
+            if (typeof url === 'string' && url.includes('basemaps.linz.govt.nz')) {
+                // Check if URL contains API key
+                if (url.includes('api=')) {
+                    addLogEntry('Direct LINZ API call detected!', 'error');
+                }
+            }
+            return originalFetch.apply(this, args);
+        };
+
+        // Initial security check
+        map.on('load', () => {
+            checkApiSecurity();
+            addLogEntry('Map loaded successfully', 'success');
+        });
+
+        // Log errors
+        map.on('error', (e) => {
+            if (e.error && e.error.message) {
+                addLogEntry(`Map error: ${e.error.message}`, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

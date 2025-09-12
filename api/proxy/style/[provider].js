@@ -67,6 +67,32 @@ const STYLE_PROVIDERS = {
     provider: 'basemap.de',
     keyParam: null,
     name: 'Basemap.de Global'
+  },
+  
+  // LINZ New Zealand styles
+  'nz-basemap-topographic': {
+    url: 'https://basemaps.linz.govt.nz/v1/styles/topographic.json',
+    provider: 'linz',
+    keyParam: 'api',
+    name: 'NZ Basemap Topographic'
+  },
+  'nz-basemap-topolite': {
+    url: 'https://basemaps.linz.govt.nz/v1/styles/topolite.json',
+    provider: 'linz',
+    keyParam: 'api',
+    name: 'NZ Basemap Topolite'
+  },
+  'nz-basemap-aerial': {
+    url: 'https://basemaps.linz.govt.nz/v1/styles/aerial.json',
+    provider: 'linz',
+    keyParam: 'api',
+    name: 'NZ Basemap Aerial'
+  },
+  'nz-basemap-aerial-hybrid': {
+    url: 'https://basemaps.linz.govt.nz/v1/styles/aerial-hybrid.json',
+    provider: 'linz',
+    keyParam: 'api',
+    name: 'NZ Basemap Aerial Hybrid'
   }
 };
 
@@ -79,6 +105,8 @@ function getApiKey(provider) {
       return process.env.CLOCKWORK_API_KEY || '9G4F5b99xO28esL8tArIO2Bbp8sGhURW5qIieYTy';
     case 'bev':
       return process.env.BEV_API_KEY || '';
+    case 'linz':
+      return process.env.LINZ_API_KEY || 'c01j9kgtq3hq9yb59c22gnr6k64';
     default:
       return null;
   }

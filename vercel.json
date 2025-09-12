@@ -8,6 +8,30 @@
   },
   "rewrites": [
     {
+      "source": "/api/proxy/tiles/:style/:source/:z/:x/:y",
+      "destination": "/api/proxy/tiles/index.js?style=:style&source=:source&z=:z&x=:x&y=:y"
+    },
+    {
+      "source": "/api/proxy/sprite/:style/:encoded/:rest*",
+      "destination": "/api/proxy/sprite/index.js?style=:style&encoded=:encoded&rest=:rest"
+    },
+    {
+      "source": "/api/proxy/glyphs/:style/:encoded/:fontstack/:range",
+      "destination": "/api/proxy/glyphs/index.js?style=:style&encoded=:encoded&fontstack=:fontstack&range=:range"
+    },
+    {
+      "source": "/api/proxy/style/:provider",
+      "destination": "/api/proxy/style/[provider].js?provider=:provider"
+    },
+    {
+      "source": "/api/styles/:name",
+      "destination": "/api/styles/[name].js?name=:name"
+    },
+    {
+      "source": "/styles/:name.json",
+      "destination": "/api/styles/[name].js?name=:name"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
@@ -15,5 +39,12 @@
       "source": "/(.*)",
       "destination": "/$1"
     }
-  ]
+  ],
+  "env": {
+    "MAPTILER_API_KEY": "@maptiler-api-key",
+    "CLOCKWORK_API_KEY": "@clockwork-api-key",
+    "BEV_API_KEY": "@bev-api-key",
+    "LINZ_API_KEY": "@linz-api-key",
+    "MAPBOX_ACCESS_TOKEN": "@mapbox-access-token"
+  }
 }

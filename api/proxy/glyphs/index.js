@@ -18,6 +18,10 @@ const PROVIDERS = {
   'bev': {
     key: process.env.BEV_API_KEY || '',
     param: 'key'
+  },
+  'linz': {
+    key: process.env.LINZ_API_KEY || 'c01j9kgtq3hq9yb59c22gnr6k64',
+    param: 'api'
   }
 };
 
@@ -26,6 +30,7 @@ function getProviderFromUrl(url) {
   if (url.includes('maptiler.com')) return 'maptiler';
   if (url.includes('clockworkmicro.com')) return 'clockwork';
   if (url.includes('kataster.bev.gv.at')) return 'bev';
+  if (url.includes('basemaps.linz.govt.nz')) return 'linz';
   return null;
 }
 

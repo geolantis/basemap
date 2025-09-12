@@ -592,6 +592,11 @@ async function loadConfig() {
     if (config) {
       formData.value = { ...config };
       
+      // Ensure map_category has a value (default to 'background' if missing)
+      if (!formData.value.map_category) {
+        formData.value.map_category = 'background';
+      }
+      
       // Load helper fields
       if (config.metadata?.tiles?.[0]) {
         tilesInput.value = config.metadata.tiles[0];
