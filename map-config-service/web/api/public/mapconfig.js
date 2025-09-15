@@ -151,6 +151,7 @@ function sanitizeConfig(config, requestBaseUrl = 'https://mapconfig.geolantis.co
     style: finalStyleUrl,
     country: config.country,
     flag: config.flag,
+    select_layer: config.select_layer || null,
     layers: config.layers?.filter((layer) => !layer.private) || [],
     // Only include non-sensitive metadata
     metadata: {
