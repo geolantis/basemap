@@ -102,9 +102,7 @@
         </div>
         
         <div class="flex items-center space-x-4 text-xs text-neutral-400">
-          <span>{{ brandingConfig.footer.version }}</span>
-          <span>•</span>
-          <span>Built {{ brandingConfig.footer.buildDate }}</span>
+          <AppVersion :display-mode="'footer'" :show-details="true" />
           <span>•</span>
           <span class="flex items-center">
             <i class="pi pi-heart mr-1 text-red-500"></i>
@@ -118,6 +116,7 @@
 
 <script setup lang="ts">
 import { brandingConfig } from '../config/branding';
+import AppVersion from './AppVersion.vue';
 </script>
 
 <style scoped>
