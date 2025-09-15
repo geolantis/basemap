@@ -19,8 +19,9 @@ export interface MapConfig {
   updatedAt: string;
   createdBy?: string;
   updatedBy?: string;
-  map_category?: 'background' | 'overlay';
+  mapCategory?: 'background' | 'overlay'; // Map classification (database: map_category)
   previewImageUrl?: string;
+  selectLayer?: string; // Primary selectable layer for overlays
 }
 
 export interface Layer {

@@ -79,13 +79,14 @@
                   <option value="wms">WMS</option>
                 </select>
               </div>
-              
+
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                   Map Category <span class="text-red-500">*</span>
                 </label>
                 <select
-                  v-model="formData.map_category"
+                  v-model="formData.mapCategory"
+                  @change="onCategoryChange"
                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="background">Background (Base Layer)</option>
@@ -168,6 +169,37 @@
                     GitHub: https://raw.githubusercontent.com/user/repo/main/style.json
                   </button>
                 </div>
+              </div>
+
+              <!-- Select Layer for Overlays -->
+              <div v-if="formData.mapCategory === 'overlay' && formData.type === 'vtc'" class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Primary Select Layer
+                  <span class="text-gray-500 text-xs ml-1">(for feature selection)</span>
+                </label>
+                <div class="flex space-x-2">
+                  <select
+                    v-model="formData.selectLayer"
+                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    :disabled="!availableLayers.length"
+                  >
+                    <option value="">{{ availableLayers.length ? 'Select a layer...' : 'No layers available' }}</option>
+                    <option v-for="layer in availableLayers" :key="layer.value" :value="layer.value">
+                      {{ layer.label }}
+                    </option>
+                  </select>
+                  <button
+                    @click="fetchAvailableLayers"
+                    :disabled="!formData.style || fetchingLayers"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Fetch layers from style"
+                  >
+                    <i :class="fetchingLayers ? 'pi pi-spin pi-spinner' : 'pi pi-refresh'"></i>
+                  </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">
+                  Select the primary layer that will be used for feature selection and highlighting
+                </p>
               </div>
             </div>
 
@@ -289,7 +321,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useConfigStore } from '../stores/config';
+import { useConfigStore } from '../stores/mapConfig';
 import type { MapConfig } from '../types';
 
 const route = useRoute();
@@ -308,9 +340,10 @@ const formData = ref<Partial<MapConfig>>({
   style: '',
   country: 'Global',
   flag: '🌐',
-  map_category: 'background',
+  mapCategory: 'background',
   layers: [],
-  metadata: {}
+  metadata: {},
+  selectLayer: ''
 });
 
 // Helper fields for WMTS/WMS
@@ -319,6 +352,10 @@ const wmsUrl = ref('');
 const layersInput = ref('');
 const tileSize = ref(256);
 const attribution = ref('');
+
+// Layer selection for overlays
+const availableLayers = ref<Array<{ value: string; label: string; type: string }>>([]);
+const fetchingLayers = ref(false);
 
 // Validation
 const validationErrors = ref<string[]>([]);
@@ -365,16 +402,18 @@ const configPreview = computed(() => {
     type: formData.value.type,
     country: formData.value.country,
     flag: formData.value.flag,
+    mapCategory: formData.value.mapCategory,
     ...(formData.value.type === 'vtc' && formData.value.style && { style: formData.value.style }),
+    ...(formData.value.selectLayer && { selectLayer: formData.value.selectLayer }),
     ...(formData.value.layers?.length && { layers: formData.value.layers }),
-    ...(formData.value.metadata && Object.keys(formData.value.metadata).length && { 
+    ...(formData.value.metadata && Object.keys(formData.value.metadata).length && {
       ...(formData.value.metadata.tiles && { tiles: formData.value.metadata.tiles }),
       ...(formData.value.metadata.url && { url: formData.value.metadata.url }),
       ...(formData.value.metadata.tileSize && { tileSize: formData.value.metadata.tileSize }),
       ...(formData.value.metadata.attribution && { attribution: formData.value.metadata.attribution })
     })
   };
-  
+
   return JSON.stringify(config, null, 2);
 });
 
@@ -416,9 +455,19 @@ function onTypeChange() {
   // Clear type-specific fields when changing type
   if (formData.value.type !== 'vtc') {
     formData.value.style = '';
+    formData.value.selectLayer = '';
+    availableLayers.value = [];
   }
   if (formData.value.type !== 'wms') {
     formData.value.layers = [];
+  }
+  validateForm();
+}
+
+function onCategoryChange() {
+  // If switching to overlay and has a style, fetch layers
+  if (formData.value.mapCategory === 'overlay' && formData.value.type === 'vtc' && formData.value.style) {
+    fetchAvailableLayers();
   }
   validateForm();
 }
@@ -470,6 +519,63 @@ function updateMetadata() {
   formData.value.metadata.tileSize = tileSize.value;
   formData.value.metadata.attribution = attribution.value;
   validateForm();
+}
+
+async function fetchAvailableLayers() {
+  if (!formData.value.style || formData.value.type !== 'vtc') {
+    return;
+  }
+
+  fetchingLayers.value = true;
+  availableLayers.value = [];
+
+  try {
+    // Determine if we have a URL or JSON
+    let requestBody: any = {};
+
+    if (formData.value.style.startsWith('{')) {
+      // It's a JSON string
+      try {
+        requestBody.styleJson = JSON.parse(formData.value.style);
+      } catch (e) {
+        console.error('Invalid JSON in style field');
+        return;
+      }
+    } else if (formData.value.style.startsWith('http')) {
+      // It's a URL
+      requestBody.styleUrl = formData.value.style;
+    } else {
+      // It might be a relative path or invalid
+      requestBody.styleUrl = formData.value.style;
+    }
+
+    // Set selectableOnly to true for overlays
+    requestBody.selectableOnly = formData.value.mapCategory === 'overlay';
+
+    const response = await fetch('/api/layers/extract', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      availableLayers.value = result.layers || [];
+
+      // Auto-select suggested layer if none selected
+      if (!formData.value.selectLayer && result.suggestedPrimary) {
+        formData.value.selectLayer = result.suggestedPrimary;
+      }
+    } else {
+      console.error('Failed to fetch layers');
+    }
+  } catch (error) {
+    console.error('Error fetching layers:', error);
+  } finally {
+    fetchingLayers.value = false;
+  }
 }
 
 async function saveConfig() {
@@ -602,11 +708,11 @@ async function loadConfig() {
     if (config) {
       formData.value = { ...config };
 
-      // Ensure map_category has a value (default to 'background' if missing)
-      if (!formData.value.map_category) {
-        formData.value.map_category = 'background';
+      // Ensure mapCategory has a value (default to 'background' if missing)
+      if (!formData.value.mapCategory) {
+        formData.value.mapCategory = 'background';
       }
-      
+
       // Load helper fields
       if (config.metadata?.tiles?.[0]) {
         tilesInput.value = config.metadata.tiles[0];
@@ -623,6 +729,11 @@ async function loadConfig() {
       if (config.metadata?.attribution) {
         attribution.value = config.metadata.attribution;
       }
+
+      // If it's an overlay with VTC type and has a style, fetch available layers
+      if (config.mapCategory === 'overlay' && config.type === 'vtc' && config.style) {
+        await fetchAvailableLayers();
+      }
     }
   } catch (error) {
     console.error('Failed to load configuration:', error);
@@ -637,4 +748,16 @@ onMounted(() => {
 
 // Watch for changes to trigger validation
 watch(() => formData.value, validateForm, { deep: true });
+
+// Watch for style changes on overlay maps to auto-fetch layers
+watch(() => formData.value.style, async (newStyle, oldStyle) => {
+  if (newStyle !== oldStyle && formData.value.mapCategory === 'overlay' && formData.value.type === 'vtc' && newStyle) {
+    // Debounce to avoid too many requests while typing
+    setTimeout(() => {
+      if (formData.value.style === newStyle) {
+        fetchAvailableLayers();
+      }
+    }, 1000);
+  }
+});
 </script>
