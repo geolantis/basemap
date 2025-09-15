@@ -1,8 +1,22 @@
-# Deployment Guide - Secure API Key Management
+# Deployment Guide - Vercel Automatic Deployment
+
+## 🚀 Quick Start
+
+**Simply push to GitHub → Vercel deploys automatically!**
+
+- **Production**: Push to `main` branch → Deploys to https://mapconfig.geolantis.com
+- **Preview**: Push to any other branch → Creates preview deployment
 
 ## Overview
 
 This guide explains how to deploy the Map Configuration Service with secure API key management. All API keys are stored server-side and never exposed to clients.
+
+## ⚠️ GitHub Actions Status
+
+**GitHub Actions workflow has been DISABLED** to allow seamless Vercel deployments.
+- File renamed to: `.github/workflows/ci-cd.yml.disabled`
+- Vercel handles all building and deployment
+- No CI/CD pipeline interference
 
 ## Security Architecture
 
