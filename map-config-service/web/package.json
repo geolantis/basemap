@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp -r public/styles dist/",
+    "build": "node scripts/update-version.js && vite build && cp -r public/styles dist/",
     "build:check": "vue-tsc -b && vite build",
-    "build:vercel": "node scripts/update-version.js && vite build && cp -r public/styles dist/",
+    "build:local": "vite build && cp -r public/styles dist/",
     "preview": "vite preview",
     "styles:server": "node server.js",
     "maputnik:sync": "node server/maputnik-sync.js",

@@ -1,12 +1,8 @@
 {
-  "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
   "functions": {
     "api/**/*.js": {
       "maxDuration": 30
     }
-  },
-  "env": {
-    "NODE_VERSION": "18"
   }
 }
