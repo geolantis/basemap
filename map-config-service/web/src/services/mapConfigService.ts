@@ -206,6 +206,7 @@ export class MapConfigService {
       if (updates.pitch !== undefined) dbUpdates.pitch = updates.pitch;
       if (updates.map_category !== undefined) dbUpdates.map_category = updates.map_category;
       
+      console.log('Updating config with:', dbUpdates);
       const { data, error } = await supabase
         .from('map_configs')
         .update(dbUpdates)
@@ -213,7 +214,10 @@ export class MapConfigService {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase update error:', error);
+        throw error;
+      }
       
       // Transform the response back to camelCase
       if (data) {

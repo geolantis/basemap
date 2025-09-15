@@ -380,7 +380,7 @@ const configPreview = computed(() => {
 
 function validateForm() {
   validationErrors.value = [];
-  
+
   if (!formData.value.name) {
     validationErrors.value.push('Map name is required');
   } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.value.name)) {
@@ -474,7 +474,7 @@ function updateMetadata() {
 
 async function saveConfig() {
   if (!isValid.value) return;
-  
+
   saving.value = true;
   saveResult.value = null;
   
@@ -557,7 +557,14 @@ async function saveConfig() {
     };
     
     if (isEditMode.value) {
-      await configStore.updateConfig(route.params.id as string, configData);
+      console.log('Updating config with data:', configData);
+      const updatedConfig = await configStore.updateConfig(route.params.id as string, configData);
+      console.log('Update result:', updatedConfig);
+
+      if (!updatedConfig) {
+        throw new Error('Failed to update configuration - no response from server');
+      }
+
       saveResult.value = {
         success: true,
         message: 'Configuration updated successfully!'
@@ -589,12 +596,12 @@ async function saveConfig() {
 
 async function loadConfig() {
   if (!isEditMode.value) return;
-  
+
   try {
     const config = await configStore.fetchConfig(route.params.id as string);
     if (config) {
       formData.value = { ...config };
-      
+
       // Ensure map_category has a value (default to 'background' if missing)
       if (!formData.value.map_category) {
         formData.value.map_category = 'background';
