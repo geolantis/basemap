@@ -39,6 +39,7 @@ The service is automatically deployed to Vercel when changes are pushed to the m
 - **Production URL**: https://mapconfig.geolantis.com
 - **CI/CD**: Fully automated via GitHub Actions
 - **Last Updated**: November 2024
+- **Auto-Deploy**: Enabled via GitHub integration
 
 ### CI/CD Pipeline
 - ✅ Automated testing on push
