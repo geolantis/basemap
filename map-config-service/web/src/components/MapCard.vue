@@ -197,7 +197,19 @@ function handleImageError(event: Event) {
 }
 
 function formatDate(date: string) {
-  return format(new Date(date), 'MMM d, yyyy');
+  if (!date) return 'N/A';
+
+  try {
+    const parsedDate = new Date(date);
+    // Check if date is valid
+    if (isNaN(parsedDate.getTime())) {
+      return 'N/A';
+    }
+    return format(parsedDate, 'MMM d, yyyy');
+  } catch (error) {
+    console.warn('Invalid date:', date);
+    return 'N/A';
+  }
 }
 
 function duplicateWithEdits() {

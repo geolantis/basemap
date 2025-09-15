@@ -257,10 +257,15 @@ export default async function handler(req, res) {
           flag: config.flag,
           country: config.country
         };
-        
+
         // Only add optional fields if they exist
         if (config.layers && config.layers.length > 0) {
           cleanEntry.layers = config.layers;
+        }
+
+        // Add select_layer if it exists
+        if (config.select_layer) {
+          cleanEntry.select_layer = config.select_layer;
         }
         
         // Add to appropriate category
