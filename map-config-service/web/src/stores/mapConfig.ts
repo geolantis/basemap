@@ -31,7 +31,8 @@ export const useConfigStore = defineStore('mapConfig', () => {
       const mappedData = data.map((config: any) => ({
         ...config,
         mapCategory: config.map_category,
-        selectLayer: config.select_layer
+        selectLayer: config.select_layer,
+        previewImageUrl: config.preview_image_url
       }));
       configs.value = mappedData;
       return mappedData;
@@ -66,7 +67,8 @@ export const useConfigStore = defineStore('mapConfig', () => {
         return {
           ...data[0],
           mapCategory: data[0].map_category,
-          selectLayer: data[0].select_layer
+          selectLayer: data[0].select_layer,
+          previewImageUrl: data[0].preview_image_url
         };
       }
       return null;
