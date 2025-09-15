@@ -19,7 +19,13 @@ const getVersion = () => {
     const minutes = String(now.getMinutes()).padStart(2, '0');
 
     // Generate version like "2.0.0-20241112.1430" for Nov 12, 2024 at 14:30
-    const buildId = process.env.VERCEL_GIT_COMMIT_SHA?.substring(0, 7) || 'unknown';
+    // Try multiple environment variables for git commit
+    const buildId = (
+      process.env.VERCEL_GIT_COMMIT_SHA ||
+      process.env.VERCEL_GITHUB_COMMIT_SHA ||
+      process.env.GITHUB_SHA ||
+      'build'
+    ).substring(0, 7);
     return `2.0.0-${year}${month}${day}.${hours}${minutes}-${buildId}`;
   }
 
@@ -57,8 +63,8 @@ const createVersionFile = (version) => {
     version,
     buildTime: new Date().toISOString(),
     environment: process.env.VERCEL_ENV || 'development',
-    gitCommit: process.env.VERCEL_GIT_COMMIT_SHA || 'local',
-    gitBranch: process.env.VERCEL_GIT_COMMIT_REF || 'local',
+    gitCommit: process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_GITHUB_COMMIT_SHA || process.env.GITHUB_SHA || 'local',
+    gitBranch: process.env.VERCEL_GIT_COMMIT_REF || process.env.VERCEL_GITHUB_COMMIT_REF || process.env.GITHUB_REF || 'local',
     deploymentUrl: process.env.VERCEL_URL || 'http://localhost:5173'
   };
 
@@ -79,7 +85,15 @@ createVersionFile(version);
 console.log('\n📊 Version Information:');
 console.log(`  Version: ${version}`);
 console.log(`  Environment: ${process.env.VERCEL_ENV || 'development'}`);
-console.log(`  Git Commit: ${process.env.VERCEL_GIT_COMMIT_SHA || 'local'}`);
-console.log(`  Git Branch: ${process.env.VERCEL_GIT_COMMIT_REF || 'local'}`);
+console.log(`  Git Commit: ${process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_GITHUB_COMMIT_SHA || process.env.GITHUB_SHA || 'local'}`);
+console.log(`  Git Branch: ${process.env.VERCEL_GIT_COMMIT_REF || process.env.VERCEL_GITHUB_COMMIT_REF || process.env.GITHUB_REF || 'local'}`);
+
+// Debug: Show available Vercel env vars (only in non-production)
+if (process.env.VERCEL && process.env.VERCEL_ENV !== 'production') {
+  console.log('\n🔍 Available Vercel Environment Variables:');
+  Object.keys(process.env).filter(key => key.startsWith('VERCEL') || key.startsWith('GITHUB')).forEach(key => {
+    console.log(`  ${key}: ${process.env[key]?.substring(0, 50)}...`);
+  });
+}
 
 console.log('\n✨ Version update complete!');
