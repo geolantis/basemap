@@ -321,8 +321,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useConfigStore } from '../stores/config';
 import { storeToRefs } from 'pinia';
 import BrandLayout from '../components/BrandLayout.vue';
@@ -337,6 +337,7 @@ import { openInMaputnik as openMaputnik } from '../utils/maputnikHelper';
 import { getAllPreviewsFromLocalStorage } from '../utils/localStorage';
 
 const router = useRouter();
+const route = useRoute();
 const configStore = useConfigStore();
 const { 
   configs, 
@@ -520,10 +521,20 @@ function handleStyleUploadError(error: string) {
   // Error is already shown in the modal, just log it here
 }
 
+// Refresh configs when component is mounted or when returning from edit
 onMounted(async () => {
   await configStore.fetchConfigs();
   console.log('Configs loaded:', configs.value.length);
   console.log('Filtered configs:', filteredConfigs.value.length);
   console.log('First few configs:', configs.value.slice(0, 3));
+});
+
+// Also refresh when the route changes (e.g., returning from edit)
+watch(() => route.path, async (newPath, oldPath) => {
+  // Refresh if coming back to dashboard from config editor
+  if (newPath === '/' && oldPath?.includes('/config/')) {
+    console.log('Returning from config editor, refreshing...');
+    await configStore.fetchConfigs();
+  }
 });
 </script>

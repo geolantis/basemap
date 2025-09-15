@@ -102,21 +102,22 @@ export const useConfigStore = defineStore('config', () => {
   async function updateConfig(id: string, updates: Partial<MapConfig>) {
     loading.value = true;
     error.value = null;
-    
+
     try {
       const updatedConfig = await service.update(id, updates);
-      
+
       if (updatedConfig) {
         const index = configs.value.findIndex(c => c.id === id);
         if (index !== -1) {
-          configs.value[index] = updatedConfig;
+          // Use Vue's reactivity system to ensure the update triggers re-renders
+          configs.value.splice(index, 1, updatedConfig);
         }
-        
+
         if (currentConfig.value?.id === id) {
           currentConfig.value = updatedConfig;
         }
       }
-      
+
       return updatedConfig;
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to update configuration';

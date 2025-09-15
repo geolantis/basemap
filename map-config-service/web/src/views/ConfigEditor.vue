@@ -569,7 +569,10 @@ async function saveConfig() {
         message: 'Configuration created successfully!'
       };
     }
-    
+
+    // Fetch latest configs to ensure dashboard has fresh data
+    await configStore.fetchConfigs();
+
     // Redirect after successful save
     setTimeout(() => {
       router.push('/');

@@ -44,7 +44,11 @@
     "docker:prod": "docker-compose --profile production up --build",
     "lighthouse": "npx lighthouse-ci --config=.lighthouserc.json",
     "security:scan": "npm audit --audit-level=moderate",
-    "bundle:analyze": "npm run build && npx vite-bundle-analyzer dist/stats.html"
+    "bundle:analyze": "npm run build && npx vite-bundle-analyzer dist/stats.html",
+    "add-pelican-users": "node scripts/add-pelican-users.js",
+    "add-users": "node scripts/add-users-flexible.js",
+    "add-users:local": "node scripts/add-users-flexible.js --env local",
+    "add-users:prod": "node scripts/add-users-flexible.js --env production"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
