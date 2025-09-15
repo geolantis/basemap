@@ -35,6 +35,11 @@ npm run test
 
 The service is automatically deployed to Vercel when changes are pushed to the main branch via GitHub Actions.
 
+### Deployment Status
+- **Production URL**: https://mapconfig.geolantis.com
+- **CI/CD**: Fully automated via GitHub Actions
+- **Last Updated**: November 2024
+
 ### CI/CD Pipeline
 - ✅ Automated testing on push
 - ✅ Security scanning
