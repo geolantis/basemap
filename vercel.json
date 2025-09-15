@@ -1,6 +1,10 @@
 {
+  "git": {
+    "deploymentEnabled": true
+  },
   "buildCommand": "cd map-config-service/web && npm install && npm run build",
   "outputDirectory": "map-config-service/web/dist",
+  "installCommand": "cd map-config-service/web && npm install",
   "functions": {
     "api/**/*.js": {
       "maxDuration": 30
