@@ -339,14 +339,35 @@ import { getAllPreviewsFromLocalStorage } from '../utils/localStorage';
 const router = useRouter();
 const route = useRoute();
 const configStore = useConfigStore();
-const { 
-  configs, 
-  filteredConfigs, 
-  loading, 
-  error, 
-  searchQuery, 
-  selectedCountry 
+const {
+  configs,
+  loading,
+  error
 } = storeToRefs(configStore);
+
+// Local state
+const searchQuery = ref('');
+const selectedCountry = ref('all');
+const filteredConfigs = computed(() => {
+  let filtered = configs.value || [];
+
+  // Filter by search query
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    filtered = filtered.filter(config =>
+      config.name.toLowerCase().includes(query) ||
+      config.label.toLowerCase().includes(query) ||
+      config.country?.toLowerCase().includes(query)
+    );
+  }
+
+  // Filter by country
+  if (selectedCountry.value !== 'all') {
+    filtered = filtered.filter(config => config.country === selectedCountry.value);
+  }
+
+  return filtered;
+});
 
 const showDuplicateDialog = ref(false);
 const showMapSearch = ref(false);
