@@ -96,7 +96,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useConfigStore } from '../stores/config';
+import { useConfigStore } from '../stores/mapConfig';
 
 const route = useRoute();
 const router = useRouter();

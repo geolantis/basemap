@@ -184,7 +184,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useConfigStore } from '../stores/config';
+import { useConfigStore } from '../stores/mapConfig';
 import { storeToRefs } from 'pinia';
 import { isSupabaseConfigured } from '../lib/supabase';
 

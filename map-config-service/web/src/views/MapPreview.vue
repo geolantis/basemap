@@ -233,7 +233,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useConfigStore } from '../stores/config';
+import { useConfigStore } from '../stores/mapConfig';
 import { storeToRefs } from 'pinia';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';

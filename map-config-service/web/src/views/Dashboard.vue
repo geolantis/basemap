@@ -323,7 +323,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useConfigStore } from '../stores/config';
+import { useConfigStore } from '../stores/mapConfig';
 import { storeToRefs } from 'pinia';
 import BrandLayout from '../components/BrandLayout.vue';
 import SearchBar from '../components/SearchBar.vue';

@@ -259,7 +259,7 @@
 import { ref, computed } from 'vue';
 // Use development mock service for now (switch to ClaudeMapService when API endpoint is deployed)
 import { ClaudeMapServiceDev } from '../services/claudeMapServiceDev';
-import { useConfigStore } from '../stores/config';
+import { useConfigStore } from '../stores/mapConfig';
 import MapPreviewModal from './MapPreviewModal.vue';
 
 const configStore = useConfigStore();
