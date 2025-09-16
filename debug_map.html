@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Basemap Debug</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #debug {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 1000;
+        }
+        .error { color: red; font-weight: bold; }
+        .warning { color: orange; }
+        .info { color: blue; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        button {
+            display: block;
+            margin: 5px 0;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="controls">
+        <button onclick="loadStyle('basemap7.json')">Load Basemap7</button>
+        <button onclick="loadStyle('basemap8.json')">Load Basemap8</button>
+        <button onclick="toggleLayers()">Toggle Vector Layers</button>
+        <button onclick="clearDebug()">Clear Debug</button>
+        <button onclick="inspectTile()">Inspect Current Tile</button>
+    </div>
+    <div id="debug">
+        <h4>Debug Console</h4>
+        <div id="debugLog"></div>
+    </div>
+
+    <script>
+        let map;
+        let debugLog = document.getElementById('debugLog');
+        let vectorLayersVisible = true;
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.innerHTML = `[${timestamp}] ${message}`;
+            debugLog.appendChild(entry);
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
+
+        function clearDebug() {
+            debugLog.innerHTML = '';
+        }
+
+        function loadStyle(styleFile) {
+            log(`Loading style: ${styleFile}`, 'info');
+
+            if (map) {
+                map.remove();
+            }
+
+            map = new maplibregl.Map({
+                container: 'map',
+                style: styleFile,
+                center: [16.3738, 48.2082], // Vienna
+                zoom: 10,
+                hash: true
+            });
+
+            // Add debug event listeners
+            map.on('error', (e) => {
+                log(`MAP ERROR: ${e.error.message}`, 'error');
+                if (e.sourceId) log(`Source: ${e.sourceId}`, 'error');
+                if (e.tile) log(`Tile: ${JSON.stringify(e.tile.tileID.canonical)}`, 'error');
+            });
+
+            map.on('load', () => {
+                log('Map loaded successfully', 'info');
+
+                // Log all sources
+                const style = map.getStyle();
+                Object.keys(style.sources).forEach(sourceId => {
+                    log(`Source loaded: ${sourceId}`, 'info');
+                });
+
+                // Monitor tile loading
+                map.on('data', (e) => {
+                    if (e.sourceDataType === 'visibility' && e.isSourceLoaded) {
+                        log(`Source data loaded: ${e.sourceId}`, 'info');
+                    }
+                });
+
+                map.on('dataloading', (e) => {
+                    if (e.tile) {
+                        log(`Loading tile: z${e.tile.tileID.canonical.z}/${e.tile.tileID.canonical.x}/${e.tile.tileID.canonical.y}`, 'info');
+                    }
+                });
+
+                map.on('sourcedata', (e) => {
+                    if (e.tile && e.dataType === 'source') {
+                        const coord = e.tile.tileID.canonical;
+                        if (e.isSourceLoaded === false) {
+                            log(`Tile failed: z${coord.z}/${coord.x}/${coord.y}`, 'error');
+                        }
+                    }
+                });
+
+                // Click handler to inspect features
+                map.on('click', (e) => {
+                    const features = map.queryRenderedFeatures(e.point);
+                    if (features.length > 0) {
+                        log(`Found ${features.length} features at click point:`, 'info');
+                        features.slice(0, 3).forEach((f, i) => {
+                            log(`Feature ${i}: Layer=${f.layer.id}, Source=${f.source}`, 'info');
+                            if (f.properties._symbol !== undefined) {
+                                log(`_symbol value: ${f.properties._symbol}`, 'info');
+                            }
+                        });
+                    } else {
+                        log('No features at click point', 'warning');
+                    }
+                });
+
+                // Add tile grid for debugging
+                map.addSource('debug-tiles', {
+                    type: 'vector',
+                    tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.pbf'],
+                    minzoom: 0,
+                    maxzoom: 14
+                });
+
+                map.addLayer({
+                    id: 'debug-grid',
+                    type: 'line',
+                    source: 'debug-tiles',
+                    'source-layer': 'water',
+                    layout: {
+                        visibility: 'none'
+                    },
+                    paint: {
+                        'line-color': 'red',
+                        'line-width': 1
+                    }
+                });
+            });
+
+            map.on('idle', () => {
+                // Check for rendering issues
+                const layers = map.getStyle().layers;
+                let errorCount = 0;
+                layers.forEach(layer => {
+                    try {
+                        const visibility = map.getLayoutProperty(layer.id, 'visibility');
+                        if (visibility === 'none') return;
+
+                        // Try to query features for this layer
+                        const features = map.querySourceFeatures(layer.source, {
+                            sourceLayer: layer['source-layer']
+                        });
+
+                        if (layer.filter && features.length === 0) {
+                            log(`Warning: Layer ${layer.id} has no features matching filter`, 'warning');
+                        }
+                    } catch (err) {
+                        errorCount++;
+                        log(`Error checking layer ${layer.id}: ${err.message}`, 'error');
+                    }
+                });
+
+                if (errorCount > 0) {
+                    log(`Total layer errors: ${errorCount}`, 'error');
+                }
+            });
+        }
+
+        function toggleLayers() {
+            const style = map.getStyle();
+            style.layers.forEach(layer => {
+                if (layer.source === 'vector-source') {
+                    const currentVisibility = map.getLayoutProperty(layer.id, 'visibility') || 'visible';
+                    const newVisibility = currentVisibility === 'visible' ? 'none' : 'visible';
+                    map.setLayoutProperty(layer.id, 'visibility', newVisibility);
+                }
+            });
+            vectorLayersVisible = !vectorLayersVisible;
+            log(`Vector layers ${vectorLayersVisible ? 'shown' : 'hidden'}`, 'info');
+        }
+
+        function inspectTile() {
+            const center = map.getCenter();
+            const zoom = Math.floor(map.getZoom());
+
+            // Calculate tile coordinates
+            const n = Math.pow(2, zoom);
+            const x = Math.floor((center.lng + 180) / 360 * n);
+            const y = Math.floor((1 - Math.log(Math.tan(center.lat * Math.PI / 180) + 1 / Math.cos(center.lat * Math.PI / 180)) / Math.PI) / 2 * n);
+
+            log(`Current tile: z${zoom}/${x}/${y}`, 'info');
+            log(`Fetching tile data...`, 'info');
+
+            // Try to fetch the actual tile
+            const tileUrl = `https://mapsneu.wien.gv.at/basemapv/bmapv/3857/tile/${zoom}/${y}/${x}.pbf`;
+
+            fetch(tileUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.arrayBuffer();
+                })
+                .then(buffer => {
+                    log(`Tile size: ${buffer.byteLength} bytes`, 'info');
+
+                    // Check if tile is empty or corrupted
+                    if (buffer.byteLength === 0) {
+                        log('Tile is empty!', 'error');
+                    } else if (buffer.byteLength < 100) {
+                        log('Tile is suspiciously small', 'warning');
+                    } else {
+                        log('Tile loaded successfully', 'info');
+                    }
+                })
+                .catch(err => {
+                    log(`Failed to fetch tile: ${err.message}`, 'error');
+                });
+        }
+
+        // Load basemap8 by default
+        loadStyle('basemap8.json');
+    </script>
+</body>
+</html>

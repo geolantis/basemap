@@ -6,7 +6,7 @@
     "basemap-source": {
       "type": "raster",
       "tileSize": 256,
-      "maxzoom": 19,
+      "maxzoom": 23,
       "tiles": [
         "https://mapsneu.wien.gv.at/basemap/bmapgelaende/grau/google3857/{z}/{y}/{x}.jpeg"
       ]
@@ -18,7 +18,30 @@
       ],
       "minzoom": 0,
       "maxzoom": 16,
-      "attribution": " "
+      "bounds": [
+        9.5,
+        47,
+        17,
+        49
+      ],
+      "scheme": "xyz"
+    },
+    "bmhl": {
+      "type": "vector",
+      "tiles": [
+        "https://mapsneu.wien.gv.at/basemapv/bmapvhl/3857/tile/{z}/{y}/{x}.pbf"
+      ],
+      "minzoom": 0,
+      "maxzoom": 16
+    },
+    "vector-fallback": {
+      "type": "raster",
+      "tiles": [
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+      ],
+      "tileSize": 256,
+      "attribution": "© OpenStreetMap contributors",
+      "maxzoom": 19
     }
   },
   "layers": [
@@ -36,15 +59,13 @@
       }
     },
     {
-      "id": "tile-gap-fill",
+      "id": "missing-tile-background",
       "type": "background",
-      "layout": {
-        "visibility": "visible"
-      },
+      "layout": {},
       "paint": {
-        "background-color": "rgba(240, 240, 240, 0.3)"
-      },
-      "maxzoom": 24
+        "background-color": "rgba(200, 200, 200, 0.1)",
+        "background-opacity": 0.5
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L0-8/Wald",
@@ -2540,7 +2561,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2564,7 +2585,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2628,7 +2649,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2652,7 +2673,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2716,7 +2737,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2740,7 +2761,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2804,7 +2825,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2828,7 +2849,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2980,7 +3001,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -3004,7 +3025,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -3024,7 +3045,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -3778,7 +3799,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -3799,7 +3820,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4147,7 +4168,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {},
       "paint": {
         "fill-color": "#EDCACA"
@@ -4164,7 +4185,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4221,7 +4242,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {},
       "paint": {
@@ -4238,7 +4259,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "line-cap": "round",
@@ -4259,7 +4280,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {},
       "paint": {
         "fill-color": "#E6B8B8"
@@ -4276,7 +4297,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4333,7 +4354,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {},
       "paint": {
@@ -4350,7 +4371,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "line-cap": "round",
@@ -4405,7 +4426,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -4445,7 +4466,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4495,7 +4516,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -4535,7 +4556,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4560,7 +4581,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "line-cap": "round",
@@ -4585,7 +4606,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4627,7 +4648,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -4647,7 +4668,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "line-join": "round"
@@ -4667,7 +4688,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -4707,7 +4728,7 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -4747,7 +4768,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4789,7 +4810,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {},
       "paint": {
         "line-color": "#669BCC",
@@ -4833,7 +4854,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4891,7 +4912,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4945,7 +4966,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {},
       "paint": {
         "line-color": "#9C9C9C",
@@ -4967,7 +4988,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {},
       "paint": {
@@ -4989,7 +5010,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -5026,7 +5047,7 @@
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_F_GEBUESCH",
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {},
       "paint": {
         "fill-color": "rgba(153,204,139,0.5)",
@@ -5044,7 +5065,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1",
         "icon-rotation-alignment": "map",
@@ -5066,7 +5087,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1_2",
@@ -5088,7 +5109,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1_1",
@@ -5110,7 +5131,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/2",
         "icon-rotation-alignment": "map",
@@ -5132,7 +5153,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/2_2",
@@ -5154,7 +5175,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/2_1",
@@ -5176,7 +5197,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/3",
         "icon-rotation-alignment": "map",
@@ -5198,7 +5219,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/3_2",
@@ -5220,7 +5241,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/3_1",
@@ -5242,7 +5263,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/4",
         "icon-rotation-alignment": "map",
@@ -5264,7 +5285,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/4_2",
@@ -5286,7 +5307,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/4_1",
@@ -5308,7 +5329,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/5",
         "icon-rotation-alignment": "map",
@@ -5330,7 +5351,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/5_2",
@@ -5352,7 +5373,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/5_1",
@@ -5374,7 +5395,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/6",
         "icon-rotation-alignment": "map",
@@ -5396,7 +5417,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/6_2",
@@ -5418,7 +5439,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/6_1",
@@ -5440,7 +5461,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/7",
         "icon-rotation-alignment": "map",
@@ -5462,7 +5483,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/7_2",
@@ -5484,7 +5505,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/7_1",
@@ -5506,7 +5527,7 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/8",
         "icon-rotation-alignment": "map",
@@ -5528,7 +5549,7 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/8_2",
@@ -5550,7 +5571,7 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/8_1",
@@ -5572,7 +5593,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/9",
         "icon-rotation-alignment": "map",
@@ -5594,7 +5615,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/9_2",
@@ -5616,7 +5637,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/9_1",
@@ -5638,7 +5659,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/10",
         "icon-rotation-alignment": "map",
@@ -5660,7 +5681,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/10_2",
@@ -5682,7 +5703,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/10_1",
@@ -5704,7 +5725,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/11",
         "icon-rotation-alignment": "map",
@@ -5726,7 +5747,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/11_2",
@@ -5748,7 +5769,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/11_1",
@@ -5770,7 +5791,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/12",
         "icon-rotation-alignment": "map",
@@ -5792,7 +5813,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/12_2",
@@ -5814,7 +5835,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/12_1",
@@ -5836,7 +5857,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/13",
         "icon-rotation-alignment": "map",
@@ -5858,7 +5879,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/13_2",
@@ -5880,7 +5901,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/13_1",
@@ -5902,7 +5923,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/14",
         "icon-rotation-alignment": "map",
@@ -5924,7 +5945,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/14_2",
@@ -5946,7 +5967,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/14_1",
@@ -5968,7 +5989,7 @@
         "_symbol",
         14
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/15",
         "icon-rotation-alignment": "map",
@@ -5990,7 +6011,7 @@
         "_symbol",
         14
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/15_2",
@@ -6012,7 +6033,7 @@
         "_symbol",
         14
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/15_1",
@@ -6034,7 +6055,7 @@
         "_symbol",
         15
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/16",
         "icon-rotation-alignment": "map",
@@ -6056,7 +6077,7 @@
         "_symbol",
         15
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/16_2",
@@ -6078,7 +6099,7 @@
         "_symbol",
         15
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/16_1",
@@ -6100,7 +6121,7 @@
         "_symbol",
         16
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/17",
         "icon-rotation-alignment": "map",
@@ -6122,7 +6143,7 @@
         "_symbol",
         16
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/17_2",
@@ -6144,7 +6165,7 @@
         "_symbol",
         16
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/17_1",
@@ -6166,7 +6187,7 @@
         "_symbol",
         17
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/18",
         "icon-rotation-alignment": "map",
@@ -6188,7 +6209,7 @@
         "_symbol",
         17
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/18_2",
@@ -6210,7 +6231,7 @@
         "_symbol",
         17
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/18_1",
@@ -6232,7 +6253,7 @@
         "_symbol",
         18
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/19",
         "icon-rotation-alignment": "map",
@@ -6254,7 +6275,7 @@
         "_symbol",
         18
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/19_2",
@@ -6276,7 +6297,7 @@
         "_symbol",
         18
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/19_1",
@@ -6298,7 +6319,7 @@
         "_symbol",
         19
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/20",
         "icon-rotation-alignment": "map",
@@ -6320,7 +6341,7 @@
         "_symbol",
         19
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/20_2",
@@ -6342,7 +6363,7 @@
         "_symbol",
         19
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/20_1",
@@ -6364,7 +6385,7 @@
         "_symbol",
         20
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/21",
         "icon-rotation-alignment": "map",
@@ -6386,7 +6407,7 @@
         "_symbol",
         20
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/21_2",
@@ -6408,7 +6429,7 @@
         "_symbol",
         20
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/21_1",
@@ -6430,7 +6451,7 @@
         "_symbol",
         21
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/22",
         "icon-rotation-alignment": "map",
@@ -6452,7 +6473,7 @@
         "_symbol",
         21
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/22_2",
@@ -6474,7 +6495,7 @@
         "_symbol",
         21
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/22_1",
@@ -6496,7 +6517,7 @@
         "_symbol",
         22
       ],
-      "minzoom": 16,
+      "minzoom": 18.9113,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/23",
         "icon-rotation-alignment": "map",
@@ -6518,7 +6539,7 @@
         "_symbol",
         22
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/23_2",
@@ -6540,7 +6561,7 @@
         "_symbol",
         22
       ],
-      "minzoom": 16,
+      "minzoom": 17.9113,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/23_1",
@@ -6562,7 +6583,7 @@
         "_symbol",
         23
       ],
-      "minzoom": 16,
+      "minzoom": 18.9113,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/24",
         "icon-rotation-alignment": "map",
@@ -6584,7 +6605,7 @@
         "_symbol",
         23
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/24_2",
@@ -6606,7 +6627,7 @@
         "_symbol",
         23
       ],
-      "minzoom": 16,
+      "minzoom": 17.9113,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/24_1",
@@ -8657,7 +8678,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -8697,7 +8718,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -8737,7 +8758,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -8799,7 +8820,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -8839,7 +8860,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -8879,7 +8900,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -8919,7 +8940,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -8982,7 +9003,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -9045,7 +9066,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -9085,7 +9106,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -9125,7 +9146,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -9165,7 +9186,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -9227,7 +9248,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -11035,7 +11056,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -11115,7 +11136,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11239,7 +11260,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -11299,7 +11320,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11362,7 +11383,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -11402,7 +11423,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11444,7 +11465,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -11484,7 +11505,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11526,7 +11547,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -11566,7 +11587,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -12094,7 +12115,7 @@
       "type": "circle",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_P_U-BAHNZUGANG (TXT)",
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {},
       "paint": {
         "circle-radius": 2.66667,
@@ -13130,7 +13151,7 @@
         "_label_class3",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Italic"
@@ -13566,7 +13587,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Corbel Bold"
@@ -13665,7 +13686,7 @@
         "_label_class12",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Italic"
@@ -14335,7 +14356,7 @@
         "_label_class2",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -14367,7 +14388,7 @@
         "_label_class1",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -14399,7 +14420,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Bold"
@@ -14656,7 +14677,7 @@
         "_label_class4",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -14846,7 +14867,7 @@
         "_label_class2",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -14879,7 +14900,7 @@
         "_label_class1",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -14912,7 +14933,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Corbel Bold Italic"
@@ -14940,7 +14961,7 @@
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_P_REIHE_NUMMER",
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Corbel Bold"
@@ -14996,7 +15017,7 @@
         "_label_class3",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -15028,7 +15049,7 @@
         "_label_class5",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -15381,7 +15402,7 @@
         "_label_class6",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Italic"
@@ -15795,7 +15816,7 @@
         "_label_class5",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -15825,7 +15846,7 @@
         "_label_class4",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -15855,7 +15876,7 @@
         "_label_class3",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Arial Regular"
@@ -15885,7 +15906,7 @@
         "_label_class2",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -15949,7 +15970,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Arial Regular"
@@ -16063,7 +16084,7 @@
         "_label_class",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16119,7 +16140,7 @@
         "_label_class",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16175,7 +16196,7 @@
         "_label_class",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16231,7 +16252,7 @@
         "_label_class",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16259,7 +16280,7 @@
         "_label_class",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16287,7 +16308,7 @@
         "_label_class",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16397,7 +16418,7 @@
         "_label_class",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16453,7 +16474,7 @@
         "_label_class",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16537,7 +16558,7 @@
         "_label_class",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16593,7 +16614,7 @@
         "_label_class",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16663,7 +16684,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -16731,7 +16752,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -16787,7 +16808,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1333,
@@ -17357,7 +17378,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1333,
@@ -17395,7 +17416,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -17421,7 +17442,7 @@
         "_label_class",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -17491,7 +17512,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -17547,7 +17568,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1333,
@@ -17658,7 +17679,7 @@
         "_label_class",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -17772,7 +17793,7 @@
         "_label_class",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -17828,7 +17849,7 @@
         "_label_class",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -17884,7 +17905,7 @@
         "_label_class",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -17954,7 +17975,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -18022,7 +18043,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -18048,7 +18069,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -18104,6 +18125,598 @@
         }
       },
       "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/10",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
+      "minzoom": 17,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 0.533333
+      },
+      "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/10_1",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 0.533333
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/50",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 1.06667
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/20",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        2
+      ],
+      "minzoom": 17,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 1.53333
+      },
+      "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/20_1",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        2
+      ],
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 0.533333
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/100",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
+      "minzoom": 17,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 2.66667
+      },
+      "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/100_1",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        3
+      ],
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/1000",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        4
+      ],
+      "minzoom": 17,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 2.66667
+      },
+      "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/1000_1",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        4
+      ],
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/5",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        5
+      ],
+      "minzoom": 17,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,102,89,0.5)",
+        "line-width": 0.533333
+      },
+      "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_20_100_1000_HL/20",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_20_100_1000_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
+      "minzoom": 14,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 0.8
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_20_100_1000_HL/100; 1000",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_20_100_1000_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
+      "minzoom": 14,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_50_100_1000_smooth200m_HL/50er",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_50_100_1000_smooth200m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
+      "minzoom": 12,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 0.8
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_50_100_1000_smooth200m_HL/1000; 2000; 3000; 200; 400; 600; 800; 1200; 1400; 1600; 1800; 2200; 2400; 2600; 2800; 3200; 3400; 3600",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_50_100_1000_smooth200m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
+      "minzoom": 12,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "AUSTRIA_HL50_100_1000_smooth500m_HL/200; 300; 400; 600; 700; 800; 900; 1100; 1200; 1300; 1400; 1600; 1700; 1800; 1900; 2100; 2200; 2300; 2400; 2600; 2700; 2800; 2900; 3100; 3200; 3300; 3400; 3600; 3700",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL50_100_1000_smooth500m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
+      "minzoom": 11,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 0.8
+      }
+    },
+    {
+      "id": "AUSTRIA_HL50_100_1000_smooth500m_HL/200; 300; 400; 600; 700; 800; 900; 1100; 1200; 1300; 1400; 1600; 1700; 1800; 1900; 2100; 2200; 2300; 2400; 2600; 2700; 2800; 2900; 3100; 3200; 3300; 3400; 3600; 3700_1",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL50_100_1000_smooth500m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        0
+      ],
+      "minzoom": 10,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.4)",
+        "line-width": 0.8
+      }
+    },
+    {
+      "id": "AUSTRIA_HL50_100_1000_smooth500m_HL/1000; 2000; 3000; 500; 1500; 2500; 3500",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL50_100_1000_smooth500m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
+      "minzoom": 11,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.5)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "AUSTRIA_HL50_100_1000_smooth500m_HL/1000; 2000; 3000; 500; 1500; 2500; 3500_1",
+      "type": "line",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL50_100_1000_smooth500m_HL",
+      "filter": [
+        "==",
+        "_symbol",
+        1
+      ],
+      "minzoom": 10,
+      "maxzoom": 24,
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(128,111,102,0.4)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_20_100_1000_HL/label/HL15-16_100er,1000er",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_20_100_1000_HL/label",
+      "minzoom": 14,
+      "maxzoom": 24,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 13.3333,
+        "text-field": "{_name}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#4E4E4E",
+        "text-halo-color": "rgba(230,230,230,0.5)",
+        "text-halo-width": 1.06667
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_50_100_1000_smooth200m_HL/label/HL13_14_HL",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_50_100_1000_smooth200m_HL/label",
+      "minzoom": 12,
+      "maxzoom": 24,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 12,
+        "text-field": "{_name}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#806659",
+        "text-halo-color": "rgba(230,230,230,0.5)",
+        "text-halo-width": 1.06667
+      }
+    },
+    {
+      "id": "AUSTRIA_HL50_100_1000_smooth500m_HL/label/HL_11500er, 1000er",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL50_100_1000_smooth500m_HL/label",
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
+      "minzoom": 10,
+      "maxzoom": 24,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 13.3333,
+        "text-field": "{_name}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#997A6B",
+        "text-halo-color": "rgba(220,220,220,0.4)",
+        "text-halo-width": 1.06667
+      }
+    },
+    {
+      "id": "AUSTRIA_HL50_100_1000_smooth500m_HL/label/HL12_Contour2",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL50_100_1000_smooth500m_HL/label",
+      "filter": [
+        "==",
+        "_label_class1",
+        1
+      ],
+      "minzoom": 10.91,
+      "maxzoom": 24,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 12,
+        "text-field": "{_name1}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#806659",
+        "text-halo-color": "rgba(220,220,220,0.5)",
+        "text-halo-width": 1.06667
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label/HL18-20_100er",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label",
+      "filter": [
+        "==",
+        "_label_class2",
+        2
+      ],
+      "minzoom": 16,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 17.3333,
+        "text-field": "{_name2}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#806659",
+        "text-halo-color": "rgba(230,230,230,0.5)",
+        "text-halo-width": 1.06667
+      },
+      "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label/HL18-20_20er",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label",
+      "filter": [
+        "==",
+        "_label_class3",
+        3
+      ],
+      "minzoom": 16,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 14.6667,
+        "text-field": "{_name3}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#806659",
+        "text-halo-color": "rgba(230,230,230,0.5)",
+        "text-halo-width": 1.06667
+      },
+      "maxzoom": 24
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label/HL17_50er",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label",
+      "filter": [
+        "==",
+        "_label_class1",
+        1
+      ],
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 12,
+        "text-field": "{_name1}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#806659",
+        "text-halo-color": "rgba(230,230,230,0.5)",
+        "text-halo-width": 1.06667
+      }
+    },
+    {
+      "id": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label/HL17_1000er",
+      "type": "symbol",
+      "source": "bmhl",
+      "source-layer": "AUSTRIA_HL_Gesamt_gen20cm_smooth20m_HL/label",
+      "filter": [
+        "==",
+        "_label_class",
+        0
+      ],
+      "minzoom": 16,
+      "maxzoom": 24,
+      "layout": {
+        "symbol-placement": "line",
+        "symbol-spacing": 1000,
+        "text-font": [
+          "Corbel Bold Italic"
+        ],
+        "text-size": 14.6667,
+        "text-field": "{_name}",
+        "text-optional": true
+      },
+      "paint": {
+        "text-color": "#806659",
+        "text-halo-color": "rgba(230,230,230,0.5)",
+        "text-halo-width": 1.06667
+      }
     }
   ]
 }

@@ -18,7 +18,12 @@
       ],
       "minzoom": 0,
       "maxzoom": 16,
-      "attribution": " "
+      "bounds": [
+        8.8587,
+        45.7823,
+        17.1608,
+        49.5752
+      ]
     }
   },
   "layers": [
@@ -34,17 +39,6 @@
       "paint": {
         "raster-brightness-min": 0.1
       }
-    },
-    {
-      "id": "tile-gap-fill",
-      "type": "background",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "background-color": "rgba(240, 240, 240, 0.3)"
-      },
-      "maxzoom": 24
     },
     {
       "id": "NUTZUNG/NUTZUNG_L0-8/Wald",
@@ -63,7 +57,7 @@
       }
     },
     {
-      "id": "NUTZUNG/NUTZUNG_L0-8/Landwirtschaft | Grünfläche",
+      "id": "NUTZUNG/NUTZUNG_L0-8/Landwirtschaft | Gr\u00fcnfl\u00e4che",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NUTZUNG_L0-8",
@@ -113,7 +107,7 @@
       }
     },
     {
-      "id": "NUTZUNG/NUTZUNG_L9_11/Landwirtschaft | Grünfläche | Gewässerrand",
+      "id": "NUTZUNG/NUTZUNG_L9_11/Landwirtschaft | Gr\u00fcnfl\u00e4che | Gew\u00e4sserrand",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NUTZUNG_L9_11",
@@ -164,7 +158,7 @@
       }
     },
     {
-      "id": "NUTZUNG/NUTZUNG_L15_12/Grünflächen",
+      "id": "NUTZUNG/NUTZUNG_L15_12/Gr\u00fcnfl\u00e4chen",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NUTZUNG_L15_12",
@@ -249,7 +243,7 @@
       }
     },
     {
-      "id": "NUTZUNG/NUTZUNG_L15_12/Gewässerrand",
+      "id": "NUTZUNG/NUTZUNG_L15_12/Gew\u00e4sserrand",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NUTZUNG_L15_12",
@@ -330,11 +324,10 @@
       "layout": {},
       "paint": {
         "fill-color": "#EFEBE9"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "NUTZUNG/NUTZUNG_L16_20/Grünflächen",
+      "id": "NUTZUNG/NUTZUNG_L16_20/Gr\u00fcnfl\u00e4chen",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NUTZUNG_L16_20",
@@ -347,8 +340,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(136,204,102,0.4)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L16_20/Landwirtschaft",
@@ -364,8 +356,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(235,255,170,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L16_20/Wald",
@@ -381,8 +372,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(71,179,18,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L16_20/Gletscher",
@@ -398,8 +388,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(115,240,255,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L16_20/Sonstiges",
@@ -415,11 +404,10 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(253,253,255,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "NUTZUNG/NUTZUNG_L16_20/Gewässerrand",
+      "id": "NUTZUNG/NUTZUNG_L16_20/Gew\u00e4sserrand",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NUTZUNG_L16_20",
@@ -432,8 +420,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(163,255,115,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L16_20/Friedhof",
@@ -449,8 +436,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(153,125,77,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L16_20/Freizeit",
@@ -466,8 +452,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(102,153,77,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "NUTZUNG/NUTZUNG_L16_20/Weingarten",
@@ -483,8 +468,7 @@
       "layout": {},
       "paint": {
         "fill-color": "rgba(191,191,86,0.25)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/> 10000_2",
@@ -1228,8 +1212,7 @@
       "paint": {
         "fill-color": "#B3D9FF",
         "fill-outline-color": "#B3D9FF"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_F_GEWF/3",
@@ -1246,8 +1229,7 @@
       "paint": {
         "fill-color": "#B3D9FF",
         "fill-outline-color": "#B3D9FF"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_F_GEWF/1",
@@ -1264,8 +1246,7 @@
       "paint": {
         "fill-color": "#B3D9FF",
         "fill-outline-color": "#B3D9FF"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_F_GEWF/2",
@@ -1282,8 +1263,7 @@
       "paint": {
         "fill-color": "#B3D9FF",
         "fill-outline-color": "#B3D9FF"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/7",
@@ -1304,8 +1284,7 @@
           2.5
         ],
         "line-width": 1.6
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/6",
@@ -1326,8 +1305,7 @@
           1.875
         ],
         "line-width": 2.13333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/5",
@@ -1348,8 +1326,7 @@
           1.875
         ],
         "line-width": 3.2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/4",
@@ -1370,8 +1347,7 @@
           1.875
         ],
         "line-width": 4.26667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/3",
@@ -1392,8 +1368,7 @@
           1.66667
         ],
         "line-width": 4.8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/4000-10000",
@@ -1414,8 +1389,7 @@
           2.25
         ],
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWLUnterirdisch/> 10000",
@@ -1436,8 +1410,7 @@
           2
         ],
         "line-width": 8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /7",
@@ -1457,8 +1430,7 @@
       "paint": {
         "line-color": "#B3D9FF",
         "line-width": 1.6
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /6",
@@ -1478,8 +1450,7 @@
       "paint": {
         "line-color": "#B3D9FF",
         "line-width": 2.13333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /5",
@@ -1499,8 +1470,7 @@
       "paint": {
         "line-color": "#B3D9FF",
         "line-width": 3.2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /4",
@@ -1520,8 +1490,7 @@
       "paint": {
         "line-color": "#B3D9FF",
         "line-width": 4.26667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /3",
@@ -1541,8 +1510,7 @@
       "paint": {
         "line-color": "#B3D9FF",
         "line-width": 4.8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /4000-10000",
@@ -1562,8 +1530,7 @@
       "paint": {
         "line-color": "#B3D9FF",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /> 10000",
@@ -1583,8 +1550,7 @@
       "paint": {
         "line-color": "#B3D9FF",
         "line-width": 8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_BAUWERK_L_TUNNEL_BRUNNENCLA/AB_SS_Tunnel/1",
@@ -2540,7 +2506,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2551,8 +2517,7 @@
           0.171429
         ],
         "line-width": 18.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/AB_SS_Tunnel/0",
@@ -2564,15 +2529,14 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FEEFD8",
         "line-width": 16.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/AB_SS_Tunnel_1/1",
@@ -2628,7 +2592,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2639,8 +2603,7 @@
           0.24
         ],
         "line-width": 13.3333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/Rampe_Tunnel/0",
@@ -2652,15 +2615,14 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FEEFD8",
         "line-width": 11.3333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/Rampe_Tunnel_1/1",
@@ -2716,7 +2678,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2727,8 +2689,7 @@
           0.177778
         ],
         "line-width": 18
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/HV_Tunnel/0",
@@ -2740,15 +2701,14 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FFFF99",
         "line-width": 16
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/HV_Tunnel_1/1",
@@ -2804,7 +2764,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2815,8 +2775,7 @@
           0.32
         ],
         "line-width": 10
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/WichtigeNV_Tunnel_GS_Tunnel/0",
@@ -2828,15 +2787,14 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#F1F1F1",
         "line-width": 7.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/WichtigeNV_Tunnel_GS_Tunnel_1/1",
@@ -2980,7 +2938,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -2991,8 +2949,7 @@
           0.218182
         ],
         "line-width": 14.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/SonstigeStrasse_Tunnel_1/0",
@@ -3004,15 +2961,14 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#F1F1F1",
         "line-width": 12.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/Fahrweg_Fussweg_FGZone_Tunnel",
@@ -3024,7 +2980,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
@@ -3035,8 +2991,7 @@
           0.75
         ],
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/Fahrweg_Fussweg_FGZone_Tunnel_1",
@@ -3079,8 +3034,7 @@
       "paint": {
         "line-color": "#BFB6AC",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/BahnNN_Tunnel",
@@ -3099,8 +3053,7 @@
       "paint": {
         "line-color": "#BFB6AC",
         "line-width": 3.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/Bim_Seilbahn_Zahnradbahn_Schmalspurbahn_Tunnel",
@@ -3123,8 +3076,7 @@
           1.6
         ],
         "line-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/13080-Bahn,Anschluss",
@@ -3148,7 +3100,7 @@
       }
     },
     {
-      "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/13020-Bahn, Ergänzungsnetz",
+      "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/13020-Bahn, Erg\u00e4nzungsnetz",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_INSIDE_BAUWERK_L_TUNNEL",
@@ -3204,8 +3156,7 @@
       "paint": {
         "line-color": "#B2B2B2",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/12150-Parkgarage/0",
@@ -3224,11 +3175,10 @@
       "paint": {
         "line-color": "#E1E1E1",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/12020-Fußweg | 12110-Fußgängerzone | 12120-Stufe, Stiege",
+      "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/12020-Fu\u00dfweg | 12110-Fu\u00dfg\u00e4ngerzone | 12120-Stufe, Stiege",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_INSIDE_BAUWERK_L_TUNNEL",
@@ -3241,7 +3191,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/12020-Fußweg | 12110-Fußgängerzone | 12120-Stufe, Stiege",
+        "icon-image": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/12020-Fu\u00dfweg | 12110-Fu\u00dfg\u00e4ngerzone | 12120-Stufe, Stiege",
         "symbol-spacing": 4,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -3291,7 +3241,7 @@
       }
     },
     {
-      "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/11010-Autobahn; 11020-Schnellstraße",
+      "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/11010-Autobahn; 11020-Schnellstra\u00dfe",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_INSIDE_BAUWERK_L_TUNNEL",
@@ -3660,8 +3610,7 @@
       "paint": {
         "line-color": "#EAE0EF",
         "line-width": 3.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_GEMEINDE_L_GEMEINDEGRENZE/GemeindegrenzeOID/0",
@@ -3681,8 +3630,7 @@
       "paint": {
         "line-color": "#B094A0",
         "line-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_GEMEINDE_L_GEMEINDEGRENZE/GemeindegrenzeOID_1/1",
@@ -3744,8 +3692,7 @@
       "paint": {
         "line-color": "#EAE0EF",
         "line-width": 3.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_GEMEINDE_L_GEMEINDEGRENZE/other/0",
@@ -3765,8 +3712,7 @@
       "paint": {
         "line-color": "#B094A0",
         "line-width": 1.46667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_BEZIRK_L_BEZIRKSGRENZE/BezirkgrenzeOID/1",
@@ -3778,7 +3724,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -3786,8 +3732,7 @@
       "paint": {
         "line-color": "#EAE0EF",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_BEZIRK_L_BEZIRKSGRENZE/BezirkgrenzeOID/0",
@@ -3799,7 +3744,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -3807,8 +3752,7 @@
       "paint": {
         "line-color": "#B094A0",
         "line-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_BEZIRK_L_BEZIRKSGRENZE/BezirkgrenzeOID_2/1",
@@ -3912,8 +3856,7 @@
       "paint": {
         "line-color": "#EAE0EF",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_BEZIRK_L_BEZIRKSGRENZE/other/0",
@@ -3933,8 +3876,7 @@
       "paint": {
         "line-color": "#B094A0",
         "line-width": 1.6
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_LAND_L_LANDESGRENZE/LandesgrenzeOID/1",
@@ -3954,8 +3896,7 @@
       "paint": {
         "line-color": "#EAE0EF",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_LAND_L_LANDESGRENZE/LandesgrenzeOID/0",
@@ -3975,8 +3916,7 @@
       "paint": {
         "line-color": "#B094A0",
         "line-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_LAND_L_LANDESGRENZE/LandesgrenzeOID_2/1",
@@ -4080,8 +4020,7 @@
       "paint": {
         "line-color": "#EAE0EF",
         "line-width": 2.66667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_LAND_L_LANDESGRENZE/other/0",
@@ -4101,8 +4040,7 @@
       "paint": {
         "line-color": "#B094A0",
         "line-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GRENZEN/GRENZEN_L09_20/BEV_STAAT_L_STAATSGRENZE/1",
@@ -4138,7 +4076,7 @@
       }
     },
     {
-      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Gebäude; 0/1",
+      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Geb\u00e4ude; 0/1",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "GEBAEUDE_F_GEBAEUDE",
@@ -4147,15 +4085,14 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {},
       "paint": {
         "fill-color": "#EDCACA"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Gebäude; 0/0",
+      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Geb\u00e4ude; 0/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GEBAEUDE_F_GEBAEUDE",
@@ -4164,7 +4101,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4172,11 +4109,10 @@
       "paint": {
         "line-color": "#CC8F8F",
         "line-width": 2.66667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Gebäude; 0_3",
+      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Geb\u00e4ude; 0_3",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "GEBAEUDE_F_GEBAEUDE",
@@ -4194,7 +4130,7 @@
       }
     },
     {
-      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Gebäude; 0_2",
+      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Geb\u00e4ude; 0_2",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "GEBAEUDE_F_GEBAEUDE",
@@ -4212,7 +4148,7 @@
       }
     },
     {
-      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Gebäude; 0_1/1",
+      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Geb\u00e4ude; 0_1/1",
       "type": "fill",
       "source": "vector-source",
       "source-layer": "GEBAEUDE_F_GEBAEUDE",
@@ -4221,7 +4157,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {},
       "paint": {
@@ -4229,7 +4165,7 @@
       }
     },
     {
-      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Gebäude; 0_1/0",
+      "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Geb\u00e4ude; 0_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GEBAEUDE_F_GEBAEUDE",
@@ -4238,7 +4174,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "line-cap": "round",
@@ -4259,12 +4195,11 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {},
       "paint": {
         "fill-color": "#E6B8B8"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Landmark/0",
@@ -4276,7 +4211,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4284,8 +4219,7 @@
       "paint": {
         "line-color": "#CC8F8F",
         "line-width": 2.66667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEBAEUDE/GEBAEUDE_F_GEBAEUDE/Landmark_3",
@@ -4333,7 +4267,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {},
       "paint": {
@@ -4350,7 +4284,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "line-cap": "round",
@@ -4405,15 +4339,14 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#9C9C9C",
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Zaun, Mauer_1",
@@ -4445,7 +4378,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4457,8 +4390,7 @@
           5
         ],
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Zaun strichliert_1",
@@ -4495,15 +4427,14 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#AAAAAA",
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Situationslinie_1",
@@ -4535,7 +4466,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4547,8 +4478,7 @@
           5.25
         ],
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Situationslinie strichliert_1",
@@ -4560,7 +4490,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "line-cap": "round",
@@ -4585,7 +4515,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4593,8 +4523,7 @@
       "paint": {
         "line-color": "#B6B6B6",
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gehsteig_1",
@@ -4627,15 +4556,14 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#8C8C8C",
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Schienen_1",
@@ -4647,7 +4575,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "line-join": "round"
@@ -4658,7 +4586,7 @@
       }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Brücke",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Br\u00fccke",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4667,18 +4595,17 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#828282",
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Brücke_1",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Br\u00fccke_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4698,7 +4625,7 @@
       }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Geländer",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gel\u00e4nder",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4707,18 +4634,17 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#828282",
         "line-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Geländer_1",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gel\u00e4nder_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4738,7 +4664,7 @@
       }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gewässerlinie",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gew\u00e4sserlinie",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4747,7 +4673,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4755,11 +4681,10 @@
       "paint": {
         "line-color": "#669BCC",
         "line-width": 1.6
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gewässerlinie_1",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gew\u00e4sserlinie_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4780,7 +4705,7 @@
       }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gewässerlinie strichliert",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gew\u00e4sserlinie strichliert",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4789,7 +4714,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {},
       "paint": {
         "line-color": "#669BCC",
@@ -4798,11 +4723,10 @@
           1.66667
         ],
         "line-width": 1.6
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gewässerlinie strichliert_1",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Gew\u00e4sserlinie strichliert_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4824,7 +4748,7 @@
       }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Ölleitung",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/\u00d6lleitung",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4833,7 +4757,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4849,11 +4773,10 @@
           2.85714
         ],
         "line-width": 0.933333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Ölleitung_1",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/\u00d6lleitung_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4891,7 +4814,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4905,8 +4828,7 @@
           5
         ],
         "line-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Starkstromleitung_1",
@@ -4936,7 +4858,7 @@
       }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Böschung",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/B\u00f6schung",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4945,7 +4867,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {},
       "paint": {
         "line-color": "#9C9C9C",
@@ -4954,11 +4876,10 @@
           4
         ],
         "line-width": 0.666667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Böschung_1",
+      "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/B\u00f6schung_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_L_NATURBESTAND_L",
@@ -4967,7 +4888,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {},
       "paint": {
@@ -4989,7 +4910,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -4997,8 +4918,7 @@
       "paint": {
         "line-color": "#9C9C9C",
         "line-width": 0.666667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_L_NATURBESTAND_L/Signaturen_1",
@@ -5026,13 +4946,12 @@
       "type": "fill",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_F_GEBUESCH",
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {},
       "paint": {
         "fill-color": "rgba(153,204,139,0.5)",
         "fill-outline-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1",
@@ -5044,7 +4963,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1",
         "icon-rotation-alignment": "map",
@@ -5053,8 +4972,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1_2",
@@ -5066,7 +4984,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1_2",
@@ -5088,7 +5006,7 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/1_1",
@@ -5110,7 +5028,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/2",
         "icon-rotation-alignment": "map",
@@ -5119,8 +5037,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/2_2",
@@ -5132,7 +5049,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/2_2",
@@ -5154,7 +5071,7 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/2_1",
@@ -5176,7 +5093,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/3",
         "icon-rotation-alignment": "map",
@@ -5185,8 +5102,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/3_2",
@@ -5198,7 +5114,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/3_2",
@@ -5220,7 +5136,7 @@
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/3_1",
@@ -5242,7 +5158,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/4",
         "icon-rotation-alignment": "map",
@@ -5251,8 +5167,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/4_2",
@@ -5264,7 +5179,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/4_2",
@@ -5286,7 +5201,7 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/4_1",
@@ -5308,7 +5223,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/5",
         "icon-rotation-alignment": "map",
@@ -5317,8 +5232,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/5_2",
@@ -5330,7 +5244,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/5_2",
@@ -5352,7 +5266,7 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/5_1",
@@ -5374,7 +5288,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/6",
         "icon-rotation-alignment": "map",
@@ -5383,8 +5297,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/6_2",
@@ -5396,7 +5309,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/6_2",
@@ -5418,7 +5331,7 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/6_1",
@@ -5440,7 +5353,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/7",
         "icon-rotation-alignment": "map",
@@ -5449,8 +5362,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/7_2",
@@ -5462,7 +5374,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/7_2",
@@ -5484,7 +5396,7 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/7_1",
@@ -5506,7 +5418,7 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/8",
         "icon-rotation-alignment": "map",
@@ -5515,8 +5427,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/8_2",
@@ -5528,7 +5439,7 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/8_2",
@@ -5550,7 +5461,7 @@
         "_symbol",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/8_1",
@@ -5572,7 +5483,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/9",
         "icon-rotation-alignment": "map",
@@ -5581,8 +5492,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/9_2",
@@ -5594,7 +5504,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/9_2",
@@ -5616,7 +5526,7 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/9_1",
@@ -5638,7 +5548,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/10",
         "icon-rotation-alignment": "map",
@@ -5647,8 +5557,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/10_2",
@@ -5660,7 +5569,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/10_2",
@@ -5682,7 +5591,7 @@
         "_symbol",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/10_1",
@@ -5704,7 +5613,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/11",
         "icon-rotation-alignment": "map",
@@ -5713,8 +5622,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/11_2",
@@ -5726,7 +5634,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/11_2",
@@ -5748,7 +5656,7 @@
         "_symbol",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/11_1",
@@ -5770,7 +5678,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/12",
         "icon-rotation-alignment": "map",
@@ -5779,8 +5687,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/12_2",
@@ -5792,7 +5699,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/12_2",
@@ -5814,7 +5721,7 @@
         "_symbol",
         11
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/12_1",
@@ -5836,7 +5743,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/13",
         "icon-rotation-alignment": "map",
@@ -5845,8 +5752,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/13_2",
@@ -5858,7 +5764,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/13_2",
@@ -5880,7 +5786,7 @@
         "_symbol",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/13_1",
@@ -5902,7 +5808,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/14",
         "icon-rotation-alignment": "map",
@@ -5911,8 +5817,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/14_2",
@@ -5924,7 +5829,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/14_2",
@@ -5946,7 +5851,7 @@
         "_symbol",
         13
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/14_1",
@@ -5968,7 +5873,7 @@
         "_symbol",
         14
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/15",
         "icon-rotation-alignment": "map",
@@ -5977,8 +5882,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/15_2",
@@ -5990,7 +5894,7 @@
         "_symbol",
         14
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/15_2",
@@ -6012,7 +5916,7 @@
         "_symbol",
         14
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/15_1",
@@ -6034,7 +5938,7 @@
         "_symbol",
         15
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/16",
         "icon-rotation-alignment": "map",
@@ -6043,8 +5947,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/16_2",
@@ -6056,7 +5959,7 @@
         "_symbol",
         15
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/16_2",
@@ -6078,7 +5981,7 @@
         "_symbol",
         15
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/16_1",
@@ -6100,7 +6003,7 @@
         "_symbol",
         16
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/17",
         "icon-rotation-alignment": "map",
@@ -6109,8 +6012,7 @@
       },
       "paint": {
         "icon-color": "rgba(137,205,102,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/17_2",
@@ -6122,7 +6024,7 @@
         "_symbol",
         16
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/17_2",
@@ -6144,7 +6046,7 @@
         "_symbol",
         16
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/17_1",
@@ -6166,7 +6068,7 @@
         "_symbol",
         17
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/18",
         "icon-rotation-alignment": "map",
@@ -6175,8 +6077,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/18_2",
@@ -6188,7 +6089,7 @@
         "_symbol",
         17
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/18_2",
@@ -6210,7 +6111,7 @@
         "_symbol",
         17
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/18_1",
@@ -6232,7 +6133,7 @@
         "_symbol",
         18
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/19",
         "icon-rotation-alignment": "map",
@@ -6241,8 +6142,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/19_2",
@@ -6254,7 +6154,7 @@
         "_symbol",
         18
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/19_2",
@@ -6276,7 +6176,7 @@
         "_symbol",
         18
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/19_1",
@@ -6298,7 +6198,7 @@
         "_symbol",
         19
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/20",
         "icon-rotation-alignment": "map",
@@ -6307,8 +6207,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/20_2",
@@ -6320,7 +6219,7 @@
         "_symbol",
         19
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/20_2",
@@ -6342,7 +6241,7 @@
         "_symbol",
         19
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/20_1",
@@ -6364,7 +6263,7 @@
         "_symbol",
         20
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/21",
         "icon-rotation-alignment": "map",
@@ -6373,8 +6272,7 @@
       },
       "paint": {
         "icon-color": "rgba(134,179,121,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/21_2",
@@ -6386,7 +6284,7 @@
         "_symbol",
         20
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/21_2",
@@ -6408,7 +6306,7 @@
         "_symbol",
         20
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/21_1",
@@ -6430,7 +6328,7 @@
         "_symbol",
         21
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/22",
         "icon-rotation-alignment": "map",
@@ -6439,8 +6337,7 @@
       },
       "paint": {
         "icon-color": "rgba(38,115,0,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/22_2",
@@ -6452,7 +6349,7 @@
         "_symbol",
         21
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/22_2",
@@ -6474,7 +6371,7 @@
         "_symbol",
         21
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/22_1",
@@ -6496,7 +6393,7 @@
         "_symbol",
         22
       ],
-      "minzoom": 16,
+      "minzoom": 18.9113,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/23",
         "icon-rotation-alignment": "map",
@@ -6505,8 +6402,7 @@
       },
       "paint": {
         "icon-color": "rgba(38,115,0,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/23_2",
@@ -6518,7 +6414,7 @@
         "_symbol",
         22
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/23_2",
@@ -6540,7 +6436,7 @@
         "_symbol",
         22
       ],
-      "minzoom": 16,
+      "minzoom": 17.9113,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/23_1",
@@ -6562,7 +6458,7 @@
         "_symbol",
         23
       ],
-      "minzoom": 16,
+      "minzoom": 18.9113,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/24",
         "icon-rotation-alignment": "map",
@@ -6571,8 +6467,7 @@
       },
       "paint": {
         "icon-color": "rgba(38,115,0,0.5)"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/24_2",
@@ -6584,7 +6479,7 @@
         "_symbol",
         23
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/24_2",
@@ -6606,7 +6501,7 @@
         "_symbol",
         23
       ],
-      "minzoom": 16,
+      "minzoom": 17.9113,
       "maxzoom": 24,
       "layout": {
         "icon-image": "V_NATURBESTAND_1/NATURBESTAND_P_BAUM/24_1",
@@ -6660,7 +6555,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/13020-Bahn, Ergänzungsnetz",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/13020-Bahn, Erg\u00e4nzungsnetz",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_INSIDE_L_GIP",
@@ -6696,8 +6591,7 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/12150-Parkgarage_1/0",
@@ -6760,7 +6654,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/11010-Autobahn; 11020-Schnellstraße_1",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/11010-Autobahn; 11020-Schnellstra\u00dfe_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_INSIDE_L_GIP",
@@ -6780,10 +6674,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/13080-Bahn,Anschluss",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/13080-Bahn,Anschluss",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6801,10 +6695,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/13020-Bahn, Ergänzungsnetz",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/13020-Bahn, Erg\u00e4nzungsnetz",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6821,10 +6715,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/13010-Bahn, Hauptnetz",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/13010-Bahn, Hauptnetz",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6841,10 +6735,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/12150-Parkgarage/1",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/12150-Parkgarage/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6857,14 +6751,13 @@
       "paint": {
         "line-color": "#B2B2B2",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/12150-Parkgarage/0",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/12150-Parkgarage/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6877,14 +6770,13 @@
       "paint": {
         "line-color": "#E1E1E1",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/12020-Fußweg | 12110-Fußgängerzone | 12120-Stufe, Stiege",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/12020-Fu\u00dfweg | 12110-Fu\u00dfg\u00e4ngerzone | 12120-Stufe, Stiege",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6894,7 +6786,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/12020-Fußweg | 12110-Fußgängerzone | 12120-Stufe, Stiege",
+        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/12020-Fu\u00dfweg | 12110-Fu\u00dfg\u00e4ngerzone | 12120-Stufe, Stiege",
         "symbol-spacing": 4,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -6904,10 +6796,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/11110-Hauptverbindungen/0",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/11110-Hauptverbindungen/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6924,10 +6816,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/11030-Rampe/0",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/11030-Rampe/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6944,10 +6836,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/11010-Autobahn; 11020-Schnellstraße/0",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/11010-Autobahn; 11020-Schnellstra\u00dfe/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -6985,7 +6877,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/15010-Fähre",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/15010-F\u00e4hre",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -6998,7 +6890,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/GIP_L_GIP_144/15010-Fähre",
+        "icon-image": "STRASSENNETZ/GIP_L_GIP_144/15010-F\u00e4hre",
         "symbol-spacing": 5.33333,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -7008,7 +6900,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/15010-Fähre_1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/15010-F\u00e4hre_1",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7021,7 +6913,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/GIP_L_GIP_144/15010-Fähre_1",
+        "icon-image": "STRASSENNETZ/GIP_L_GIP_144/15010-F\u00e4hre_1",
         "symbol-spacing": 4,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -7239,7 +7131,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/13020-Bahn, Ergänzungsnetz",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/13020-Bahn, Erg\u00e4nzungsnetz",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7259,7 +7151,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/13020-Bahn, Ergänzungsnetz_2",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/13020-Bahn, Erg\u00e4nzungsnetz_2",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7280,7 +7172,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/13020-Bahn, Ergänzungsnetz_1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/13020-Bahn, Erg\u00e4nzungsnetz_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7425,7 +7317,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fußgängerzone/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fu\u00dfg\u00e4ngerzone/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7445,7 +7337,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fußgängerzone_1/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fu\u00dfg\u00e4ngerzone_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7465,7 +7357,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fußgängerzone/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fu\u00dfg\u00e4ngerzone/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7485,7 +7377,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fußgängerzone_1/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/12110-Fu\u00dfg\u00e4ngerzone_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7505,7 +7397,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/12020-Fußweg; 12160",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/12020-Fu\u00dfweg; 12160",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7518,7 +7410,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/GIP_L_GIP_144/12020-Fußweg; 12160",
+        "icon-image": "STRASSENNETZ/GIP_L_GIP_144/12020-Fu\u00dfweg; 12160",
         "symbol-spacing": 4,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -7528,7 +7420,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/12010-beschränkte Befahrbarkeit",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/12010-beschr\u00e4nkte Befahrbarkeit",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7548,7 +7440,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/12010-beschränkte Befahrbarkeit_1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/12010-beschr\u00e4nkte Befahrbarkeit_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7568,7 +7460,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Straßen/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Stra\u00dfen/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7588,7 +7480,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Straßen_1/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Stra\u00dfen_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7608,7 +7500,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Straßen/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Stra\u00dfen/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7628,7 +7520,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Straßen_1/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11220-Sonstige Stra\u00dfen_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7648,7 +7540,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7668,7 +7560,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_1/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7688,7 +7580,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7708,7 +7600,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_1/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7728,7 +7620,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstraße/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstra\u00dfe/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7748,7 +7640,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstraße_2/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstra\u00dfe_2/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7768,7 +7660,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstraße_1/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstra\u00dfe_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7788,7 +7680,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstraße/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstra\u00dfe/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7808,7 +7700,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstraße_2/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstra\u00dfe_2/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7828,7 +7720,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstraße_1/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11110-Hauptstra\u00dfe_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7848,7 +7740,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7870,7 +7762,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7892,7 +7784,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7914,7 +7806,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7936,7 +7828,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -7958,7 +7850,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_144",
@@ -8300,7 +8192,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8322,7 +8214,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstraße/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstra\u00dfe/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8342,7 +8234,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstraße_1/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstra\u00dfe_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8362,7 +8254,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/1",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8382,7 +8274,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8442,7 +8334,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8464,7 +8356,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstraße/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstra\u00dfe/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8484,7 +8376,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstraße_1/0",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/11110-Hauptstra\u00dfe_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8604,7 +8496,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/13020-Bahn, Ergänzungsnetz",
+      "id": "STRASSENNETZ/GIP_L_GIP_Merge144/13020-Bahn, Erg\u00e4nzungsnetz",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_L_GIP_Merge144",
@@ -8657,15 +8549,14 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FFD37F",
         "line-width": 11.3333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11030-Rampe_1/0",
@@ -8697,15 +8588,14 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#CD8966",
         "line-width": 18.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11010-Autobahn; 11020-Schnellstrasse_1/1",
@@ -8737,15 +8627,14 @@
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#CD8966",
         "line-width": 13.3333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11030-Rampe_1/1",
@@ -8768,7 +8657,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8786,8 +8675,7 @@
           0.266667
         ],
         "line-width": 12
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11110/1",
@@ -8799,15 +8687,14 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#CDAA66",
         "line-width": 18
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11110_1/1",
@@ -8830,7 +8717,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8839,18 +8726,17 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#B2B2B2",
         "line-width": 10.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_1/1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8870,7 +8756,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Straßen/1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Stra\u00dfen/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8879,18 +8765,17 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#B2B2B2",
         "line-width": 12
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Straßen_1/1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Stra\u00dfen_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8910,7 +8795,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fußgängerzone/1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fu\u00dfg\u00e4ngerzone/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8919,18 +8804,17 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#B2B2B2",
         "line-width": 9.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fußgängerzone_1/1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fu\u00dfg\u00e4ngerzone_1/1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8950,7 +8834,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/15010-Fähre",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/15010-F\u00e4hre",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8962,18 +8846,17 @@
       "minzoom": 16,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/15010-Fähre",
+        "icon-image": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/15010-F\u00e4hre",
         "symbol-spacing": 5.33333,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
       },
       "paint": {
         "icon-color": "#004DA8"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fußgängerzone/0",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fu\u00dfg\u00e4ngerzone/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -8982,18 +8865,17 @@
         "_symbol",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FFDCF0",
         "line-width": 8
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fußgängerzone_1/0",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12110-Fu\u00dfg\u00e4ngerzone_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9013,7 +8895,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12020-Fußweg; 12160 | 12150-Parkgarage | 12160 | 12025 | 12130",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12020-Fu\u00dfweg; 12160 | 12150-Parkgarage | 12160 | 12025 | 12130",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9025,18 +8907,17 @@
       "minzoom": 16,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12020-Fußweg; 12160 | 12150-Parkgarage | 12160 | 12025 | 12130",
+        "icon-image": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12020-Fu\u00dfweg; 12160 | 12150-Parkgarage | 12160 | 12025 | 12130",
         "symbol-spacing": 4,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
       },
       "paint": {
         "icon-color": "#B2B2B2"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12010-beschränkte Befahrbarkeit",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12010-beschr\u00e4nkte Befahrbarkeit",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9045,18 +8926,17 @@
         "_symbol",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#CCCCCC",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12010-beschränkte Befahrbarkeit_1",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/12010-beschr\u00e4nkte Befahrbarkeit_1",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9076,7 +8956,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Straßen/0",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Stra\u00dfen/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9085,18 +8965,17 @@
         "_symbol",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 10.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Straßen_1/0",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11220-Sonstige Stra\u00dfen_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9116,7 +8995,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/0",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9125,18 +9004,17 @@
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 9.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_1/0",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_1/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9165,15 +9043,14 @@
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FFFF99",
         "line-width": 16
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11110_1/0",
@@ -9196,7 +9073,7 @@
       }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9214,8 +9091,7 @@
           0.32
         ],
         "line-width": 10
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11010-Autobahn; 11020-Schnellstrasse/0",
@@ -9227,15 +9103,14 @@
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#FFD37F",
         "line-width": 16.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/11010-Autobahn; 11020-Schnellstrasse_1/0",
@@ -9274,8 +9149,7 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13030-Schmalspurbahn | 13040-Zahnradbahn/0",
@@ -9297,8 +9171,7 @@
       },
       "paint": {
         "icon-color": "#897044"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13080-Bahn, Anschlussbahn",
@@ -9318,11 +9191,10 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13020-Bahn, Ergänzungsnetz",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13020-Bahn, Erg\u00e4nzungsnetz",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9338,8 +9210,7 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 2.66667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13011-Bahn,Hauptnetz in Bau | 13021/1",
@@ -9358,8 +9229,7 @@
       "paint": {
         "line-color": "#B2B2B2",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13011-Bahn,Hauptnetz in Bau | 13021/0",
@@ -9382,8 +9252,7 @@
           2.88
         ],
         "line-width": 3.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13010-Bahn, Hauptnetz",
@@ -9402,11 +9271,10 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13060 - Straßenbahn",
+      "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13060 - Stra\u00dfenbahn",
       "type": "line",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_L_GIP",
@@ -9423,8 +9291,7 @@
       "paint": {
         "line-color": "#9C9C9C",
         "line-width": 1.6
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13070-Seilbahn/1",
@@ -9441,8 +9308,7 @@
       "paint": {
         "line-color": "#9C9C9C",
         "line-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/13070-Seilbahn/0",
@@ -9463,14 +9329,13 @@
       },
       "paint": {
         "icon-color": "#9C9C9C"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/15010-Fähre",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/15010-F\u00e4hre",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9480,7 +9345,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/15010-Fähre",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/15010-F\u00e4hre",
         "symbol-spacing": 5.33333,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -9490,10 +9355,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/15010-Fähre_1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/15010-F\u00e4hre_1",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9503,7 +9368,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/15010-Fähre_1",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/15010-F\u00e4hre_1",
         "symbol-spacing": 4,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -9513,10 +9378,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13080-Bahn, Anschlussbahn",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13080-Bahn, Anschlussbahn",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9534,10 +9399,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13070-Seilbahn/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13070-Seilbahn/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9552,10 +9417,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13070-Seilbahn_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13070-Seilbahn_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9570,10 +9435,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13070-Seilbahn/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13070-Seilbahn/0",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9583,7 +9448,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13070-Seilbahn/0",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13070-Seilbahn/0",
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
       },
@@ -9592,10 +9457,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13070-Seilbahn_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13070-Seilbahn_1/0",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9605,7 +9470,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13070-Seilbahn_1/0",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13070-Seilbahn_1/0",
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
       },
@@ -9614,10 +9479,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9634,10 +9499,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_1/0",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9647,7 +9512,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_1/0",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_1/0",
         "symbol-spacing": 20,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -9657,10 +9522,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13030-Schmalspurbahn | 13040-Zahnradbahn_2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9678,10 +9543,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13030-Schmalspurbahn | 13040-Zahnradbahn/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13030-Schmalspurbahn | 13040-Zahnradbahn/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9698,10 +9563,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13030-Schmalspurbahn | 13040-Zahnradbahn/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13030-Schmalspurbahn | 13040-Zahnradbahn/0",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9711,7 +9576,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13030-Schmalspurbahn | 13040-Zahnradbahn/0",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13030-Schmalspurbahn | 13040-Zahnradbahn/0",
         "symbol-spacing": 13.3333,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -9721,10 +9586,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13020-Bahn, Ergänzungsnetz",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13020-Bahn, Erg\u00e4nzungsnetz",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9741,10 +9606,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13020-Bahn, Ergänzungsnetz_2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13020-Bahn, Erg\u00e4nzungsnetz_2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9762,10 +9627,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13020-Bahn, Ergänzungsnetz_1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13020-Bahn, Erg\u00e4nzungsnetz_1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9782,10 +9647,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13011-Bahn,Hauptnetz in Bau | 13021/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13011-Bahn,Hauptnetz in Bau | 13021/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9802,10 +9667,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13011-Bahn,Hauptnetz in Bau | 13021/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13011-Bahn,Hauptnetz in Bau | 13021/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9826,10 +9691,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13010-Bahn, Hauptnetz_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13010-Bahn, Hauptnetz_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9846,10 +9711,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13010-Bahn, Hauptnetz",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13010-Bahn, Hauptnetz",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9866,10 +9731,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/13010-Bahn, Hauptnetz_2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/13010-Bahn, Hauptnetz_2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9887,10 +9752,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12150-Parkgarage/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12150-Parkgarage/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9907,10 +9772,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12110-Fußgängerzone/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12110-Fu\u00dfg\u00e4ngerzone/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9927,10 +9792,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12110-Fußgängerzone_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12110-Fu\u00dfg\u00e4ngerzone_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9947,10 +9812,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12110-Fußgängerzone/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12110-Fu\u00dfg\u00e4ngerzone/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9967,10 +9832,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12110-Fußgängerzone_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12110-Fu\u00dfg\u00e4ngerzone_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -9987,10 +9852,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12020-Fußweg; 12160",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12020-Fu\u00dfweg; 12160",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10000,7 +9865,7 @@
       "maxzoom": 24,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12020-Fußweg; 12160",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12020-Fu\u00dfweg; 12160",
         "symbol-spacing": 4,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
@@ -10010,10 +9875,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12010-Fahrweg",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12010-Fahrweg",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10030,10 +9895,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/12010-Fahrweg_1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/12010-Fahrweg_1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10050,10 +9915,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11220-Sonstige Straßen/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11220-Sonstige Stra\u00dfen/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10070,10 +9935,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11220-Sonstige Straßen_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11220-Sonstige Stra\u00dfen_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10090,10 +9955,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11220-Sonstige Straßen/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11220-Sonstige Stra\u00dfen/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10110,10 +9975,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11220-Sonstige Straßen_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11220-Sonstige Stra\u00dfen_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10130,10 +9995,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10150,10 +10015,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_2/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_2/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10170,10 +10035,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10190,10 +10055,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10210,10 +10075,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_2/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_2/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10230,10 +10095,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestraße Hochrangig_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11120-Wichtige Nebenverbindung | 11210-Gemeindestra\u00dfe Hochrangig_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10250,10 +10115,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11110/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11110/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10270,10 +10135,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11110_2/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11110_2/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10290,10 +10155,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11110_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11110_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10310,10 +10175,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11110/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11110/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10330,10 +10195,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11110_2/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11110_2/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10350,10 +10215,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11110_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11110_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10370,10 +10235,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10392,10 +10257,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10414,10 +10279,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10436,10 +10301,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10458,10 +10323,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_2/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10480,10 +10345,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11021- Schnellstraße in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-GemstraßeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11021- Schnellstra\u00dfe in Bau | 11031-Rampe in Bau | 11121-Wichtige Nebenverbindung in Bau; 11211-Gemstra\u00dfeinBau; 11221; 11211 | 11221-Wichtige Nebenverbindung in Bau | 11111_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10502,10 +10367,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11030-Rampe/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11030-Rampe/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10522,10 +10387,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11030-Rampe_2/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11030-Rampe_2/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10542,10 +10407,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11030-Rampe_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11030-Rampe_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10562,10 +10427,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11030-Rampe/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11030-Rampe/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10582,10 +10447,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11030-Rampe_2/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11030-Rampe_2/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10602,10 +10467,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11030-Rampe_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11030-Rampe_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10622,10 +10487,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11010-Autobahn; 11020-Schnellstrasse/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11010-Autobahn; 11020-Schnellstrasse/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10642,10 +10507,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11010-Autobahn; 11020-Schnellstrasse_2/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11010-Autobahn; 11020-Schnellstrasse_2/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10662,10 +10527,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11010-Autobahn; 11020-Schnellstrasse_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11010-Autobahn; 11020-Schnellstrasse_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10682,10 +10547,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11010-Autobahn; 11020-Schnellstrasse/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11010-Autobahn; 11020-Schnellstrasse/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10702,10 +10567,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11010-Autobahn; 11020-Schnellstrasse_2/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11010-Autobahn; 11020-Schnellstrasse_2/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10722,10 +10587,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/11010-Autobahn; 11020-Schnellstrasse_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/11010-Autobahn; 11020-Schnellstrasse_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10742,10 +10607,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/Anschlussbahn/2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/Anschlussbahn/2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10758,14 +10623,13 @@
       "paint": {
         "line-color": "#4D3F25",
         "line-width": 12.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/Anschlussbahn/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/Anschlussbahn/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10778,14 +10642,13 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 9.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/Anschlussbahn/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/Anschlussbahn/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10799,14 +10662,13 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113071 | 113079 | 113061; 113069; Bim Brücke/2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113071 | 113079 | 113061; 113069; Bim Br\u00fccke/2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10819,14 +10681,13 @@
       "paint": {
         "line-color": "#4D3F25",
         "line-width": 12.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113071 | 113079 | 113061; 113069; Bim Brücke/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113071 | 113079 | 113061; 113069; Bim Br\u00fccke/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10839,14 +10700,13 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 9.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113071 | 113079 | 113061; 113069; Bim Brücke/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113071 | 113079 | 113061; 113069; Bim Br\u00fccke/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10859,14 +10719,13 @@
       "paint": {
         "line-color": "#9C9C9C",
         "line-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113031 | 113039 | 113041 | 113049/3",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113031 | 113039 | 113041 | 113049/3",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10879,14 +10738,13 @@
       "paint": {
         "line-color": "#4D3F25",
         "line-width": 12.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113031 | 113039 | 113041 | 113049/2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113031 | 113039 | 113041 | 113049/2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10899,14 +10757,13 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 9.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113031 | 113039 | 113041 | 113049/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113031 | 113039 | 113041 | 113049/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10919,14 +10776,13 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113031 | 113039 | 113041 | 113049/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113031 | 113039 | 113041 | 113049/0",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10935,21 +10791,20 @@
       "minzoom": 16,
       "layout": {
         "symbol-placement": "line",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113031 | 113039 | 113041 | 113049/0",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113031 | 113039 | 113041 | 113049/0",
         "symbol-spacing": 13.3333,
         "icon-rotation-alignment": "map",
         "icon-allow-overlap": true
       },
       "paint": {
         "icon-color": "#897044"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113021; 113029; BahnNN/2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113021; 113029; BahnNN/2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10962,14 +10817,13 @@
       "paint": {
         "line-color": "#4D4025",
         "line-width": 14
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113021; 113029; BahnNN/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113021; 113029; BahnNN/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -10982,14 +10836,13 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 10
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113021; 113029; BahnNN/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113021; 113029; BahnNN/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11002,14 +10855,13 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 2.66667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113011; 113019; BahnHN_Brücke/2",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113011; 113019; BahnHN_Br\u00fccke/2",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11022,34 +10874,32 @@
       "paint": {
         "line-color": "#4D4025",
         "line-width": 14
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112111/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112111/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#686868",
         "line-width": 8
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112111_2/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112111_2/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11066,10 +10916,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112111_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112111_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11082,14 +10932,13 @@
       "paint": {
         "line-color": "#686868",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113011; 113019; BahnHN_Brücke/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113011; 113019; BahnHN_Br\u00fccke/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11102,20 +10951,19 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 10
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112111/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112111/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11123,14 +10971,13 @@
       "paint": {
         "line-color": "#FFDCF0",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112111_2/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112111_2/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11148,10 +10995,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112111_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112111_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11165,14 +11012,13 @@
       "paint": {
         "line-color": "#FFDCF0",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/113011; 113019; BahnHN_Brücke/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/113011; 113019; BahnHN_Br\u00fccke/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11185,14 +11031,13 @@
       "paint": {
         "line-color": "#897044",
         "line-width": 4
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111121; 111211; 111129; 111219; 111221; 111229; Wichtige NV/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111121; 111211; 111129; 111219; 111221; 111229; Wichtige NV/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11205,14 +11050,13 @@
       "paint": {
         "line-color": "#4D3D25",
         "line-width": 12
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111121; 111211; 111129; 111219; 111221; 111229; Wichtige NV/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111121; 111211; 111129; 111219; 111221; 111229; Wichtige NV/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11226,34 +11070,32 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 9.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#686868",
         "line-width": 8
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_2/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_2/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11270,10 +11112,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11286,20 +11128,19 @@
       "paint": {
         "line-color": "#686868",
         "line-width": 8
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11307,14 +11148,13 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_2/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_2/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11332,10 +11172,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/112121 | 112011 | 112019 | 112119 | 112021 | 112029_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11349,34 +11189,32 @@
       "paint": {
         "line-color": "#FFFFFF",
         "line-width": 5.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111111; 111119; HV_Brücke/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111111; 111119; HV_Br\u00fccke/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#CDAA66",
         "line-width": 20.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111111; 111119; HV_Brücke_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111111; 111119; HV_Br\u00fccke_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11393,16 +11231,16 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111111; 111119; HV_Brücke/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111111; 111119; HV_Br\u00fccke/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11410,14 +11248,13 @@
       "paint": {
         "line-color": "#FFFF99",
         "line-width": 16
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111111; 111119; HV_Brücke_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111111; 111119; HV_Br\u00fccke_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11435,30 +11272,29 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111031; 111039; Rampe Brücke/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111031; 111039; Rampe Br\u00fccke/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#CD8966",
         "line-width": 16
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111031; 111039; Rampe Brücke_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111031; 111039; Rampe Br\u00fccke_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11475,16 +11311,16 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111031; 111039; Rampe Brücke/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111031; 111039; Rampe Br\u00fccke/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11492,14 +11328,13 @@
       "paint": {
         "line-color": "#FFD37F",
         "line-width": 11.3333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111031; 111039; Rampe Brücke_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111031; 111039; Rampe Br\u00fccke_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11517,30 +11352,29 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111021 | 111019 | 111011 | 111029/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111021 | 111019 | 111011 | 111029/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-join": "round"
       },
       "paint": {
         "line-color": "#CD8966",
         "line-width": 21.3333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111021 | 111019 | 111011 | 111029_1/1",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111021 | 111019 | 111011 | 111029_1/1",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11557,16 +11391,16 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111021 | 111019 | 111011 | 111029/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111021 | 111019 | 111011 | 111029/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "line-cap": "round",
         "line-join": "round"
@@ -11574,14 +11408,13 @@
       "paint": {
         "line-color": "#FFD37F",
         "line-width": 16.6667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/111021 | 111019 | 111011 | 111029_1/0",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/111021 | 111019 | 111011 | 111029_1/0",
       "type": "line",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE",
       "filter": [
         "==",
         "_symbol",
@@ -11868,8 +11701,7 @@
         "circle-color": "rgba(200,200,200,0)",
         "circle-stroke-color": "rgba(0,0,0,0)",
         "circle-stroke-width": 0
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/<all other values>",
@@ -11888,8 +11720,7 @@
         "circle-color": "rgba(130,130,130,0)",
         "circle-stroke-color": "rgba(0,0,0,0)",
         "circle-stroke-width": 0
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/LANDESHAUPTSTADT_P/OwnerID_2",
@@ -11930,8 +11761,7 @@
       },
       "paint": {
         "icon-color": "#732600"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GIPFEL_L09-20/7303_1",
@@ -11970,8 +11800,7 @@
       },
       "paint": {
         "icon-color": "#732600"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GIPFEL_L09-20/7304_1",
@@ -12010,8 +11839,7 @@
       },
       "paint": {
         "icon-color": "#732600"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/FLUGHAFEN_P_FLUGHAFEN/0",
@@ -12033,8 +11861,7 @@
       },
       "paint": {
         "icon-color": "#4E4E4E"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/FLUGHAFEN_P_FLUGHAFEN/1",
@@ -12056,8 +11883,7 @@
       },
       "paint": {
         "icon-color": "#4E4E4E"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/BAHNHOF_RAILJET/BHF_L12",
@@ -12086,23 +11912,21 @@
         "icon-keep-upright": false,
         "icon-allow-overlap": true
       },
-      "paint": {},
-      "maxzoom": 24
+      "paint": {}
     },
     {
       "id": "TXT/NATURBESTAND_P_U-BAHNZUGANG (TXT)",
       "type": "circle",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_P_U-BAHNZUGANG (TXT)",
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {},
       "paint": {
         "circle-radius": 2.66667,
         "circle-color": "rgba(89,0,130,0)",
         "circle-stroke-color": "rgba(0,0,0,0)",
         "circle-stroke-width": 0
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/FRIEDHOEFE/NATURBESTAND_F_GRAB/8",
@@ -12119,8 +11943,7 @@
       "paint": {
         "fill-color": "#D9CEC3",
         "fill-outline-color": "#A69585"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/BAHNHOF_RAILJET/BHF_L13-20/label/Name2",
@@ -12153,8 +11976,7 @@
         "text-color": "#343434",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/BAHNHOF_RAILJET/BHF_L13-20/label/Name",
@@ -12336,8 +12158,7 @@
         "text-color": "#004DA8",
         "text-halo-color": "#BFDFFF",
         "text-halo-width": 0.8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /label/2_3_L15-16",
@@ -12481,8 +12302,7 @@
         "text-color": "#004DA8",
         "text-halo-color": "#BFDFFF",
         "text-halo-width": 0.8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_L_GEWL /label/1_L12-14",
@@ -12568,8 +12388,7 @@
         "text-color": "#004DA8",
         "text-halo-color": "#BFDFFF",
         "text-halo-width": 0.8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_F_GEWF/label/2_L10-12",
@@ -12703,8 +12522,7 @@
         "text-color": "#004DA8",
         "text-halo-color": "#BFDFFF",
         "text-halo-width": 0.533333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_F_GEWF/label/2_L17-20",
@@ -12730,8 +12548,7 @@
         "text-color": "#004DA8",
         "text-halo-color": "#BFDFFF",
         "text-halo-width": 0.533333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEWAESSER/GEWAESSER_F_GEWF/label/1_L08-09",
@@ -12811,8 +12628,7 @@
         "text-color": "#004DA8",
         "text-halo-color": "#BFDFFF",
         "text-halo-width": 0.533333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/label/WichtigeNS_GS_SonstSTR_FW_FZONE_L14-16",
@@ -12867,7 +12683,7 @@
       }
     },
     {
-      "id": "TUNNEL/GIP_BAUWERK_L_TUNNEL_BRUNNENCLA/label/AB_SS_HV_Brücke_L14-16",
+      "id": "TUNNEL/GIP_BAUWERK_L_TUNNEL_BRUNNENCLA/label/AB_SS_HV_Br\u00fccke_L14-16",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_BAUWERK_L_TUNNEL_BRUNNENCLA/label",
@@ -12895,7 +12711,7 @@
       }
     },
     {
-      "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/label/AB_SS_HV_Brücke_L14-16",
+      "id": "TUNNEL/GIP_OUTSIDE_BAUWERK_L_TUNNEL/label/AB_SS_HV_Br\u00fccke_L14-16",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "GIP_OUTSIDE_BAUWERK_L_TUNNEL/label",
@@ -12985,8 +12801,7 @@
         "text-color": "#732600",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.73333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GEONAMEN_P_GEONAMEN/label/7203, 7303_L16-20",
@@ -13018,8 +12833,7 @@
         "text-color": "#732600",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.73333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GEONAMEN_P_GEONAMEN/label/7202, 7302_L10-15",
@@ -13084,8 +12898,7 @@
         "text-color": "#732600",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.73333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GEONAMEN_P_GEONAMEN/label/7201, 7301_L09-15",
@@ -13130,7 +12943,7 @@
         "_label_class3",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Italic"
@@ -13145,8 +12958,7 @@
         "text-color": "#732600",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.73333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GEONAMEN_P_GEONAMEN/label/2077, 7131_L16-17",
@@ -13198,8 +13010,7 @@
       },
       "paint": {
         "text-color": "#009CE0"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GEONAMEN_P_GEONAMEN/label/2016-Gletscher_L12-16",
@@ -13566,7 +13377,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Corbel Bold"
@@ -13586,8 +13397,7 @@
         "text-color": "#000000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2.66667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GEONAMEN_P_GEONAMEN/label/7204, 7304, 7355_L16-20",
@@ -13619,14 +13429,13 @@
         "text-color": "#732600",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.73333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/G_Nr_L12-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/G_Nr_L12-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "all",
         [
@@ -13648,7 +13457,7 @@
         ],
         "text-size": 8,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/G_Nr_L12-16/{_len}",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/G_Nr_L12-16/{_len}",
         "icon-keep-upright": true
       },
       "paint": {
@@ -13665,7 +13474,7 @@
         "_label_class12",
         12
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Italic"
@@ -13685,14 +13494,13 @@
         "text-color": "#267300",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.73333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/AutobahnSStr_L15-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/AutobahnSStr_L15-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13717,10 +13525,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/Bahn_in_Bau_L15-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/Bahn_in_Bau_L15-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13748,10 +13556,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/SonstigeStr_Fahrweg_L15-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/SonstigeStr_Fahrweg_L15-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13776,10 +13584,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/GemStr_L13-14",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/GemStr_L13-14",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13804,10 +13612,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/GemStr_L15-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/GemStr_L15-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13832,10 +13640,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/Fussgaengerzone_L15-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/Fussgaengerzone_L15-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13860,10 +13668,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/HauptStr_L12-14",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/HauptStr_L12-14",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13888,10 +13696,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/HauptStr_L15-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/HauptStr_L15-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13916,10 +13724,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/AutobahnSStr_L11-14",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/AutobahnSStr_L11-14",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -13976,10 +13784,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/H_Nr_L10-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/H_Nr_L10-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "all",
         [
@@ -14001,7 +13809,7 @@
         ],
         "text-size": 8,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/H_Nr_L10-16/{_len}",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/H_Nr_L10-16/{_len}",
         "icon-keep-upright": true
       },
       "paint": {
@@ -14009,10 +13817,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/label/AS_Nr_L08-16",
+      "id": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/label/AS_Nr_L08-16",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -14028,7 +13836,7 @@
         ],
         "text-size": 8,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BRÜCKE/AS_Nr_L08-16/{_len}",
+        "icon-image": "STRASSENNETZ/BRUECKE/GIP_BAUWERK_L_BR\u00dcCKE/AS_Nr_L08-16/{_len}",
         "icon-keep-upright": true,
         "icon-rotation-alignment": "viewport",
         "text-rotation-alignment": "viewport"
@@ -14038,10 +13846,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/label/WichtigeNS_GS_SonstSTR_FW_FZONE__FUSSWEG_Brücke_L17-20",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/label/WichtigeNS_GS_SonstSTR_FW_FZONE__FUSSWEG_Br\u00fccke_L17-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -14060,14 +13868,13 @@
       },
       "paint": {
         "text-color": "#4E4E4E"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BRÜCKE/label/AB_SS_HV_Brücke_L17-20",
+      "id": "STRASSENNETZ/BRUECKE/GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/label/AB_SS_HV_Br\u00fccke_L17-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_OUTSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -14086,8 +13893,7 @@
       },
       "paint": {
         "text-color": "#730000"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/UBAHN/GIP_L_Ubahn/label/U6_L14-17",
@@ -14322,8 +14128,7 @@
         "text-color": "#894444",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Stadt, Markt (< 2000 Einwohner)_L18-20",
@@ -14335,7 +14140,7 @@
         "_label_class2",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -14354,8 +14159,7 @@
         "text-color": "#000000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Stadt, Markt (2 000 - 10 000 Einwohner)_L18-20",
@@ -14367,7 +14171,7 @@
         "_label_class1",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -14386,8 +14190,7 @@
         "text-color": "#000000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Stadt (10 000 - 100 000 Einwohner)_L18-20",
@@ -14399,7 +14202,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Bold"
@@ -14418,8 +14221,7 @@
         "text-color": "#000000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/LANDESHAUPTSTADT_P/label/L06_L06",
@@ -14615,8 +14417,7 @@
         "text-color": "#894444",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 0.8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GIPFEL_L09-20/label/7303_L12-20",
@@ -14643,8 +14444,7 @@
         "text-color": "#894444",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Dorf (< 300 Einwohner)_L18-20",
@@ -14656,7 +14456,7 @@
         "_label_class4",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -14675,8 +14475,7 @@
         "text-color": "#000000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/GIPFEL_L09-20/label/7304_L11",
@@ -14833,8 +14632,7 @@
         "text-color": "#730000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/NATURBESTAND_P_U-BAHNZUGANG (TXT)/label/L18",
@@ -14846,7 +14644,7 @@
         "_label_class2",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -14879,7 +14677,7 @@
         "_label_class1",
         1
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -14912,7 +14710,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Corbel Bold Italic"
@@ -14932,15 +14730,14 @@
         "text-color": "#732600",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/FRIEDHOEFE/NATURBESTAND_P_REIHE_NUMMER/label/Grabreihe_L19_20",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "NATURBESTAND_P_REIHE_NUMMER",
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Corbel Bold"
@@ -14956,8 +14753,7 @@
         "text-color": "#F1F1F1",
         "text-halo-color": "#806659",
         "text-halo-width": 1.46667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/FRIEDHOEFE/NATURBESTAND_F_GRAB/label/Gruppe_L17-20",
@@ -14983,8 +14779,7 @@
         "text-color": "#F5F5FA",
         "text-halo-color": "#997A6B",
         "text-halo-width": 1.73333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Dorf (> 2000 Einwohner)_L18-20",
@@ -14996,7 +14791,7 @@
         "_label_class3",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -15015,11 +14810,10 @@
         "text-color": "#000000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Einzelgebäude und Gehöft_L18-20",
+      "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Einzelgeb\u00e4ude und Geh\u00f6ft_L18-20",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "SIEDLUNG_P_SIEDLUNG",
@@ -15028,7 +14822,7 @@
         "_label_class5",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Regular"
@@ -15047,8 +14841,7 @@
         "text-color": "#000000",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Stadt (< 2000 Einwohner)_L10",
@@ -15112,8 +14905,7 @@
       },
       "paint": {
         "text-color": "#000000"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Stadt (2 000 - 10 000 Einwohner)_L10",
@@ -15381,7 +15173,7 @@
         "_label_class6",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "layout": {
         "text-font": [
           "Corbel Italic"
@@ -15400,8 +15192,7 @@
         "text-color": "#732600",
         "text-halo-color": "#FAFAFA",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Stadt (10 000 - 100 000 Einwohner)_L13-15",
@@ -15500,7 +15291,7 @@
       }
     },
     {
-      "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Einzelgebäude und Gehöft_L16-17",
+      "id": "TXT/SIEDLUNG_P_SIEDLUNG/label/Einzelgeb\u00e4ude und Geh\u00f6ft_L16-17",
       "type": "symbol",
       "source": "vector-source",
       "source-layer": "SIEDLUNG_P_SIEDLUNG",
@@ -15721,8 +15512,7 @@
       },
       "paint": {
         "text-color": "#730000"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_L_GIP_144/label/G_Nr_L12-16",
@@ -15782,8 +15572,7 @@
         "text-color": "#730000",
         "text-halo-color": "#FFD37F",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEBAEUDE/HAUSNUMMER_P_HAUSNUMMER_P/label/STG_L18",
@@ -15795,7 +15584,7 @@
         "_label_class5",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 17,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -15825,7 +15614,7 @@
         "_label_class4",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -15855,7 +15644,7 @@
         "_label_class3",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Arial Regular"
@@ -15872,8 +15661,7 @@
       },
       "paint": {
         "text-color": "#B36B6B"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEBAEUDE/HAUSNUMMER_P_HAUSNUMMER_P/label/HNR_L19",
@@ -15885,7 +15673,7 @@
         "_label_class2",
         2
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "maxzoom": 24,
       "layout": {
         "text-font": [
@@ -15949,7 +15737,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Arial Regular"
@@ -15968,8 +15756,7 @@
         "text-color": "#803333",
         "text-halo-color": "#FFFFFF",
         "text-halo-width": 2.66667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/Bahn_in_Bau_L17-20",
@@ -15994,8 +15781,7 @@
       },
       "paint": {
         "text-color": "#828282"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/Fussweg_L17-20",
@@ -16022,8 +15808,7 @@
         "text-color": "#686868",
         "text-halo-color": "#EBEBEB",
         "text-halo-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/SonstigeStr_Fahrweg_L17-18",
@@ -16063,7 +15848,7 @@
         "_label_class",
         5
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16078,8 +15863,7 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#FFFFFF",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/Fussgaengerzone_L17-18",
@@ -16119,7 +15903,7 @@
         "_label_class",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16134,8 +15918,7 @@
         "text-color": "#894444",
         "text-halo-color": "#FFDCF0",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/GemStr_L17-18",
@@ -16175,7 +15958,7 @@
         "_label_class",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16190,8 +15973,7 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#FFFFFF",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/HauptStr_L17-18",
@@ -16231,7 +16013,7 @@
         "_label_class",
         4
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16246,8 +16028,7 @@
         "text-color": "#730000",
         "text-halo-color": "#FFFF99",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/AutobahnSStr_L19-20",
@@ -16259,7 +16040,7 @@
         "_label_class",
         3
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16274,8 +16055,7 @@
         "text-color": "#730000",
         "text-halo-color": "#FFD37F",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/GemStr_L19-20",
@@ -16287,7 +16067,7 @@
         "_label_class",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16302,8 +16082,7 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#FFFFFF",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/Bahn_in_Bau_L17-20",
@@ -16328,8 +16107,7 @@
       },
       "paint": {
         "text-color": "#828282"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/Fussweg_L17-20",
@@ -16356,8 +16134,7 @@
         "text-color": "#686868",
         "text-halo-color": "#EBEBEB",
         "text-halo-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/SonstigeStr_Fahrweg_L17-18",
@@ -16397,7 +16174,7 @@
         "_label_class",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16412,8 +16189,7 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#FFFFFF",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/Fussgaengerzone_L17-18",
@@ -16453,7 +16229,7 @@
         "_label_class",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -16468,8 +16244,7 @@
         "text-color": "#894444",
         "text-halo-color": "#FFDCF0",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/GemStr_L17-18",
@@ -16537,7 +16312,7 @@
         "_label_class",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16552,8 +16327,7 @@
         "text-color": "#730000",
         "text-halo-color": "#FFFF99",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/AutobahnSStr_L17-18",
@@ -16593,7 +16367,7 @@
         "_label_class",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -16608,8 +16382,7 @@
         "text-color": "#730000",
         "text-halo-color": "#FFD37F",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/G_Nr_L17-18",
@@ -16663,7 +16436,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -16676,8 +16449,7 @@
       },
       "paint": {
         "text-color": "#000000"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/H_Nr_L17-18",
@@ -16731,7 +16503,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -16744,8 +16516,7 @@
       },
       "paint": {
         "text-color": "#730000"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TUNNEL/V_TUNNEL/GIP_INSIDE_BAUWERK_L_TUNNEL/label/AS_Nr_L17-18",
@@ -16787,7 +16558,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1333,
@@ -16804,8 +16575,7 @@
       },
       "paint": {
         "text-color": "#FFFFFF"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/AutobahnSStr_L17-18",
@@ -17232,8 +17002,7 @@
       },
       "paint": {
         "text-color": "#828282"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/label/SonstigeStr_Fahrweg_L17-21",
@@ -17260,8 +17029,7 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#F0F0F0",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/label/GemStr_L17-21",
@@ -17288,8 +17056,7 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#F0F0F0",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/label/Fussgaengerzone_L17-21",
@@ -17316,8 +17083,7 @@
         "text-color": "#894444",
         "text-halo-color": "#FFDCF0",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/GIP_OUTSIDE_L_GIP/label/HauptStr_L17-21",
@@ -17344,20 +17110,19 @@
         "text-color": "#730000",
         "text-halo-color": "#FFFF99",
         "text-halo-width": 1.06667
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/AS_Nr_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/AS_Nr_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1333,
@@ -17367,15 +17132,14 @@
         "text-size": 13.3333,
         "text-letter-spacing": 0.1,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/AS_Nr_L19-20/{_len}",
+        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/AS_Nr_L19-20/{_len}",
         "icon-keep-upright": true,
         "icon-rotation-alignment": "viewport",
         "text-rotation-alignment": "viewport"
       },
       "paint": {
         "text-color": "#FFFFFF"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/G_Nr_L19-20",
@@ -17395,7 +17159,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -17408,20 +17172,19 @@
       },
       "paint": {
         "text-color": "#000000"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/Fussgaengerzone_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/Fussgaengerzone_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
         9
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -17436,8 +17199,7 @@
         "text-color": "#894444",
         "text-halo-color": "#FFDCF0",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/H_Nr_L17-18",
@@ -17491,7 +17253,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -17504,8 +17266,7 @@
       },
       "paint": {
         "text-color": "#730000"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_L_GIP/label/AS_Nr_L17-18",
@@ -17547,7 +17308,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1333,
@@ -17563,14 +17324,13 @@
       },
       "paint": {
         "text-color": "#FFFFFF"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/Bahn_in_Bau_L17-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/Bahn_in_Bau_L17-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17589,14 +17349,13 @@
       },
       "paint": {
         "text-color": "#828282"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/Fussweg_L17-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/Fussweg_L17-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17617,14 +17376,13 @@
         "text-color": "#686868",
         "text-halo-color": "#EBEBEB",
         "text-halo-width": 1.33333
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/SonstigeStr_Fahrweg_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/SonstigeStr_Fahrweg_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17649,16 +17407,16 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/SonstigeStr_Fahrweg_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/SonstigeStr_Fahrweg_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
         10
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -17673,14 +17431,13 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#FFFFFF",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/Fussgaengerzone_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/Fussgaengerzone_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17705,10 +17462,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/GemStr_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/GemStr_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17733,10 +17490,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/AS_Nr_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/AS_Nr_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17753,7 +17510,7 @@
         "text-size": 10.6667,
         "text-letter-spacing": 0.1,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/AS_Nr_L17-18/{_len}",
+        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/AS_Nr_L17-18/{_len}",
         "icon-keep-upright": true,
         "icon-rotation-alignment": "viewport",
         "text-rotation-alignment": "viewport"
@@ -17763,16 +17520,16 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/GemStr_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/GemStr_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
         8
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 400,
@@ -17787,14 +17544,13 @@
         "text-color": "#4E4E4E",
         "text-halo-color": "#FFFFFF",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/HauptStr_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/HauptStr_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17819,16 +17575,16 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/HauptStr_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/HauptStr_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
         7
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -17843,14 +17599,13 @@
         "text-color": "#730000",
         "text-halo-color": "#FFFF99",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/AutobahnSStr_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/AutobahnSStr_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
@@ -17875,16 +17630,16 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/AutobahnSStr_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/AutobahnSStr_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "==",
         "_label_class",
         6
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "symbol-placement": "line",
         "symbol-spacing": 1000,
@@ -17899,14 +17654,13 @@
         "text-color": "#730000",
         "text-halo-color": "#FFD37F",
         "text-halo-width": 2
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/G_Nr_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/G_Nr_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "all",
         [
@@ -17929,7 +17683,7 @@
         "text-size": 10.6667,
         "text-letter-spacing": 0.1,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/G_Nr_L17-18/{_len}",
+        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/G_Nr_L17-18/{_len}",
         "icon-keep-upright": true
       },
       "paint": {
@@ -17937,10 +17691,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/G_Nr_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/G_Nr_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "all",
         [
@@ -17954,7 +17708,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -17962,19 +17716,18 @@
         "text-size": 13.3333,
         "text-letter-spacing": 0.1,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/G_Nr_L19-20/{_len}",
+        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/G_Nr_L19-20/{_len}",
         "icon-keep-upright": true
       },
       "paint": {
         "text-color": "#000000"
-      },
-      "maxzoom": 24
+      }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/H_Nr_L17-18",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/H_Nr_L17-18",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "all",
         [
@@ -17997,7 +17750,7 @@
         "text-size": 10.6667,
         "text-letter-spacing": 0.1,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/H_Nr_L17-18/{_len}",
+        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/H_Nr_L17-18/{_len}",
         "icon-keep-upright": true
       },
       "paint": {
@@ -18005,10 +17758,10 @@
       }
     },
     {
-      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/label/H_Nr_L19-20",
+      "id": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label/H_Nr_L19-20",
       "type": "symbol",
       "source": "vector-source",
-      "source-layer": "GIP_INSIDE_BAUWERK_L_BRÜCKE/label",
+      "source-layer": "GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/label",
       "filter": [
         "all",
         [
@@ -18022,7 +17775,7 @@
           "Point"
         ]
       ],
-      "minzoom": 16,
+      "minzoom": 18,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -18030,13 +17783,12 @@
         "text-size": 13.3333,
         "text-letter-spacing": 0.1,
         "text-field": "{_name}",
-        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BRÜCKE/H_Nr_L19-20/{_len}",
+        "icon-image": "STRASSENNETZ/V_STRASSENNETZ/GIP_INSIDE_BAUWERK_L_BR\u00dcCKE/H_Nr_L19-20/{_len}",
         "icon-keep-upright": true
       },
       "paint": {
         "text-color": "#730000"
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "TXT/FRIEDHOEFE/NATURBESTAND_F_GRAB/label/Grabnummer_L20",
@@ -18048,7 +17800,7 @@
         "_label_class",
         0
       ],
-      "minzoom": 16,
+      "minzoom": 19,
       "layout": {
         "text-font": [
           "Arial Bold"
@@ -18061,8 +17813,7 @@
         "text-color": "#806659",
         "text-halo-color": "#F0F0F0",
         "text-halo-width": 0.8
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEBAEUDE_F_fill",
@@ -18076,8 +17827,7 @@
       "paint": {
         "fill-color": "hsla(360, 63.1%, 86.4%, 1.0)",
         "fill-antialias": false
-      },
-      "maxzoom": 24
+      }
     },
     {
       "id": "GEBAEUDE_F_outline",
@@ -18102,8 +17852,7 @@
             ]
           ]
         }
-      },
-      "maxzoom": 24
+      }
     }
   ]
 }

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tile Validation Test</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            max-width: 400px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .control-group {
+            margin-bottom: 10px;
+        }
+        button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #errors {
+            color: red;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .error-item {
+            background: #ffeeee;
+            padding: 5px;
+            margin: 2px 0;
+            font-size: 12px;
+        }
+        #status {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="info">
+        <div class="control-group">
+            <h3>Tile Debug Tool</h3>
+            <button onclick="testMinimalStyle()">Test Minimal Style</button>
+            <button onclick="testRasterOnly()">Test Raster Only</button>
+            <button onclick="testOneVectorLayer()">Test 1 Vector Layer</button>
+            <button onclick="loadFullStyle()">Load Full Style</button>
+            <button onclick="loadNoFilterStyle()">Test No Filters</button>
+            <button onclick="loadSafeStyle()">Test Safe Filters</button>
+            <button onclick="loadFixedTiles()">Test Fixed Tiles</button>
+            <button onclick="loadOverzoom()">Test Overzoom</button>
+            <button onclick="toggleTileBoundaries()">Toggle Tile Boundaries</button>
+            <button onclick="toggleTileInfo()">Toggle Tile Info</button>
+        </div>
+        <div id="status"></div>
+        <div id="errors"></div>
+    </div>
+
+    <script>
+        let map;
+        let currentView = { center: [16.3738, 48.2082], zoom: 10 }; // Store current view
+        let tileBoundariesVisible = false;
+        let tileInfoVisible = false;
+        const errorDiv = document.getElementById('errors');
+        const statusDiv = document.getElementById('status');
+
+        // Minimal style with just raster
+        const minimalStyle = {
+            version: 8,
+            sources: {
+                "basemap-source": {
+                    "type": "raster",
+                    "tileSize": 256,
+                    "tiles": [
+                        "https://mapsneu.wien.gv.at/basemap/bmapgelaende/grau/google3857/{z}/{y}/{x}.jpeg"
+                    ]
+                }
+            },
+            layers: [
+                {
+                    "id": "basemap-layer",
+                    "type": "raster",
+                    "source": "basemap-source"
+                }
+            ]
+        };
+
+        // Style with one vector layer
+        const oneVectorStyle = {
+            version: 8,
+            sources: {
+                "basemap-source": {
+                    "type": "raster",
+                    "tileSize": 256,
+                    "tiles": [
+                        "https://mapsneu.wien.gv.at/basemap/bmapgelaende/grau/google3857/{z}/{y}/{x}.jpeg"
+                    ]
+                },
+                "vector-source": {
+                    "type": "vector",
+                    "tiles": [
+                        "https://mapsneu.wien.gv.at/basemapv/bmapv/3857/tile/{z}/{y}/{x}.pbf"
+                    ],
+                    "minzoom": 0,
+                    "maxzoom": 16
+                }
+            },
+            layers: [
+                {
+                    "id": "basemap-layer",
+                    "type": "raster",
+                    "source": "basemap-source"
+                },
+                {
+                    "id": "test-vector-layer",
+                    "type": "fill",
+                    "source": "vector-source",
+                    "source-layer": "NUTZUNG_L0-8",
+                    "paint": {
+                        "fill-color": "rgba(255,0,0,0.3)"
+                    }
+                }
+            ]
+        };
+
+        function clearErrors() {
+            errorDiv.innerHTML = '';
+        }
+
+        function addError(message) {
+            const errorItem = document.createElement('div');
+            errorItem.className = 'error-item';
+            errorItem.textContent = message;
+            errorDiv.appendChild(errorItem);
+        }
+
+        function setStatus(message) {
+            statusDiv.textContent = message;
+        }
+
+        function initMap(style, description) {
+            clearErrors();
+            setStatus(`Loading ${description}...`);
+
+            // Save current view if map exists
+            if (map) {
+                currentView.center = map.getCenter();
+                currentView.zoom = map.getZoom();
+                map.remove();
+            }
+
+            map = new maplibregl.Map({
+                container: 'map',
+                style: style,
+                center: currentView.center,
+                zoom: currentView.zoom,
+                hash: true
+            });
+
+            map.on('error', (e) => {
+                console.error('Map error:', e);
+                addError(`Error: ${e.error.message}`);
+                if (e.sourceId) addError(`Source: ${e.sourceId}`);
+            });
+
+            map.on('load', () => {
+                setStatus(`${description} loaded successfully`);
+
+                // Update stored view when map moves
+                map.on('moveend', () => {
+                    currentView.center = map.getCenter();
+                    currentView.zoom = map.getZoom();
+                });
+
+                // Add debug layers
+                addDebugLayers();
+
+                // Monitor tile errors
+                map.on('data', (e) => {
+                    if (e.dataType === 'source' && e.sourceDataType === 'content') {
+                        if (e.tile && !e.isSourceLoaded) {
+                            const coord = e.tile.tileID.canonical;
+                            addError(`Tile load failed: z${coord.z}/${coord.x}/${coord.y}`);
+                        }
+                    }
+                });
+            });
+
+            // Click to inspect
+            map.on('click', (e) => {
+                const features = map.queryRenderedFeatures(e.point);
+                console.log('Features at click:', features);
+                if (features.length > 0) {
+                    setStatus(`Found ${features.length} features`);
+                    features.slice(0, 3).forEach(f => {
+                        console.log('Feature:', f);
+                    });
+                }
+            });
+        }
+
+        function testMinimalStyle() {
+            initMap(minimalStyle, 'Minimal Style (Raster Only)');
+        }
+
+        function testRasterOnly() {
+            const style = JSON.parse(JSON.stringify(minimalStyle));
+            style.sprite = "https://mapsneu.wien.gv.at/basemapv/bmapv/3857/resources/sprites/sprite";
+            style.glyphs = "https://mapsneu.wien.gv.at/basemapv/bmapv/3857/resources/fonts/{fontstack}/{range}.pbf";
+            initMap(style, 'Raster with Sprites/Glyphs');
+        }
+
+        function testOneVectorLayer() {
+            initMap(oneVectorStyle, 'One Vector Layer Test');
+        }
+
+        function loadFullStyle() {
+            fetch('basemap8.json')
+                .then(response => response.json())
+                .then(style => initMap(style, 'Full Basemap8 Style'))
+                .catch(err => addError('Failed to load basemap8.json: ' + err.message));
+        }
+
+        function loadNoFilterStyle() {
+            fetch('basemap8_nofilter.json')
+                .then(response => response.json())
+                .then(style => initMap(style, 'Basemap8 Without Filters'))
+                .catch(err => addError('Failed to load basemap8_nofilter.json: ' + err.message));
+        }
+
+        function loadSafeStyle() {
+            fetch('basemap8_safe.json')
+                .then(response => response.json())
+                .then(style => initMap(style, 'Basemap8 With Safe Filters'))
+                .catch(err => addError('Failed to load basemap8_safe.json: ' + err.message));
+        }
+
+        function loadFixedTiles() {
+            fetch('basemap8_fixed_tiles.json')
+                .then(response => response.json())
+                .then(style => initMap(style, 'Basemap8 Fixed Tiles'))
+                .catch(err => addError('Failed to load basemap8_fixed_tiles.json: ' + err.message));
+        }
+
+        function loadOverzoom() {
+            fetch('basemap8_overzoom.json')
+                .then(response => response.json())
+                .then(style => initMap(style, 'Basemap8 with Overzoom'))
+                .catch(err => addError('Failed to load basemap8_overzoom.json: ' + err.message));
+        }
+
+        function addDebugLayers() {
+            // Add tile boundaries source
+            if (!map.getSource('tile-boundaries')) {
+                map.addSource('tile-boundaries', {
+                    type: 'vector',
+                    tiles: ['https://tiles.mapbox.com/v4/mapbox.mapbox-streets-v7/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'],
+                    minzoom: 0,
+                    maxzoom: 14
+                });
+            }
+
+            // Add tile boundary lines
+            if (!map.getLayer('tile-boundaries')) {
+                map.addLayer({
+                    id: 'tile-boundaries',
+                    type: 'line',
+                    source: 'tile-boundaries',
+                    'source-layer': 'water',
+                    layout: {
+                        visibility: 'none'
+                    },
+                    paint: {
+                        'line-color': '#ff0000',
+                        'line-width': 2,
+                        'line-opacity': 0.7
+                    }
+                });
+            }
+
+            // Add tile coordinate labels
+            if (!map.getLayer('tile-coordinates')) {
+                map.addLayer({
+                    id: 'tile-coordinates',
+                    type: 'symbol',
+                    source: 'tile-boundaries',
+                    'source-layer': 'water',
+                    layout: {
+                        'text-field': '',
+                        'text-size': 14,
+                        visibility: 'none'
+                    },
+                    paint: {
+                        'text-color': '#ff0000',
+                        'text-halo-color': '#ffffff',
+                        'text-halo-width': 2
+                    }
+                });
+            }
+
+            // Create custom tile grid
+            createTileGrid();
+        }
+
+        function createTileGrid() {
+            // Add a GeoJSON source for tile grid
+            if (!map.getSource('tile-grid')) {
+                map.addSource('tile-grid', {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: []
+                    }
+                });
+
+                map.addLayer({
+                    id: 'tile-grid-lines',
+                    type: 'line',
+                    source: 'tile-grid',
+                    layout: {
+                        visibility: 'none'
+                    },
+                    paint: {
+                        'line-color': '#00ff00',
+                        'line-width': 2,
+                        'line-opacity': 0.8,
+                        'line-dasharray': [2, 2]
+                    }
+                });
+
+                map.addLayer({
+                    id: 'tile-grid-labels',
+                    type: 'symbol',
+                    source: 'tile-grid',
+                    layout: {
+                        'text-field': ['get', 'tile'],
+                        'text-size': 16,
+                        'text-anchor': 'center',
+                        visibility: 'none'
+                    },
+                    paint: {
+                        'text-color': '#00ff00',
+                        'text-halo-color': '#000000',
+                        'text-halo-width': 2
+                    }
+                });
+            }
+
+            updateTileGrid();
+
+            // Update tile grid on move
+            map.on('moveend', updateTileGrid);
+        }
+
+        function updateTileGrid() {
+            const zoom = Math.floor(map.getZoom());
+            const bounds = map.getBounds();
+
+            // Calculate tile coordinates for current view
+            const tiles = getTilesInBounds(bounds, zoom);
+
+            // Create GeoJSON features for tile boundaries
+            const features = tiles.map(tile => {
+                const bbox = tileToBounds(tile.x, tile.y, tile.z);
+                return {
+                    type: 'Feature',
+                    properties: {
+                        tile: `${tile.z}/${tile.x}/${tile.y}`,
+                        zoom: tile.z,
+                        x: tile.x,
+                        y: tile.y
+                    },
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [
+                            [bbox.west, bbox.north],
+                            [bbox.east, bbox.north],
+                            [bbox.east, bbox.south],
+                            [bbox.west, bbox.south],
+                            [bbox.west, bbox.north]
+                        ]
+                    }
+                };
+            });
+
+            // Add center points for labels
+            tiles.forEach(tile => {
+                const bbox = tileToBounds(tile.x, tile.y, tile.z);
+                const centerLng = (bbox.west + bbox.east) / 2;
+                const centerLat = (bbox.north + bbox.south) / 2;
+
+                features.push({
+                    type: 'Feature',
+                    properties: {
+                        tile: `${tile.z}/${tile.x}/${tile.y}`
+                    },
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [centerLng, centerLat]
+                    }
+                });
+            });
+
+            const source = map.getSource('tile-grid');
+            if (source) {
+                source.setData({
+                    type: 'FeatureCollection',
+                    features: features
+                });
+            }
+        }
+
+        function getTilesInBounds(bounds, zoom) {
+            const tiles = [];
+            const minTile = lngLatToTile(bounds.getWest(), bounds.getNorth(), zoom);
+            const maxTile = lngLatToTile(bounds.getEast(), bounds.getSouth(), zoom);
+
+            for (let x = minTile.x; x <= maxTile.x; x++) {
+                for (let y = minTile.y; y <= maxTile.y; y++) {
+                    tiles.push({ x, y, z: zoom });
+                }
+            }
+
+            return tiles;
+        }
+
+        function lngLatToTile(lng, lat, zoom) {
+            const x = Math.floor((lng + 180) / 360 * Math.pow(2, zoom));
+            const y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
+            return { x, y };
+        }
+
+        function tileToBounds(x, y, z) {
+            const n = Math.pow(2, z);
+            const west = x / n * 360 - 180;
+            const east = (x + 1) / n * 360 - 180;
+            const north = Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI;
+            const south = Math.atan(Math.sinh(Math.PI * (1 - 2 * (y + 1) / n))) * 180 / Math.PI;
+            return { north, south, east, west };
+        }
+
+        function toggleTileBoundaries() {
+            tileBoundariesVisible = !tileBoundariesVisible;
+            const visibility = tileBoundariesVisible ? 'visible' : 'none';
+
+            if (map.getLayer('tile-grid-lines')) {
+                map.setLayoutProperty('tile-grid-lines', 'visibility', visibility);
+            }
+
+            setStatus(`Tile boundaries ${tileBoundariesVisible ? 'shown' : 'hidden'}`);
+        }
+
+        function toggleTileInfo() {
+            tileInfoVisible = !tileInfoVisible;
+            const visibility = tileInfoVisible ? 'visible' : 'none';
+
+            if (map.getLayer('tile-grid-labels')) {
+                map.setLayoutProperty('tile-grid-labels', 'visibility', visibility);
+            }
+
+            setStatus(`Tile info ${tileInfoVisible ? 'shown (z/x/y)' : 'hidden'}`);
+
+            // Also show current zoom info
+            if (tileInfoVisible) {
+                const zoom = map.getZoom();
+                const center = map.getCenter();
+                const tile = lngLatToTile(center.lng, center.lat, Math.floor(zoom));
+                setStatus(`Zoom: ${zoom.toFixed(2)}, Center tile: ${Math.floor(zoom)}/${tile.x}/${tile.y}`);
+            }
+        }
+
+        // Start with minimal style
+        testMinimalStyle();
+    </script>
+</body>
+</html>
