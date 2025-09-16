@@ -559,34 +559,37 @@ const loadLayerGroups = async () => {
       }
     ];
 
-    // Mock basemaps and overlays
-    basemaps.value = [
-      {
-        id: 'osm-carto',
-        name: 'openstreetmap-carto',
-        label: 'OpenStreetMap Carto',
-        type: 'xyz',
-        country: 'Global',
-        flag: '🌍',
-        isActive: true,
-        previewUrl: '/api/preview/osm-carto.png',
-        metadata: { provider: 'OpenStreetMap' }
-      }
-    ];
+    // DON'T OVERWRITE REAL DATA WITH MOCK DATA!
+    // The basemaps and overlays are already loaded from Supabase in loadMapsData()
+    // Commenting out the mock data that was overwriting the real data:
 
-    overlays.value = [
-      {
-        id: 'buildings',
-        name: 'building-overlay',
-        label: 'Buildings Layer',
-        type: 'geojson',
-        country: 'Global',
-        flag: '🌍',
-        isActive: true,
-        previewUrl: '/api/preview/buildings.png',
-        metadata: { provider: 'Local GIS' }
-      }
-    ];
+    // basemaps.value = [
+    //   {
+    //     id: 'osm-carto',
+    //     name: 'openstreetmap-carto',
+    //     label: 'OpenStreetMap Carto',
+    //     type: 'xyz',
+    //     country: 'Global',
+    //     flag: '🌍',
+    //     isActive: true,
+    //     previewUrl: '/api/preview/osm-carto.png',
+    //     metadata: { provider: 'OpenStreetMap' }
+    //   }
+    // ];
+
+    // overlays.value = [
+    //   {
+    //     id: 'buildings',
+    //     name: 'building-overlay',
+    //     label: 'Buildings Layer',
+    //     type: 'geojson',
+    //     country: 'Global',
+    //     flag: '🌍',
+    //     isActive: true,
+    //     previewUrl: '/api/preview/buildings.png',
+    //     metadata: { provider: 'Local GIS' }
+    //   }
+    // ];
   } catch (error) {
     console.error('Error loading layer groups:', error);
     toast.add({

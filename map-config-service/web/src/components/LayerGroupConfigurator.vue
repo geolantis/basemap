@@ -646,24 +646,31 @@ watch(() => props.visible, (newVisible) => {
 
 <style scoped>
 /* Fix for dialog transparency and overlay issues */
+/* Force opaque white background for the entire dialog */
 :deep(.p-dialog) {
-  background: white !important;
+  background: rgb(255, 255, 255) !important;
+  background-color: white !important;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   border-radius: 12px;
   max-height: 90vh;
+  opacity: 1 !important;
 }
 
 :deep(.p-dialog-header) {
-  background: white;
+  background: rgb(255, 255, 255) !important;
+  background-color: white !important;
   border-bottom: 1px solid #e5e7eb;
   padding: 1.25rem;
   border-radius: 12px 12px 0 0;
+  opacity: 1 !important;
 }
 
 :deep(.p-dialog-content) {
-  background: white;
+  background: rgb(255, 255, 255) !important;
+  background-color: white !important;
   padding: 0;
   overflow: visible;
+  opacity: 1 !important;
 }
 
 :deep(.p-dialog-mask) {
@@ -671,12 +678,26 @@ watch(() => props.visible, (newVisible) => {
   backdrop-filter: blur(2px);
 }
 
+:deep(.p-tabview) {
+  background: rgb(255, 255, 255) !important;
+  opacity: 1 !important;
+}
+
 :deep(.p-tabview-panels) {
-  background: white;
+  background: rgb(255, 255, 255) !important;
+  background-color: white !important;
+  opacity: 1 !important;
 }
 
 :deep(.p-tabview-panel) {
-  background: white;
+  background: rgb(255, 255, 255) !important;
+  background-color: white !important;
   padding: 1rem;
+  opacity: 1 !important;
+}
+
+/* Ensure all child elements are also opaque */
+:deep(.p-dialog *) {
+  opacity: 1 !important;
 }
 </style>
