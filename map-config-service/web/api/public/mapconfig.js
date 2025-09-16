@@ -223,6 +223,8 @@ export default async function handler(req, res) {
         name,
         description,
         basemap_id,
+        country,
+        country_flag,
         is_active,
         is_public,
         metadata,
@@ -257,6 +259,8 @@ export default async function handler(req, res) {
         name: group.name,
         description: group.description,
         basemap_id: group.basemap_id,
+        country: group.country || 'Global',
+        country_flag: group.country_flag || '🌍',
         basemap: basemap ? {
           id: basemap.id,
           name: basemap.name,

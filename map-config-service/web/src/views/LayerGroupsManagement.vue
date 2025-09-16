@@ -643,7 +643,10 @@ const closeConfigurator = () => {
 
 const handleSaveGroup = async (config: LayerGroupConfig) => {
   try {
-    if (editingGroup.value) {
+    // Store the editing group ID early to avoid losing reference
+    const editingGroupId = editingGroup.value?.id;
+
+    if (editingGroupId) {
       // Build update object - only include country fields if they exist
       const updateData: any = {
         name: config.name,
@@ -665,7 +668,7 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
       const { data: updatedGroup, error: updateError } = await supabase
         .from('layer_groups')
         .update(updateData)
-        .eq('id', editingGroup.value.id)
+        .eq('id', editingGroupId)
         .select()
         .single();
 
@@ -675,29 +678,31 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
       await supabase
         .from('layer_group_overlays')
         .delete()
-        .eq('layer_group_id', editingGroup.value.id);
+        .eq('layer_group_id', editingGroupId);
 
       // Insert new overlay relationships
-      if (config.overlays && config.overlays.length > 0 && editingGroup.value) {
+      if (config.overlays && config.overlays.length > 0) {
         const overlayRelations = config.overlays
           .filter(overlay => overlay && overlay.overlay && overlay.overlay.id) // Filter out any invalid overlays
           .map((overlay, index) => ({
-            layer_group_id: editingGroup.value!.id,
+            layer_group_id: editingGroupId,
             overlay_id: overlay.overlay.id,
             display_order: index,
             is_visible_by_default: overlay.isVisibleDefault !== false,
             opacity: (overlay.opacity || 100) / 100 // Convert percentage to decimal with default
           }));
 
-        const { error: overlayError } = await supabase
-          .from('layer_group_overlays')
-          .insert(overlayRelations);
+        if (overlayRelations.length > 0) {
+          const { error: overlayError } = await supabase
+            .from('layer_group_overlays')
+            .insert(overlayRelations);
 
-        if (overlayError) throw overlayError;
+          if (overlayError) throw overlayError;
+        }
       }
 
       // Update local state
-      const index = layerGroups.value.findIndex(g => g.id === editingGroup.value!.id);
+      const index = layerGroups.value.findIndex(g => g.id === editingGroupId);
       if (index >= 0) {
         layerGroups.value[index] = {
           ...layerGroups.value[index],
@@ -742,7 +747,7 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
       if (createError) throw createError;
 
       // Insert overlay relationships if any
-      if (config.overlays && config.overlays.length > 0 && newGroup) {
+      if (config.overlays && config.overlays.length > 0 && newGroup && newGroup.id) {
         const overlayRelations = config.overlays
           .filter(overlay => overlay && overlay.overlay && overlay.overlay.id) // Filter out any invalid overlays
           .map((overlay, index) => ({
@@ -753,11 +758,13 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
             opacity: (overlay.opacity || 100) / 100 // Convert percentage to decimal with default
           }));
 
-        const { error: overlayError } = await supabase
-          .from('layer_group_overlays')
-          .insert(overlayRelations);
+        if (overlayRelations.length > 0) {
+          const { error: overlayError } = await supabase
+            .from('layer_group_overlays')
+            .insert(overlayRelations);
 
-        if (overlayError) throw overlayError;
+          if (overlayError) throw overlayError;
+        }
       }
 
       // Add to local state
