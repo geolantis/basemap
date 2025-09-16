@@ -344,6 +344,393 @@ onUnmounted(() => {
           </div>
         </TabPanel>
 
+        <TabPanel header="Layer Groups">
+          <div class="tab-content">
+            <h2><i class="pi pi-sitemap"></i> Layer Groups Management</h2>
+
+            <Message severity="success" :closable="false">
+              <strong>New Feature:</strong> Create and manage layer groups to define which overlay layers are compatible with specific basemaps.
+            </Message>
+
+            <div class="layer-groups-section">
+              <h3>Overview</h3>
+              <p>Layer Groups allow you to create pre-configured combinations of basemaps and their compatible overlay layers. This ensures that only appropriate overlays are available for each basemap, improving user experience and preventing incompatible layer combinations.</p>
+
+              <Card>
+                <template #title>
+                  <i class="pi pi-plus-circle"></i> Creating a Layer Group
+                </template>
+                <template #content>
+                  <ol class="setup-steps">
+                    <li>
+                      <strong>Navigate to Layer Groups:</strong>
+                      <p>Go to the <router-link to="/layer-groups">Layer Groups Management</router-link> page</p>
+                    </li>
+                    <li>
+                      <strong>Click "New Layer Group":</strong>
+                      <p>Opens the layer group configurator dialog</p>
+                    </li>
+                    <li>
+                      <strong>Select a Basemap:</strong>
+                      <p>Choose from visual grid of available basemaps with preview images</p>
+                    </li>
+                    <li>
+                      <strong>Choose Compatible Overlays:</strong>
+                      <p>Select one or more overlay layers that work with your basemap</p>
+                    </li>
+                    <li>
+                      <strong>Configure Properties:</strong>
+                      <ul>
+                        <li>Set overlay opacity (0-100%)</li>
+                        <li>Define rendering order (drag to reorder)</li>
+                        <li>Add compatibility reasons</li>
+                        <li>Configure blend modes</li>
+                      </ul>
+                    </li>
+                    <li>
+                      <strong>Name Your Group:</strong>
+                      <p>Example: "Kärnten Standard" or "Tourism Austria"</p>
+                    </li>
+                    <li>
+                      <strong>Preview & Save:</strong>
+                      <p>View the combined result before saving</p>
+                    </li>
+                  </ol>
+                </template>
+              </Card>
+
+              <h3>Example Layer Groups</h3>
+              <div class="example-groups">
+                <div class="example-group">
+                  <h4>🏔️ Kärnten Standard</h4>
+                  <p><strong>Basemap:</strong> BasemapStandard</p>
+                  <p><strong>Overlays:</strong></p>
+                  <ul>
+                    <li>KTN Kataster (Cadastral boundaries)</li>
+                    <li>Administrative borders</li>
+                    <li>Place names</li>
+                  </ul>
+                </div>
+                <div class="example-group">
+                  <h4>🗺️ Tourism Planning</h4>
+                  <p><strong>Basemap:</strong> MapTiler Streets</p>
+                  <p><strong>Overlays:</strong></p>
+                  <ul>
+                    <li>Tourist attractions</li>
+                    <li>Hiking trails</li>
+                    <li>Public transport</li>
+                  </ul>
+                </div>
+                <div class="example-group">
+                  <h4>🏗️ Infrastructure</h4>
+                  <p><strong>Basemap:</strong> Satellite Imagery</p>
+                  <p><strong>Overlays:</strong></p>
+                  <ul>
+                    <li>Power lines</li>
+                    <li>Water networks</li>
+                    <li>Construction zones</li>
+                  </ul>
+                </div>
+              </div>
+
+              <h3>Layer Groups API</h3>
+              <Accordion>
+                <AccordionTab header="API Endpoints">
+                  <div class="api-section">
+                    <div class="endpoint-item">
+                      <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <code class="endpoint-path">/api/layer-groups</code>
+                      </div>
+                      <p>List all layer groups with filtering options</p>
+                      <pre class="code-block">
+// Query Parameters
+?active=true         // Only active groups
+?featured=true       // Only featured groups
+?tag=cadastral      // Filter by tag
+?search=kärnten     // Search by name
+?page=1&limit=20    // Pagination
+
+// Response
+{
+  "data": [{
+    "id": "uuid",
+    "name": "Kärnten Standard",
+    "basemap": {
+      "id": "uuid",
+      "name": "BasemapStandard",
+      "preview_image": "url"
+    },
+    "overlays": [{
+      "id": "uuid",
+      "name": "KTN Kataster",
+      "opacity": 80,
+      "display_order": 1
+    }],
+    "tags": ["cadastral", "administrative"]
+  }],
+  "meta": {
+    "total": 45,
+    "page": 1,
+    "limit": 20
+  }
+}</pre>
+                    </div>
+
+                    <div class="endpoint-item">
+                      <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <code class="endpoint-path">/api/layer-groups/{id}</code>
+                      </div>
+                      <p>Get detailed layer group configuration</p>
+                    </div>
+
+                    <div class="endpoint-item">
+                      <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <code class="endpoint-path">/api/layer-groups</code>
+                      </div>
+                      <p>Create new layer group (requires auth)</p>
+                      <pre class="code-block">
+// Request Body
+{
+  "name": "Kärnten Standard",
+  "description": "Standard view for Carinthia",
+  "basemap_id": "uuid",
+  "overlays": [{
+    "overlay_id": "uuid",
+    "display_order": 1,
+    "opacity": 80,
+    "is_visible": true
+  }],
+  "is_featured": true
+}</pre>
+                    </div>
+                  </div>
+                </AccordionTab>
+              </Accordion>
+            </div>
+          </div>
+        </TabPanel>
+
+        <TabPanel header="Mobile Integration">
+          <div class="tab-content">
+            <h2><i class="pi pi-mobile"></i> Mobile App Integration</h2>
+
+            <Message severity="info" :closable="false">
+              <strong>For Mobile Developers:</strong> Use layer groups to provide users with pre-configured map combinations that work well together.
+            </Message>
+
+            <div class="mobile-section">
+              <h3>Swift (iOS) Example</h3>
+              <pre class="code-block language-swift">
+import MapLibre
+
+class MapConfigService {
+    let baseURL = "https://mapconfig.geolantis.com"
+
+    // Fetch available layer groups
+    func fetchLayerGroups() async throws -> [LayerGroup] {
+        let url = URL(string: "\(baseURL)/api/layer-groups?active=true")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let response = try JSONDecoder().decode(LayerGroupResponse.self, from: data)
+        return response.data
+    }
+
+    // Apply layer group to map
+    func applyLayerGroup(_ group: LayerGroup, to map: MLNMapView) {
+        // Set basemap style
+        let styleURL = URL(string: "\(baseURL)\(group.basemap.style)")!
+        map.styleURL = styleURL
+
+        // Add overlay layers when style loads
+        map.style?.layerAdded = { _ in
+            for overlay in group.overlays {
+                self.addOverlay(overlay, to: map)
+            }
+        }
+    }
+
+    private func addOverlay(_ overlay: LayerOverlay, to map: MLNMapView) {
+        // Add overlay as raster layer
+        let source = MLNRasterTileSource(
+            identifier: overlay.id,
+            tileURLTemplates: ["\(baseURL)/api/proxy/tiles/\(overlay.name)/{z}/{x}/{y}"],
+            options: [
+                .minimumZoomLevel: 0,
+                .maximumZoomLevel: 22,
+                .tileSize: 256
+            ]
+        )
+
+        let layer = MLNRasterStyleLayer(identifier: overlay.id, source: source)
+        layer.rasterOpacity = NSExpression(forConstantValue: overlay.opacity / 100.0)
+
+        map.style?.addSource(source)
+        map.style?.addLayer(layer)
+    }
+}</pre>
+
+              <h3>Kotlin (Android) Example</h3>
+              <pre class="code-block language-kotlin">
+import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.style.layers.RasterLayer
+import com.mapbox.mapboxsdk.style.sources.RasterSource
+
+class MapConfigService(private val context: Context) {
+    private val baseURL = "https://mapconfig.geolantis.com"
+
+    // Fetch and apply layer group
+    suspend fun applyLayerGroup(groupId: String, map: MapboxMap) {
+        val group = fetchLayerGroup(groupId)
+
+        // Load basemap style
+        val styleUrl = "$baseURL${group.basemap.style}"
+        map.setStyle(styleUrl) { style ->
+            // Add overlays after style loads
+            group.overlays.forEach { overlay ->
+                addOverlay(overlay, style)
+            }
+        }
+    }
+
+    private fun addOverlay(overlay: LayerOverlay, style: Style) {
+        // Create raster source for overlay
+        val source = RasterSource(
+            overlay.id,
+            TileSet("tileset", "$baseURL/api/proxy/tiles/${overlay.name}/{z}/{x}/{y}")
+        )
+
+        // Create raster layer with opacity
+        val layer = RasterLayer(overlay.id, overlay.id).apply {
+            setProperties(
+                PropertyFactory.rasterOpacity(overlay.opacity / 100f),
+                PropertyFactory.rasterFadeDuration(300)
+            )
+        }
+
+        style.addSource(source)
+        style.addLayer(layer)
+    }
+
+    // Fetch layer groups for user selection
+    suspend fun getAvailableGroups(): List<LayerGroup> {
+        return withContext(Dispatchers.IO) {
+            val response = httpClient.get("$baseURL/api/layer-groups?active=true&featured=true")
+            response.body<LayerGroupResponse>().data
+        }
+    }
+}</pre>
+
+              <h3>React Native Example</h3>
+              <pre class="code-block language-javascript">
+import MapLibreGL from '@maplibre/maplibre-react-native';
+
+const MapConfigService = {
+  baseURL: 'https://mapconfig.geolantis.com',
+
+  // Fetch layer groups
+  async fetchLayerGroups(filters = {}) {
+    const params = new URLSearchParams({
+      active: true,
+      featured: true,
+      ...filters
+    });
+
+    const response = await fetch(`${this.baseURL}/api/layer-groups?${params}`);
+    return response.json();
+  },
+
+  // Component to display layer group
+  LayerGroupMap: ({ groupId }) => {
+    const [layerGroup, setLayerGroup] = useState(null);
+
+    useEffect(() => {
+      MapConfigService.fetchLayerGroup(groupId)
+        .then(setLayerGroup);
+    }, [groupId]);
+
+    if (!layerGroup) return <Loading />;
+
+    return (
+      <MapLibreGL.MapView
+        styleURL={`${MapConfigService.baseURL}${layerGroup.basemap.style}`}
+        onDidFinishLoadingStyle={() => {
+          // Style loaded, overlays are included
+        }}
+      >
+        {layerGroup.overlays.map(overlay => (
+          <MapLibreGL.RasterSource
+            key={overlay.id}
+            id={overlay.id}
+            tileUrlTemplates={[
+              `${MapConfigService.baseURL}/api/proxy/tiles/${overlay.name}/{z}/{x}/{y}`
+            ]}
+          >
+            <MapLibreGL.RasterLayer
+              id={overlay.id}
+              style={{
+                rasterOpacity: overlay.opacity / 100,
+                rasterFadeDuration: 300
+              }}
+            />
+          </MapLibreGL.RasterSource>
+        ))}
+      </MapLibreGL.MapView>
+    );
+  }
+};</pre>
+
+              <h3>Layer Selection UI Pattern</h3>
+              <Card>
+                <template #title>
+                  <i class="pi pi-palette"></i> Recommended Mobile UI Pattern
+                </template>
+                <template #content>
+                  <p>For the best user experience in mobile apps, we recommend:</p>
+                  <ol>
+                    <li>
+                      <strong>Layer Group Selector:</strong>
+                      <p>Show a bottom sheet or modal with layer group cards, each displaying:</p>
+                      <ul>
+                        <li>Preview image of the combined layers</li>
+                        <li>Group name and description</li>
+                        <li>Number of layers included</li>
+                        <li>Tags (e.g., "Cadastral", "Tourism")</li>
+                      </ul>
+                    </li>
+                    <li>
+                      <strong>Quick Switch Button:</strong>
+                      <p>Add a map layers button to quickly switch between layer groups</p>
+                    </li>
+                    <li>
+                      <strong>Individual Layer Controls:</strong>
+                      <p>Allow users to toggle individual overlay visibility and adjust opacity</p>
+                    </li>
+                    <li>
+                      <strong>Favorites:</strong>
+                      <p>Let users save frequently used layer groups</p>
+                    </li>
+                  </ol>
+                </template>
+              </Card>
+
+              <h3>Performance Considerations</h3>
+              <Message severity="warn" :closable="false">
+                <strong>Mobile Optimization Tips:</strong>
+                <ul style="margin-top: 0.5rem;">
+                  <li>Cache layer group configurations locally</li>
+                  <li>Preload preview images for smooth UI</li>
+                  <li>Limit overlay count to 3-4 for performance</li>
+                  <li>Use lower opacity for overlays on mobile (60-80%)</li>
+                  <li>Implement progressive loading for large datasets</li>
+                </ul>
+              </Message>
+            </div>
+          </div>
+        </TabPanel>
+
         <TabPanel header="Features">
           <div class="tab-content">
             <h2><i class="pi pi-star"></i> Key Features</h2>
@@ -360,6 +747,20 @@ onUnmounted(() => {
                   <li>Clockwork Micro protected</li>
                   <li>BEV Austria credentials safe</li>
                   <li>Google Maps API secured</li>
+                </ul>
+              </div>
+
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="pi pi-sitemap"></i>
+                </div>
+                <h3>Layer Groups</h3>
+                <p>Define compatible combinations of basemaps and overlay layers for consistent user experience.</p>
+                <ul>
+                  <li><strong>Pre-configured:</strong> Ready-to-use map combinations</li>
+                  <li><strong>Compatibility:</strong> Ensure overlays work with basemaps</li>
+                  <li><strong>Mobile-ready:</strong> Optimized for app integration</li>
+                  <li><strong>Visual Preview:</strong> See combinations before use</li>
                 </ul>
               </div>
 
@@ -1084,36 +1485,145 @@ const environment = computed(() => import.meta.env.MODE === 'production' ? 'Prod
   border-radius: 0 0 8px 8px;
 }
 
+/* Layer Groups Section */
+.layer-groups-section {
+  margin-top: 1rem;
+}
+
+.setup-steps {
+  padding-left: 1.5rem;
+  line-height: 1.8;
+}
+
+.setup-steps li {
+  margin-bottom: 1.5rem;
+}
+
+.setup-steps li strong {
+  color: #1e293b;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.setup-steps li p {
+  color: #64748b;
+  margin: 0.5rem 0;
+}
+
+.setup-steps li ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.setup-steps li ul li {
+  margin-bottom: 0.25rem;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.example-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.example-group {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+}
+
+.example-group h4 {
+  color: #1e293b;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.example-group p {
+  color: #495057;
+  margin: 0.5rem 0;
+}
+
+.example-group ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.example-group ul li {
+  color: #6c757d;
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+/* Mobile Integration Section */
+.mobile-section {
+  margin-top: 1rem;
+}
+
+.mobile-section h3 {
+  color: #1e293b;
+  margin: 2rem 0 1rem 0;
+  font-size: 1.25rem;
+}
+
+.mobile-section .code-block {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.language-swift,
+.language-kotlin {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }
-  
+
   .hero-badges {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .container {
     padding: 0 1rem;
   }
-  
+
   .tab-content {
     padding: 1rem;
   }
-  
+
   .features-grid,
   .security-section {
     grid-template-columns: 1fr;
   }
-  
+
   .contact-options {
     flex-direction: column;
+  }
+
+  .example-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-section .code-block {
+    font-size: 0.75rem;
   }
 }
 </style>

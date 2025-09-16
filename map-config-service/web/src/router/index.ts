@@ -62,6 +62,21 @@ const routes: RouteRecordRaw[] = [
     name: 'PreviewTest',
     component: () => import('../views/PreviewTestPage.vue'),
   },
+  {
+    path: '/layer-groups',
+    name: 'LayerGroupsManagement',
+    component: () => import('../views/LayerGroupsManagement.vue'),
+  },
+  {
+    path: '/layer-groups/:id/preview',
+    name: 'LayerGroupPreview',
+    component: () => import('../views/LayerGroupPreview.vue'),
+  },
+  {
+    path: '/demo/layer-groups',
+    name: 'LayerGroupDemo',
+    component: () => import('../components/LayerGroupDemo.vue'),
+  },
 ];
 
 const router = createRouter({

@@ -180,3 +180,249 @@ export interface StylePreview {
   bearing?: number;
   pitch?: number;
 }
+
+// Layer Groups Management Types
+
+export interface BasemapLayer {
+  id: string;
+  name: string;
+  label: string;
+  type: 'vtc' | 'wmts' | 'wms' | 'xyz' | 'raster';
+  country: string;
+  flag: string;
+  isActive: boolean;
+  previewUrl?: string;
+  metadata?: {
+    provider?: string;
+    projection?: string;
+    bounds?: [number, number, number, number];
+    minZoom?: number;
+    maxZoom?: number;
+    attribution?: string;
+    [key: string]: any;
+  };
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface OverlayLayer {
+  id: string;
+  name: string;
+  label: string;
+  type: 'vtc' | 'wmts' | 'wms' | 'xyz' | 'geojson' | 'vector';
+  country: string;
+  flag: string;
+  isActive: boolean;
+  previewUrl?: string;
+  metadata?: {
+    provider?: string;
+    projection?: string;
+    bounds?: [number, number, number, number];
+    minZoom?: number;
+    maxZoom?: number;
+    attribution?: string;
+    supportedBlendModes?: string[];
+    [key: string]: any;
+  };
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface OverlayConfig {
+  overlay: OverlayLayer;
+  opacity: number; // 0-100
+  blendMode: string; // normal, multiply, screen, overlay, etc.
+  order: number; // Layer stacking order
+  visible?: boolean;
+  minZoom?: number;
+  maxZoom?: number;
+}
+
+export interface LayerGroupConfig {
+  name: string;
+  basemap: BasemapLayer | null;
+  overlays: OverlayConfig[];
+  description?: string;
+  tags?: string[];
+}
+
+export interface LayerGroup extends LayerGroupConfig {
+  id: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+  metadata?: {
+    totalLayers: number;
+    estimatedSize?: string;
+    lastPreviewUpdate?: Date;
+    [key: string]: any;
+  };
+}
+
+export interface LayerCompatibility {
+  basemapId: string;
+  overlayId: string;
+  isCompatible: boolean;
+  compatibilityScore: number; // 0-100
+  issues?: string[];
+  recommendations?: string[];
+}
+
+export interface PreviewOptions {
+  width?: number;
+  height?: number;
+  center?: [number, number];
+  zoom?: number;
+  format?: 'png' | 'jpeg' | 'webp';
+  showLabels?: boolean;
+  showAttribution?: boolean;
+}
+
+// API Response types for Layer Groups
+export interface LayerGroupsResponse {
+  data: LayerGroup[];
+  total: number;
+  page: number;
+  pageSize: number;
+  hasMore: boolean;
+}
+
+export interface BasemapsResponse {
+  data: BasemapLayer[];
+  total: number;
+  filters: {
+    types: string[];
+    countries: string[];
+    providers: string[];
+  };
+}
+
+export interface OverlaysResponse {
+  data: OverlayLayer[];
+  total: number;
+  filters: {
+    types: string[];
+    countries: string[];
+    providers: string[];
+  };
+}
+
+// Search and Filter types for Layer Groups
+export interface LayerGroupFilters {
+  search?: string;
+  status?: 'active' | 'inactive' | 'all';
+  basemapType?: string;
+  overlayTypes?: string[];
+  countries?: string[];
+  tags?: string[];
+  createdBy?: string;
+  dateRange?: {
+    start: Date;
+    end: Date;
+  };
+}
+
+export interface LayerFilters {
+  search?: string;
+  types?: string[];
+  countries?: string[];
+  providers?: string[];
+  isActive?: boolean;
+  hasPreview?: boolean;
+  compatibleWith?: string; // basemap ID for overlay filtering
+}
+
+// Sorting options
+export interface SortOptions {
+  field: string;
+  direction: 'asc' | 'desc';
+}
+
+// Bulk operations for Layer Groups
+export interface BulkOperation {
+  operation: 'activate' | 'deactivate' | 'delete' | 'duplicate' | 'export';
+  groupIds: string[];
+  options?: {
+    [key: string]: any;
+  };
+}
+
+// Export/Import types for Layer Groups
+export interface LayerGroupExport {
+  version: string;
+  exportedAt: Date;
+  groups: LayerGroup[];
+  basemaps: BasemapLayer[];
+  overlays: OverlayLayer[];
+}
+
+export interface ImportResult {
+  imported: number;
+  skipped: number;
+  errors: string[];
+  warnings: string[];
+}
+
+// Performance and Analytics
+export interface LayerGroupAnalytics {
+  groupId: string;
+  viewCount: number;
+  lastViewed: Date;
+  averageLoadTime: number;
+  popularCombinations: string[];
+  userRating?: number;
+}
+
+// User preferences for Layer Groups
+export interface UserPreferences {
+  defaultViewMode: 'grid' | 'list';
+  pageSize: number;
+  favoriteGroups: string[];
+  recentlyUsed: string[];
+  sortPreference: SortOptions;
+  filterPreferences: LayerGroupFilters;
+}
+
+// Error handling for Layer Groups
+export interface LayerGroupError {
+  code: string;
+  message: string;
+  details?: any;
+  timestamp: Date;
+}
+
+// Real-time updates for Layer Groups
+export interface LayerGroupUpdate {
+  type: 'created' | 'updated' | 'deleted' | 'activated' | 'deactivated';
+  groupId: string;
+  group?: LayerGroup;
+  timestamp: Date;
+  userId: string;
+}
+
+// Drag and drop types
+export interface DragDropItem {
+  id: string;
+  type: 'basemap' | 'overlay';
+  data: BasemapLayer | OverlayLayer;
+}
+
+// Preview generation for Layer Groups
+export interface PreviewRequest {
+  groupId: string;
+  options?: PreviewOptions;
+}
+
+export interface PreviewResponse {
+  url: string;
+  expiresAt: Date;
+  metadata: {
+    generatedAt: Date;
+    size: string;
+    dimensions: {
+      width: number;
+      height: number;
+    };
+  };
+}
