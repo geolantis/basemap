@@ -75,29 +75,27 @@
                     <Dropdown
                       v-model="basemapTypeFilter"
                       :options="basemapTypes"
-                      optionLabel="label"
-                      optionValue="value"
                       placeholder="All Types"
                       showClear
                       class="w-full"
+                      style="background: white !important;"
                     />
                   </div>
                   <div>
                     <Dropdown
                       v-model="basemapCountryFilter"
                       :options="basemapCountries"
-                      optionLabel="label"
-                      optionValue="value"
                       placeholder="All Countries"
                       showClear
                       class="w-full"
+                      style="background: white !important;"
                     />
                   </div>
                 </div>
               </div>
 
               <!-- Basemap Grid -->
-              <div class="flex-1 overflow-y-auto">
+              <div class="flex-1 overflow-y-auto" style="max-height: 400px; min-height: 300px;">
                 <div v-if="filteredBasemaps.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   <BasemapCard
                     v-for="basemap in filteredBasemaps"
@@ -138,11 +136,10 @@
                     <Dropdown
                       v-model="overlayTypeFilter"
                       :options="overlayTypes"
-                      optionLabel="label"
-                      optionValue="value"
                       placeholder="All Types"
                       showClear
                       class="w-full"
+                      style="background: white !important;"
                     />
                   </div>
                   <div>
@@ -168,7 +165,7 @@
               </div>
 
               <!-- Overlay Grid -->
-              <div class="flex-1 overflow-y-auto">
+              <div class="flex-1 overflow-y-auto" style="max-height: 400px; min-height: 300px;">
                 <div v-if="compatibleOverlays.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   <OverlayCard
                     v-for="overlay in compatibleOverlays"
@@ -428,35 +425,29 @@ const canSave = computed(() => {
 const basemapTypes = computed(() => {
   if (!props.basemaps || props.basemaps.length === 0) return [];
   const types = new Set(props.basemaps.map(b => b.type).filter(Boolean));
-  return Array.from(types).sort().map(type => ({
-    label: type?.toUpperCase() || type,
-    value: type
-  }));
+  // Return simple string array for PrimeVue Dropdown
+  return Array.from(types).sort();
 });
 
 const basemapCountries = computed(() => {
   if (!props.basemaps || props.basemaps.length === 0) return [];
   const countries = new Set(props.basemaps.map(b => b.country).filter(Boolean));
-  return Array.from(countries).sort().map(country => ({
-    label: country || 'Unknown',
-    value: country
-  }));
+  // Return simple string array for PrimeVue Dropdown
+  return Array.from(countries).sort();
 });
 
 const overlayTypes = computed(() => {
-  const types = new Set(props.overlays.map(o => o.type));
-  return Array.from(types).map(type => ({
-    label: type.toUpperCase(),
-    value: type
-  }));
+  if (!props.overlays || props.overlays.length === 0) return [];
+  const types = new Set(props.overlays.map(o => o.type).filter(Boolean));
+  // Return simple string array for PrimeVue Dropdown
+  return Array.from(types).sort();
 });
 
 const overlayCountries = computed(() => {
-  const countries = new Set(props.overlays.map(o => o.country));
-  return Array.from(countries).map(country => ({
-    label: country,
-    value: country
-  }));
+  if (!props.overlays || props.overlays.length === 0) return [];
+  const countries = new Set(props.overlays.map(o => o.country).filter(Boolean));
+  // Return simple string array for PrimeVue MultiSelect
+  return Array.from(countries).sort();
 });
 
 const filteredBasemaps = computed(() => {
@@ -736,7 +727,8 @@ watch(() => props.visible, (newVisible) => {
 <!-- Global style to force dialog opacity -->
 <style>
 /* Global overrides for PrimeVue dialog transparency issue */
-.p-dialog {
+.p-dialog,
+.p-dialog * {
   background: rgb(255, 255, 255) !important;
   background-color: white !important;
   opacity: 1 !important;
@@ -756,6 +748,29 @@ watch(() => props.visible, (newVisible) => {
 .p-tabview,
 .p-tabview-panels,
 .p-tabview-panel {
+  background: white !important;
+  opacity: 1 !important;
+}
+
+/* Fix dropdown transparency */
+.p-dropdown-panel,
+.p-dropdown-items-wrapper,
+.p-dropdown-items,
+.p-dropdown-item {
+  background: white !important;
+  background-color: rgb(255, 255, 255) !important;
+  opacity: 1 !important;
+}
+
+.p-dropdown-panel {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Fix multiselect transparency */
+.p-multiselect-panel,
+.p-multiselect-items-wrapper,
+.p-multiselect-items,
+.p-multiselect-item {
   background: white !important;
   opacity: 1 !important;
 }
