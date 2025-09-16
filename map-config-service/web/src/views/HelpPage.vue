@@ -615,10 +615,10 @@ class MapConfigService(private val context: Context) {
     }
 
     // Fetch layer groups for user selection
-    suspend fun getAvailableGroups(): List<LayerGroup> {
+    suspend fun getAvailableGroups(): List&lt;LayerGroup&gt; {
         return withContext(Dispatchers.IO) {
             val response = httpClient.get("$baseURL/api/layer-groups?active=true&featured=true")
-            response.body<LayerGroupResponse>().data
+            response.body&lt;LayerGroupResponse&gt;().data
         }
     }
 }</pre>
@@ -642,43 +642,36 @@ const MapConfigService = {
     return response.json();
   },
 
-  // Component to display layer group
-  LayerGroupMap: ({ groupId }) => {
-    const [layerGroup, setLayerGroup] = useState(null);
+  // Apply layer group to map
+  async applyLayerGroup(groupId, mapRef) {
+    const response = await fetch(`${this.baseURL}/api/layer-groups/${groupId}`);
+    const layerGroup = await response.json();
 
-    useEffect(() => {
-      MapConfigService.fetchLayerGroup(groupId)
-        .then(setLayerGroup);
-    }, [groupId]);
+    // Set basemap style
+    mapRef.setStyle(`${this.baseURL}${layerGroup.basemap.style}`);
 
-    if (!layerGroup) return <Loading />;
+    // Add each overlay after style loads
+    layerGroup.overlays.forEach(overlay => {
+      const sourceId = `overlay-${overlay.id}`;
 
-    return (
-      <MapLibreGL.MapView
-        styleURL={`${MapConfigService.baseURL}${layerGroup.basemap.style}`}
-        onDidFinishLoadingStyle={() => {
-          // Style loaded, overlays are included
-        }}
-      >
-        {layerGroup.overlays.map(overlay => (
-          <MapLibreGL.RasterSource
-            key={overlay.id}
-            id={overlay.id}
-            tileUrlTemplates={[
-              `${MapConfigService.baseURL}/api/proxy/tiles/${overlay.name}/{z}/{x}/{y}`
-            ]}
-          >
-            <MapLibreGL.RasterLayer
-              id={overlay.id}
-              style={{
-                rasterOpacity: overlay.opacity / 100,
-                rasterFadeDuration: 300
-              }}
-            />
-          </MapLibreGL.RasterSource>
-        ))}
-      </MapLibreGL.MapView>
-    );
+      // Add raster source
+      mapRef.addSource(sourceId, {
+        type: 'raster',
+        tiles: [`${this.baseURL}/api/proxy/tiles/${overlay.name}/{z}/{x}/{y}`],
+        tileSize: 256
+      });
+
+      // Add raster layer
+      mapRef.addLayer({
+        id: sourceId,
+        type: 'raster',
+        source: sourceId,
+        paint: {
+          'raster-opacity': overlay.opacity / 100,
+          'raster-fade-duration': 300
+        }
+      });
+    });
   }
 };</pre>
 
