@@ -29,7 +29,7 @@
     },
     {
       "source": "/api/styles/upload",
-      "destination": "/api/styles/upload.js"
+      "destination": "/api/styles/upload.cjs"
     },
     {
       "source": "/api/styles/:name",
