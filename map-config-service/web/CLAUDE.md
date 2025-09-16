@@ -242,6 +242,42 @@ npm run db:sync            # Sync with production
 - [Mapbox Style Specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/)
 - [OpenMapTiles Schema](https://openmaptiles.org/schema/)
 
+## 🚢 Deployment Instructions
+
+### Deploying to Vercel Production
+
+1. **Ensure all changes are committed and pushed to GitHub**:
+   ```bash
+   git add -A
+   git commit -m "Your commit message"
+   git push origin main
+   ```
+
+2. **Deploy to Vercel Production**:
+   ```bash
+   # From the /map-config-service/web directory
+   vercel --prod
+   ```
+
+3. **Alternative: Automatic Deployment**
+   - Vercel automatically deploys when changes are pushed to the main branch on GitHub
+   - Check deployment status at: https://vercel.com/geolantis-projects/web
+
+### Vercel Commands
+
+- **Deploy to production**: `vercel --prod`
+- **Deploy to preview**: `vercel`
+- **Check logs**: `vercel logs`
+- **Check deployment status**: `vercel inspect [deployment-url] --logs`
+- **Redeploy**: `vercel redeploy [deployment-url]`
+
+### Environment Variables
+
+Environment variables are managed in the Vercel dashboard:
+1. Go to: https://vercel.com/geolantis-projects/web/settings/environment-variables
+2. Add/update variables as needed
+3. Redeploy for changes to take effect
+
 ## 🚨 Important Notes
 
 1. **Production Data**: The service contains live production configurations used by actual Geolantis360 applications
