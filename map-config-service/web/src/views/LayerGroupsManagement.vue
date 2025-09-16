@@ -3,9 +3,21 @@
     <!-- Header -->
     <div class="flex-shrink-0 bg-white border-b border-gray-200 px-6 py-4">
       <div class="flex items-center justify-between">
-        <div>
-          <h1 class="text-2xl font-bold text-gray-900">Layer Groups</h1>
-          <p class="text-sm text-gray-500">Manage basemap and overlay combinations</p>
+        <div class="flex items-center space-x-4">
+          <!-- Back to Dashboard Button -->
+          <Button
+            @click="router.push('/dashboard')"
+            outlined
+            size="small"
+            class="text-gray-600 hover:text-gray-900"
+          >
+            <i class="pi pi-arrow-left mr-2"></i>
+            Back to Dashboard
+          </Button>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">Layer Groups</h1>
+            <p class="text-sm text-gray-500">Manage basemap and overlay combinations</p>
+          </div>
         </div>
 
         <div class="flex items-center space-x-3">
@@ -518,46 +530,19 @@ const inactiveGroupsCount = computed(() =>
 const loadLayerGroups = async () => {
   loading.value = true;
   try {
-    // Mock data - replace with actual API calls
-    layerGroups.value = [
-      {
-        id: '1',
-        name: 'Urban Planning Combo',
-        basemap: {
-          id: 'osm-carto',
-          name: 'openstreetmap-carto',
-          label: 'OpenStreetMap Carto',
-          type: 'xyz',
-          country: 'Global',
-          flag: '🌍',
-          isActive: true,
-          previewUrl: '/api/preview/osm-carto.png',
-          metadata: { provider: 'OpenStreetMap' }
-        },
-        overlays: [
-          {
-            overlay: {
-              id: 'buildings',
-              name: 'building-overlay',
-              label: 'Buildings Layer',
-              type: 'geojson',
-              country: 'Global',
-              flag: '🌍',
-              isActive: true,
-              previewUrl: '/api/preview/buildings.png',
-              metadata: { provider: 'Local GIS' }
-            },
-            opacity: 80,
-            blendMode: 'multiply',
-            order: 0
-          }
-        ],
-        isActive: true,
-        createdAt: new Date('2024-01-15'),
-        updatedAt: new Date('2024-01-20'),
-        createdBy: 'admin'
-      }
-    ];
+    // TODO: Load real layer groups from Supabase
+    // For now, start with empty array instead of mock data
+    layerGroups.value = [];
+
+    // Later implement:
+    // const { data, error } = await supabase
+    //   .from('layer_groups')
+    //   .select(`
+    //     *,
+    //     basemap:map_configs!basemap_id(*),
+    //     overlays:layer_group_overlays(*, overlay:map_configs!overlay_id(*))
+    //   `);
+    // layerGroups.value = data || [];
 
     // DON'T OVERWRITE REAL DATA WITH MOCK DATA!
     // The basemaps and overlays are already loaded from Supabase in loadMapsData()

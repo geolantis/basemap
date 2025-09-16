@@ -75,7 +75,10 @@
                     <Dropdown
                       v-model="basemapTypeFilter"
                       :options="basemapTypes"
+                      optionLabel="label"
+                      optionValue="value"
                       placeholder="All Types"
+                      showClear
                       class="w-full"
                     />
                   </div>
@@ -83,7 +86,10 @@
                     <Dropdown
                       v-model="basemapCountryFilter"
                       :options="basemapCountries"
+                      optionLabel="label"
+                      optionValue="value"
                       placeholder="All Countries"
+                      showClear
                       class="w-full"
                     />
                   </div>
@@ -132,7 +138,10 @@
                     <Dropdown
                       v-model="overlayTypeFilter"
                       :options="overlayTypes"
+                      optionLabel="label"
+                      optionValue="value"
                       placeholder="All Types"
+                      showClear
                       class="w-full"
                     />
                   </div>
@@ -417,17 +426,19 @@ const canSave = computed(() => {
 });
 
 const basemapTypes = computed(() => {
-  const types = new Set(props.basemaps.map(b => b.type));
-  return Array.from(types).map(type => ({
-    label: type.toUpperCase(),
+  if (!props.basemaps || props.basemaps.length === 0) return [];
+  const types = new Set(props.basemaps.map(b => b.type).filter(Boolean));
+  return Array.from(types).sort().map(type => ({
+    label: type?.toUpperCase() || type,
     value: type
   }));
 });
 
 const basemapCountries = computed(() => {
-  const countries = new Set(props.basemaps.map(b => b.country));
-  return Array.from(countries).map(country => ({
-    label: country,
+  if (!props.basemaps || props.basemaps.length === 0) return [];
+  const countries = new Set(props.basemaps.map(b => b.country).filter(Boolean));
+  return Array.from(countries).sort().map(country => ({
+    label: country || 'Unknown',
     value: country
   }));
 });
@@ -449,18 +460,38 @@ const overlayCountries = computed(() => {
 });
 
 const filteredBasemaps = computed(() => {
+  console.log('Filtering basemaps:', {
+    total: props.basemaps?.length,
+    searchQuery: basemapSearchQuery.value,
+    typeFilter: basemapTypeFilter.value,
+    countryFilter: basemapCountryFilter.value
+  });
+
+  if (!props.basemaps || props.basemaps.length === 0) {
+    console.log('No basemaps to filter');
+    return [];
+  }
+
   return props.basemaps.filter(basemap => {
-    if (basemapSearchQuery.value && !basemap.label.toLowerCase().includes(basemapSearchQuery.value.toLowerCase()) &&
-        !basemap.name.toLowerCase().includes(basemapSearchQuery.value.toLowerCase())) {
-      return false;
+    // Search filter
+    if (basemapSearchQuery.value) {
+      const searchLower = basemapSearchQuery.value.toLowerCase();
+      const labelMatch = basemap.label?.toLowerCase().includes(searchLower) || false;
+      const nameMatch = basemap.name?.toLowerCase().includes(searchLower) || false;
+      if (!labelMatch && !nameMatch) return false;
     }
-    if (basemapTypeFilter.value && basemap.type !== basemapTypeFilter.value) {
-      return false;
+
+    // Type filter
+    if (basemapTypeFilter.value && basemapTypeFilter.value !== '') {
+      if (basemap.type !== basemapTypeFilter.value) return false;
     }
-    if (basemapCountryFilter.value && basemap.country !== basemapCountryFilter.value) {
-      return false;
+
+    // Country filter
+    if (basemapCountryFilter.value && basemapCountryFilter.value !== '') {
+      if (basemap.country !== basemapCountryFilter.value) return false;
     }
-    // Show basemap if isActive is true, undefined, or doesn't exist (default to showing)
+
+    // Show basemap if isActive is not explicitly false
     return basemap.isActive !== false;
   });
 });
@@ -698,6 +729,34 @@ watch(() => props.visible, (newVisible) => {
 
 /* Ensure all child elements are also opaque */
 :deep(.p-dialog *) {
+  opacity: 1 !important;
+}
+</style>
+
+<!-- Global style to force dialog opacity -->
+<style>
+/* Global overrides for PrimeVue dialog transparency issue */
+.p-dialog {
+  background: rgb(255, 255, 255) !important;
+  background-color: white !important;
+  opacity: 1 !important;
+}
+
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.p-dialog-content,
+.p-dialog-header,
+.p-dialog-footer {
+  background: white !important;
+  opacity: 1 !important;
+}
+
+.p-tabview,
+.p-tabview-panels,
+.p-tabview-panel {
+  background: white !important;
   opacity: 1 !important;
 }
 </style>
