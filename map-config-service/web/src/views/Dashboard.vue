@@ -8,6 +8,13 @@
     <!-- Action buttons in header -->
     <template #actions>
       <button
+        @click="$router.push('/layer-groups')"
+        class="btn-secondary flex items-center space-x-2"
+      >
+        <i class="pi pi-sitemap"></i>
+        <span>Layer Groups</span>
+      </button>
+      <button
         @click="showMapSearch = true"
         class="btn-secondary flex items-center space-x-2"
       >

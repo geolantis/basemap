@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
 import './style.css';
 import 'primeicons/primeicons.css';
@@ -17,6 +18,7 @@ const pinia = createPinia();
 app.use(pinia);
 app.use(router);
 app.use(ToastService);
+app.use(ConfirmationService);
 // Custom PrimeVue theme configuration with Basemap branding
 const customAuraTheme = {
   ...Aura,
