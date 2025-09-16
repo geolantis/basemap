@@ -215,6 +215,74 @@ export default async function handler(req, res) {
     // Sanitize all configurations (this will be used for standard format)
     const sanitizedConfigs = configs?.map(config => sanitizeConfig(config, baseUrl)) || [];
 
+    // Fetch layer groups with their relationships
+    const { data: layerGroups, error: layerGroupsError } = await supabase
+      .from('layer_groups')
+      .select(`
+        id,
+        name,
+        description,
+        basemap_id,
+        is_active,
+        is_public,
+        metadata,
+        display_order,
+        created_at,
+        updated_at
+      `)
+      .eq('is_active', true)
+      .eq('is_public', true)
+      .order('display_order', { ascending: true });
+
+    // Fetch layer group overlay relationships
+    const { data: layerGroupOverlays, error: overlaysError } = await supabase
+      .from('layer_group_overlays')
+      .select(`
+        id,
+        layer_group_id,
+        overlay_id,
+        display_order,
+        is_visible_default,
+        opacity
+      `)
+      .order('display_order', { ascending: true });
+
+    // Build layer groups with their relationships
+    const layerGroupsWithRelations = layerGroups?.map(group => {
+      const overlays = layerGroupOverlays?.filter(o => o.layer_group_id === group.id) || [];
+      const basemap = sanitizedConfigs.find(c => c.id === group.basemap_id);
+
+      return {
+        id: group.id,
+        name: group.name,
+        description: group.description,
+        basemap_id: group.basemap_id,
+        basemap: basemap ? {
+          id: basemap.id,
+          name: basemap.name,
+          label: basemap.label,
+          style: basemap.style
+        } : null,
+        overlays: overlays.map(overlay => {
+          const overlayConfig = sanitizedConfigs.find(c => c.id === overlay.overlay_id);
+          return {
+            overlay_id: overlay.overlay_id,
+            display_order: overlay.display_order,
+            is_visible_default: overlay.is_visible_default,
+            opacity: overlay.opacity,
+            overlay: overlayConfig ? {
+              id: overlayConfig.id,
+              name: overlayConfig.name,
+              label: overlayConfig.label,
+              style: overlayConfig.style
+            } : null
+          };
+        }).filter(o => o.overlay !== null),
+        metadata: group.metadata,
+        display_order: group.display_order
+      };
+    }) || [];
+
     // Support legacy format for backward compatibility
     if (format === 'legacy') {
       // Don't hardcode proxy maps - let the database style URL handle it!
@@ -276,6 +344,9 @@ export default async function handler(req, res) {
         }
       });
 
+      // Add layer groups to legacy format
+      legacyFormat.layerGroups = layerGroupsWithRelations;
+
       // Return with pretty printing if requested
       if (pretty === 'true' || pretty === '1') {
         res.setHeader('Content-Type', 'application/json');
@@ -289,7 +360,9 @@ export default async function handler(req, res) {
       version: '2.0',
       timestamp: new Date().toISOString(),
       configs: sanitizedConfigs,
-      total: sanitizedConfigs.length
+      layerGroups: layerGroupsWithRelations,
+      total: sanitizedConfigs.length,
+      totalLayerGroups: layerGroupsWithRelations.length
     };
     
     // Return with pretty printing if requested

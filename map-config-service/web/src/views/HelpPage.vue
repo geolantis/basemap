@@ -86,16 +86,127 @@
             <h2><i class="pi pi-code"></i> API Endpoints</h2>
             
             <Accordion :activeIndex="0">
-              <AccordionTab header="Configuration Management API">
+              <AccordionTab header="Public Configuration API">
                 <div class="api-section">
-                  <h3>Available Endpoints</h3>
-                  
+                  <h3>Public Endpoints (No Authentication Required)</h3>
+
+                  <div class="endpoint-item">
+                    <div class="endpoint-header">
+                      <span class="method get">GET</span>
+                      <code class="endpoint-path">/api/public/mapconfig</code>
+                    </div>
+                    <p>Get all public map configurations including Layer Groups</p>
+                    <pre class="code-block">
+// Query Parameters
+?format=legacy       // Use legacy format (default: standard)
+?pretty=true        // Pretty print JSON output
+
+// Example Response (legacy format)
+{
+  "backgroundMaps": {
+    "BasemapStandard": {
+      "name": "BasemapStandard",
+      "label": "Standard Basemap",
+      "style": "https://mapconfig.geolantis.com/styles/basemap-standard.json",
+      "type": "vtc",
+      "flag": "🇦🇹"
+    }
+  },
+  "overlayMaps": {
+    "KTNKataster": {
+      "name": "KTN Kataster",
+      "label": "Carinthian Cadastre",
+      "style": "https://mapconfig.geolantis.com/styles/ktn-kataster.json",
+      "type": "vtc"
+    }
+  },
+  "layerGroups": [
+    {
+      "id": "uuid",
+      "name": "Kärnten Standard",
+      "description": "Standard maps for Carinthia",
+      "basemap": {
+        "id": "basemap-id",
+        "name": "BasemapStandard",
+        "label": "Standard Basemap",
+        "style": "https://mapconfig.geolantis.com/styles/basemap-standard.json"
+      },
+      "overlays": [
+        {
+          "overlay_id": "overlay-id",
+          "display_order": 1,
+          "is_visible_default": true,
+          "opacity": 0.8,
+          "overlay": {
+            "id": "overlay-id",
+            "name": "KTN Kataster",
+            "label": "Carinthian Cadastre",
+            "style": "https://mapconfig.geolantis.com/styles/ktn-kataster.json"
+          }
+        }
+      ]
+    }
+  ]
+}</pre>
+                  </div>
+
+                  <div class="endpoint-item">
+                    <div class="endpoint-header">
+                      <span class="method get">GET</span>
+                      <code class="endpoint-path">/api/public/layer-groups</code>
+                    </div>
+                    <p>Get all public Layer Groups with full details</p>
+                    <pre class="code-block">
+// Query Parameters
+?id=uuid            // Get specific layer group by ID
+?pretty=true        // Pretty print JSON output
+
+// Example Response
+{
+  "version": "1.0",
+  "timestamp": "2025-01-16T12:00:00.000Z",
+  "layerGroups": [
+    {
+      "id": "uuid",
+      "name": "Kärnten Standard",
+      "description": "Standard configuration for Carinthia",
+      "basemap_id": "basemap-uuid",
+      "basemap": {
+        "id": "basemap-uuid",
+        "name": "BasemapStandard",
+        "label": "Standard Basemap",
+        "style": "/styles/basemap-standard.json",
+        "preview_image_url": "/api/preview/basemap-standard.png"
+      },
+      "overlays": [
+        {
+          "layer_group_id": "group-uuid",
+          "overlay_id": "overlay-uuid",
+          "display_order": 1,
+          "is_visible_default": true,
+          "opacity": 0.8,
+          "overlay": {
+            "id": "overlay-uuid",
+            "name": "KTN Kataster",
+            "label": "Carinthian Cadastre",
+            "style": "/styles/ktn-kataster.json"
+          }
+        }
+      ],
+      "metadata": {},
+      "display_order": 1
+    }
+  ],
+  "total": 1
+}</pre>
+                  </div>
+
                   <div class="endpoint-item">
                     <div class="endpoint-header">
                       <span class="method get">GET</span>
                       <code class="endpoint-path">/api/maps</code>
                     </div>
-                    <p>List all available map configurations</p>
+                    <p>List all available map configurations (deprecated - use /api/public/mapconfig)</p>
                     <pre class="code-block">
 // Example Response
 {
@@ -110,6 +221,10 @@
   "overlayMaps": { ... }
 }</pre>
                   </div>
+                </div>
+              </AccordionTab>
+
+              <AccordionTab header="Configuration Management API">
 
                   <div class="endpoint-item">
                     <div class="endpoint-header">
