@@ -641,3 +641,40 @@ watch(() => props.visible, (newVisible) => {
   }
 });
 </script>
+
+<style scoped>
+/* Fix for dialog transparency and overlay issues */
+:deep(.p-dialog) {
+  background: white !important;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  border-radius: 12px;
+  max-height: 90vh;
+}
+
+:deep(.p-dialog-header) {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1.25rem;
+  border-radius: 12px 12px 0 0;
+}
+
+:deep(.p-dialog-content) {
+  background: white;
+  padding: 0;
+  overflow: visible;
+}
+
+:deep(.p-dialog-mask) {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(2px);
+}
+
+:deep(.p-tabview-panels) {
+  background: white;
+}
+
+:deep(.p-tabview-panel) {
+  background: white;
+  padding: 1rem;
+}
+</style>

@@ -376,6 +376,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 import LayerGroupCard from '../components/LayerGroupCard.vue';
 import LayerGroupConfigurator from '../components/LayerGroupConfigurator.vue';
+import { supabase } from '../lib/supabase';
 import type { LayerGroup, BasemapLayer, OverlayLayer, LayerGroupConfig } from '../types';
 
 // Composables
@@ -842,8 +843,62 @@ watch(() => selectedGroupsData.value, (newSelection) => {
   selectedGroups.value = newSelection.map(g => g.id);
 });
 
+// Load maps data from API or Supabase
+const loadMapsData = async () => {
+  try {
+    // Load from Supabase or API
+    const { data, error } = await supabase
+      .from('map_configs')
+      .select('*')
+      .eq('is_active', true);
+
+    if (error) throw error;
+
+    if (data) {
+      // Separate basemaps and overlays
+      const backgroundMaps = data
+        .filter(m => !m.map_category || m.map_category === 'background')
+        .map(m => ({
+          id: m.id,
+          name: m.name,
+          label: m.label,
+          type: m.type,
+          style: m.style || m.style_url,
+          country: m.country || 'Global',
+          flag: m.flag || '🌐',
+          isActive: m.is_active,
+          previewUrl: m.preview_image_url || `/images/previews/${m.name}.png`
+        }));
+
+      const overlayMaps = data
+        .filter(m => m.map_category === 'overlay')
+        .map(m => ({
+          id: m.id,
+          name: m.name,
+          label: m.label,
+          type: m.type,
+          style: m.style || m.style_url,
+          country: m.country || 'Global',
+          flag: m.flag || '🌐',
+          isActive: m.is_active,
+          opacity: 0.8,
+          previewUrl: m.preview_image_url || `/images/previews/${m.name}.png`
+        }));
+
+      basemaps.value = backgroundMaps;
+      overlays.value = overlayMaps;
+    }
+  } catch (error) {
+    console.error('Error loading maps data:', error);
+    // Fallback to mock data if needed
+    basemaps.value = [];
+    overlays.value = [];
+  }
+};
+
 // Lifecycle
-onMounted(() => {
-  loadLayerGroups();
+onMounted(async () => {
+  await loadMapsData();
+  await loadLayerGroups();
 });
 </script>
