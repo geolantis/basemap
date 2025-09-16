@@ -225,7 +225,7 @@
               </AccordionTab>
 
               <AccordionTab header="Configuration Management API">
-
+                <div class="api-section">
                   <div class="endpoint-item">
                     <div class="endpoint-header">
                       <span class="method get">GET</span>
