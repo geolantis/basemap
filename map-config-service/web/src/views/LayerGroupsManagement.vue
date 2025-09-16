@@ -846,47 +846,76 @@ watch(() => selectedGroupsData.value, (newSelection) => {
 // Load maps data from API or Supabase
 const loadMapsData = async () => {
   try {
-    // Load from Supabase or API
+    console.log('Loading maps data from Supabase...');
+
+    // Load from Supabase - don't filter by is_active, check what we get
     const { data, error } = await supabase
       .from('map_configs')
-      .select('*')
-      .eq('is_active', true);
+      .select('*') as { data: any[] | null, error: any };
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
 
-    if (data) {
-      // Separate basemaps and overlays
+    console.log('Loaded maps data:', data?.length || 0, 'items');
+
+    if (data && data.length > 0) {
+      // Log first item to see structure
+      console.log('Sample map config:', data[0]);
+
+      // Separate basemaps and overlays - handle both map_category and absence of it
       const backgroundMaps = data
-        .filter(m => !m.map_category || m.map_category === 'background')
+        .filter(m => {
+          // If no map_category field, assume it's a background map
+          // Or explicitly check for 'background'
+          const isBackground = !m.map_category || m.map_category === 'background' || m.map_category === null;
+          console.log(`Map ${m.name}: category=${m.map_category}, isBackground=${isBackground}`);
+          return isBackground;
+        })
         .map(m => ({
+          ...m, // Include all original fields
           id: m.id,
           name: m.name,
-          label: m.label,
+          label: m.label || m.name,
           type: m.type,
-          style: m.style || m.style_url,
+          style: m.style || m.style_url || m.public_style_url,
           country: m.country || 'Global',
           flag: m.flag || '🌐',
-          isActive: m.is_active,
-          previewUrl: m.preview_image_url || `/images/previews/${m.name}.png`
+          isActive: m.is_active !== false, // For UI compatibility
+          is_active: m.is_active, // Keep original field
+          previewUrl: m.preview_image_url || `/api/preview/${m.name}`,
+          preview_image_url: m.preview_image_url,
+          map_category: m.map_category || 'background'
         }));
 
       const overlayMaps = data
         .filter(m => m.map_category === 'overlay')
         .map(m => ({
+          ...m, // Include all original fields
           id: m.id,
           name: m.name,
-          label: m.label,
+          label: m.label || m.name,
           type: m.type,
-          style: m.style || m.style_url,
+          style: m.style || m.style_url || m.public_style_url,
           country: m.country || 'Global',
           flag: m.flag || '🌐',
-          isActive: m.is_active,
+          isActive: m.is_active !== false, // For UI compatibility
+          is_active: m.is_active, // Keep original field
           opacity: 0.8,
-          previewUrl: m.preview_image_url || `/images/previews/${m.name}.png`
+          previewUrl: m.preview_image_url || `/api/preview/${m.name}`,
+          preview_image_url: m.preview_image_url,
+          map_category: m.map_category || 'overlay'
         }));
+
+      console.log(`Found ${backgroundMaps.length} basemaps and ${overlayMaps.length} overlays`);
 
       basemaps.value = backgroundMaps;
       overlays.value = overlayMaps;
+    } else {
+      console.warn('No maps data returned from Supabase');
+      basemaps.value = [];
+      overlays.value = [];
     }
   } catch (error) {
     console.error('Error loading maps data:', error);
