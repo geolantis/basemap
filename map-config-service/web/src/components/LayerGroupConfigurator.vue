@@ -4,11 +4,13 @@
     modal
     :closable="true"
     :draggable="false"
-    class="w-full max-w-6xl mx-4"
+    class="layer-group-dialog"
+    :style="{ width: '95vw', maxWidth: '1400px', height: '90vh' }"
+    :contentStyle="{ height: 'calc(90vh - 80px)', padding: 0 }"
     header="Configure Layer Group"
     @hide="handleClose"
   >
-    <div class="flex flex-col h-[80vh]">
+    <div class="flex flex-col h-full">
       <!-- Header Section -->
       <div class="flex-shrink-0 pb-4 border-b border-gray-200">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -95,7 +97,7 @@
               </div>
 
               <!-- Basemap Grid -->
-              <div class="flex-1 overflow-y-auto" style="max-height: 400px; min-height: 300px;">
+              <div class="flex-1 overflow-y-auto" style="height: calc(100% - 120px); max-height: 600px; min-height: 400px;">
                 <div v-if="filteredBasemaps.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   <BasemapCard
                     v-for="basemap in filteredBasemaps"
@@ -165,7 +167,7 @@
               </div>
 
               <!-- Overlay Grid -->
-              <div class="flex-1 overflow-y-auto" style="max-height: 400px; min-height: 300px;">
+              <div class="flex-1 overflow-y-auto" style="height: calc(100% - 120px); max-height: 600px; min-height: 400px;">
                 <div v-if="compatibleOverlays.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   <OverlayCard
                     v-for="overlay in compatibleOverlays"
@@ -263,53 +265,78 @@
               </div>
 
               <!-- Preview Area -->
-              <div class="flex-1 bg-gray-100 rounded-lg overflow-hidden">
-                <div v-if="localConfig.basemap" class="h-full relative">
-                  <!-- Map preview would go here -->
-                  <div class="absolute inset-0 flex items-center justify-center">
+              <div class="flex-1 flex gap-4">
+                <!-- Map Preview -->
+                <div class="flex-1">
+                  <LayerGroupMapPreview
+                    v-if="localConfig.basemap"
+                    :basemap="localConfig.basemap"
+                    :overlays="localConfig.overlays"
+                  />
+                  <div v-else class="h-full bg-gray-100 rounded-lg flex items-center justify-center">
                     <div class="text-center">
-                      <i class="pi pi-map text-4xl text-gray-400 mb-4"></i>
-                      <p class="text-lg text-gray-600">Map Preview</p>
-                      <p class="text-sm text-gray-500 mt-2">
-                        {{ localConfig.basemap.label }}
-                        <span v-if="localConfig.overlays.length > 0">
-                          + {{ localConfig.overlays.length }} overlay{{ localConfig.overlays.length > 1 ? 's' : '' }}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <!-- Layer Stack Visualization -->
-                  <div class="absolute bottom-4 left-4 bg-white bg-opacity-90 rounded-lg p-3 max-w-xs">
-                    <h4 class="text-sm font-medium text-gray-900 mb-2">Layer Stack</h4>
-                    <div class="space-y-1">
-                      <!-- Overlays (top to bottom) -->
-                      <div
-                        v-for="(overlayConfig, index) in [...localConfig.overlays].reverse()"
-                        :key="overlayConfig.overlay.id"
-                        class="flex items-center text-xs"
-                      >
-                        <div class="w-3 h-3 rounded-sm mr-2 border border-gray-300"
-                             :style="{ backgroundColor: getLayerColor(overlayConfig.overlay.type) }">
-                        </div>
-                        <span class="truncate">{{ overlayConfig.overlay.label }}</span>
-                        <span class="ml-auto text-gray-500">{{ overlayConfig.opacity }}%</span>
-                      </div>
-                      <!-- Basemap (bottom) -->
-                      <div class="flex items-center text-xs border-t pt-1">
-                        <div class="w-3 h-3 rounded-sm mr-2 border border-gray-300"
-                             :style="{ backgroundColor: getLayerColor(localConfig.basemap.type) }">
-                        </div>
-                        <span class="truncate">{{ localConfig.basemap.label }}</span>
-                        <span class="ml-auto text-gray-500">100%</span>
-                      </div>
+                      <i class="pi pi-exclamation-triangle text-4xl text-yellow-400 mb-4"></i>
+                      <p class="text-gray-600">Select a basemap to see preview</p>
                     </div>
                   </div>
                 </div>
-                <div v-else class="h-full flex items-center justify-center">
-                  <div class="text-center">
-                    <i class="pi pi-exclamation-triangle text-4xl text-yellow-400 mb-4"></i>
-                    <p class="text-gray-600">Select a basemap to see preview</p>
+
+                <!-- Layer Stack Visualization -->
+                <div v-if="previewMode === 'split'" class="w-80 bg-gray-100 rounded-lg p-4">
+                  <div v-if="localConfig.basemap" class="h-full">
+                    <div class="bg-white rounded-lg shadow-sm h-full p-4">
+                      <h4 class="text-sm font-medium text-gray-900 mb-3">Layer Stack</h4>
+                      <div class="text-xs text-gray-600 mb-3">Rendering Order (Top to Bottom):</div>
+
+                      <div class="space-y-2">
+                        <!-- Overlays (top to bottom) -->
+                        <div
+                          v-for="(overlayConfig, index) in [...localConfig.overlays].reverse()"
+                          :key="overlayConfig.overlay.id"
+                          class="flex items-center bg-gray-50 rounded p-2"
+                        >
+                          <div class="w-3 h-3 rounded-sm mr-2 border border-gray-300"
+                               :style="{ backgroundColor: getLayerColor(overlayConfig.overlay.type), opacity: overlayConfig.opacity / 100 }">
+                          </div>
+                          <span class="truncate flex-1 text-xs">{{ overlayConfig.overlay.label }}</span>
+                          <span class="ml-2 text-gray-500 text-xs">{{ overlayConfig.opacity }}%</span>
+                        </div>
+
+                        <!-- Basemap (bottom) -->
+                        <div class="flex items-center border-t pt-2 mt-2 bg-blue-50 rounded p-2">
+                          <div class="w-3 h-3 rounded-sm mr-2 border border-gray-300"
+                               :style="{ backgroundColor: getLayerColor(localConfig.basemap.type) }">
+                          </div>
+                          <span class="truncate font-medium text-xs">{{ localConfig.basemap.label }}</span>
+                          <span class="ml-auto text-gray-500 text-xs">Base</span>
+                        </div>
+                      </div>
+
+                      <!-- Legend -->
+                      <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="text-xs text-gray-600">
+                          <div class="font-medium mb-2">Layer Types:</div>
+                          <div class="grid grid-cols-2 gap-1">
+                            <div class="flex items-center">
+                              <div class="w-2 h-2 rounded-sm mr-1" style="background: #3b82f6;"></div>
+                              <span>VTC</span>
+                            </div>
+                            <div class="flex items-center">
+                              <div class="w-2 h-2 rounded-sm mr-1" style="background: #10b981;"></div>
+                              <span>WMTS</span>
+                            </div>
+                            <div class="flex items-center">
+                              <div class="w-2 h-2 rounded-sm mr-1" style="background: #8b5cf6;"></div>
+                              <span>WMS</span>
+                            </div>
+                            <div class="flex items-center">
+                              <div class="w-2 h-2 rounded-sm mr-1" style="background: #f59e0b;"></div>
+                              <span>XYZ</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -376,6 +403,7 @@ import Button from 'primevue/button';
 import Message from 'primevue/message';
 import BasemapCard from './BasemapCard.vue';
 import OverlayCard from './OverlayCard.vue';
+import LayerGroupMapPreview from './LayerGroupMapPreview.vue';
 import type { BasemapLayer, OverlayLayer, LayerGroup, LayerGroupConfig } from '../types';
 
 interface Props {
@@ -397,7 +425,7 @@ const emit = defineEmits<Emits>();
 // State
 const activeTabIndex = ref(0);
 const saving = ref(false);
-const previewMode = ref<'full' | 'split'>('full');
+const previewMode = ref<'full' | 'split'>('split');
 const draggedIndex = ref<number | null>(null);
 
 // Local configuration

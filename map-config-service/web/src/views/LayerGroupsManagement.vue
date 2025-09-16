@@ -530,19 +530,52 @@ const inactiveGroupsCount = computed(() =>
 const loadLayerGroups = async () => {
   loading.value = true;
   try {
-    // TODO: Load real layer groups from Supabase
-    // For now, start with empty array instead of mock data
-    layerGroups.value = [];
+    // Load real layer groups from Supabase
+    const { data, error } = await supabase
+      .from('layer_groups')
+      .select(`
+        *,
+        basemap:map_configs!basemap_id(
+          id, name, label, type, style, map_category,
+          country, flag, metadata, preview_image_url, is_active
+        )
+      `)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false });
 
-    // Later implement:
-    // const { data, error } = await supabase
-    //   .from('layer_groups')
-    //   .select(`
-    //     *,
-    //     basemap:map_configs!basemap_id(*),
-    //     overlays:layer_group_overlays(*, overlay:map_configs!overlay_id(*))
-    //   `);
-    // layerGroups.value = data || [];
+    if (error) throw error;
+
+    // Load overlay relationships
+    const { data: overlayRelations, error: overlayError } = await supabase
+      .from('layer_group_overlays')
+      .select(`
+        *,
+        overlay:map_configs!overlay_id(
+          id, name, label, type, style, map_category,
+          country, flag, metadata, preview_image_url, is_active
+        )
+      `)
+      .order('display_order');
+
+    if (overlayError) throw overlayError;
+
+    // Combine layer groups with their overlays
+    layerGroups.value = (data || []).map(group => {
+      const groupOverlays = overlayRelations?.filter(r => r.layer_group_id === group.id) || [];
+
+      return {
+        ...group,
+        overlays: groupOverlays.map(rel => ({
+          ...rel,
+          opacity: rel.opacity * 100, // Convert decimal to percentage for UI
+          isVisibleDefault: rel.is_visible_default
+        })),
+        isActive: group.is_active,
+        createdAt: new Date(group.created_at),
+        updatedAt: new Date(group.updated_at),
+        createdBy: group.created_by || 'System'
+      };
+    });
 
     // DON'T OVERWRITE REAL DATA WITH MOCK DATA!
     // The basemaps and overlays are already loaded from Supabase in loadMapsData()
@@ -601,7 +634,46 @@ const closeConfigurator = () => {
 const handleSaveGroup = async (config: LayerGroupConfig) => {
   try {
     if (editingGroup.value) {
-      // Update existing group
+      // Update existing group in database
+      const { data: updatedGroup, error: updateError } = await supabase
+        .from('layer_groups')
+        .update({
+          name: config.name,
+          description: config.description,
+          basemap_id: config.basemap?.id,
+          metadata: config.metadata || {},
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', editingGroup.value.id)
+        .select()
+        .single();
+
+      if (updateError) throw updateError;
+
+      // Delete existing overlay relationships
+      await supabase
+        .from('layer_group_overlays')
+        .delete()
+        .eq('layer_group_id', editingGroup.value.id);
+
+      // Insert new overlay relationships
+      if (config.overlays && config.overlays.length > 0) {
+        const overlayRelations = config.overlays.map((overlay, index) => ({
+          layer_group_id: editingGroup.value!.id,
+          overlay_id: overlay.overlay.id,
+          display_order: index,
+          is_visible_default: overlay.isVisibleDefault !== false,
+          opacity: overlay.opacity / 100 // Convert percentage to decimal
+        }));
+
+        const { error: overlayError } = await supabase
+          .from('layer_group_overlays')
+          .insert(overlayRelations);
+
+        if (overlayError) throw overlayError;
+      }
+
+      // Update local state
       const index = layerGroups.value.findIndex(g => g.id === editingGroup.value!.id);
       if (index >= 0) {
         layerGroups.value[index] = {
@@ -610,6 +682,7 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
           updatedAt: new Date()
         };
       }
+
       toast.add({
         severity: 'success',
         summary: 'Success',
@@ -617,16 +690,52 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
         life: 3000
       });
     } else {
-      // Create new group
-      const newGroup: LayerGroup = {
-        id: Date.now().toString(),
-        ...config,
+      // Create new group in database
+      const { data: newGroup, error: createError } = await supabase
+        .from('layer_groups')
+        .insert({
+          name: config.name,
+          description: config.description || '',
+          basemap_id: config.basemap?.id,
+          is_active: true,
+          is_public: true,
+          metadata: config.metadata || {},
+          display_order: 0
+        })
+        .select()
+        .single();
+
+      if (createError) throw createError;
+
+      // Insert overlay relationships if any
+      if (config.overlays && config.overlays.length > 0 && newGroup) {
+        const overlayRelations = config.overlays.map((overlay, index) => ({
+          layer_group_id: newGroup.id,
+          overlay_id: overlay.overlay.id,
+          display_order: index,
+          is_visible_default: overlay.isVisibleDefault !== false,
+          opacity: overlay.opacity / 100 // Convert percentage to decimal
+        }));
+
+        const { error: overlayError } = await supabase
+          .from('layer_group_overlays')
+          .insert(overlayRelations);
+
+        if (overlayError) throw overlayError;
+      }
+
+      // Add to local state
+      const localGroup: LayerGroup = {
+        ...newGroup,
+        basemap: config.basemap,
+        overlays: config.overlays,
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date(),
         createdBy: 'current-user'
       };
-      layerGroups.value.unshift(newGroup);
+      layerGroups.value.unshift(localGroup);
+
       toast.add({
         severity: 'success',
         summary: 'Success',
@@ -634,13 +743,17 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
         life: 3000
       });
     }
+
+    // Reload layer groups to ensure consistency
+    await loadLayerGroups();
+
   } catch (error) {
     console.error('Error saving layer group:', error);
     toast.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Failed to save layer group',
-      life: 3000
+      detail: `Failed to save layer group: ${error.message}`,
+      life: 5000
     });
   }
 };
