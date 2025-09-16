@@ -28,6 +28,10 @@
       "destination": "/api/proxy/style/[provider].js?provider=:provider"
     },
     {
+      "source": "/api/styles/upload",
+      "destination": "/api/styles/upload.js"
+    },
+    {
       "source": "/api/styles/:name",
       "destination": "/api/styles/[name].js?name=:name"
     },

@@ -1,6 +1,6 @@
-import formidable from 'formidable';
-import fs from 'fs';
-import { createClient } from '@supabase/supabase-js';
+const formidable = require('formidable');
+const fs = require('fs');
+const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase client - use hardcoded values as fallback
 const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://wphrytrrikfkwehwahqc.supabase.co';
@@ -9,18 +9,12 @@ const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsI
 console.log('Initializing Supabase with URL:', supabaseUrl);
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 // Validate Mapbox/MapLibre style
 function validateMapboxStyle(styleObject) {
   try {
     const requiredFields = ['version', 'sources', 'layers'];
     const missingFields = requiredFields.filter(field => !(field in styleObject));
-    
+
     if (missingFields.length > 0) {
       return { valid: false, error: `Missing required fields: ${missingFields.join(', ')}` };
     }
@@ -72,18 +66,20 @@ function getCountryFlag(country) {
   return flags[country] || '🌍';
 }
 
-export default async function handler(req, res) {
-  console.log('=== UPLOAD HANDLER START (map-config-service/web) ===');
-  console.log('Handler Version: v4-2025-01-10-final');
+module.exports = async function handler(req, res) {
+  console.log('=== UPLOAD HANDLER START ===');
+  console.log('Handler Version: v7-vercel-commonjs');
   console.log('Method:', req.method);
+  console.log('URL:', req.url);
+  console.log('Headers:', req.headers);
   console.log('Environment variables present:', {
     VITE_SUPABASE_URL: !!process.env.VITE_SUPABASE_URL,
     VITE_SUPABASE_ANON_KEY: !!process.env.VITE_SUPABASE_ANON_KEY
   });
-  
+
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS, GET');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -94,14 +90,15 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     return res.status(200).json({
       handler: 'upload.js',
-      version: 'v6-2025-01-10-db-storage',
-      location: 'api/styles/upload.js',
+      version: 'v7-vercel-commonjs',
+      location: 'map-config-service/web/api/styles/upload.js',
       deployedAt: new Date().toISOString(),
+      environment: 'vercel',
       features: {
         countryConversion: true,
         correctStylePath: true,
         reducedMetadata: true,
-        fileStorage: 'public/styles/'
+        databaseStorage: true
       }
     });
   }
@@ -109,13 +106,13 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({
       success: false,
-      error: 'Method not allowed'
+      error: 'Method not allowed. Use POST to upload a style.'
     });
   }
 
   try {
     console.log('Starting form parsing...');
-    
+
     // Parse multipart form data
     const form = formidable({
       maxFileSize: 10 * 1024 * 1024, // 10MB
@@ -123,12 +120,14 @@ export default async function handler(req, res) {
     });
 
     const [fields, files] = await form.parse(req);
-    
-    console.log('Form parsed. Fields:', Object.keys(fields), 'Files:', Object.keys(files));
-    
+
+    console.log('Form parsed successfully');
+    console.log('Fields received:', Object.keys(fields));
+    console.log('Files received:', Object.keys(files));
+
     // Get the uploaded file
     const uploadedFile = files.styleFile?.[0] || files.style?.[0] || files.file?.[0];
-    
+
     if (!uploadedFile) {
       console.error('No file found in upload');
       return res.status(400).json({
@@ -142,7 +141,7 @@ export default async function handler(req, res) {
     // Read and parse the file
     const fileContent = fs.readFileSync(uploadedFile.filepath, 'utf8');
     let styleObject;
-    
+
     try {
       styleObject = JSON.parse(fileContent);
       console.log('JSON parsed successfully');
@@ -170,7 +169,7 @@ export default async function handler(req, res) {
     const name = fields.name?.[0] || styleObject.name || `custom-style-${Date.now()}`;
     const label = fields.label?.[0] || styleObject.name || 'Custom Style';
     let country = fields.country?.[0] || 'Global';
-    
+
     // Convert country codes to full names
     const countryMap = {
       'at': 'Austria',
@@ -185,7 +184,7 @@ export default async function handler(req, res) {
     if (countryMap[country.toLowerCase()]) {
       country = countryMap[country.toLowerCase()];
     }
-    
+
     const type = fields.type?.[0] || 'vtc';
     const mapCategory = fields.map_category?.[0] || 'background';
     const description = fields.description?.[0] || '';
@@ -193,11 +192,11 @@ export default async function handler(req, res) {
     // Generate unique filename
     const timestamp = Date.now();
     const filename = `${name.replace(/[^a-z0-9]/gi, '-')}-${timestamp}.json`;
-    const styleUrl = `/styles/${filename}`;  // This should match where other styles are stored
+    const styleUrl = `/styles/${filename}`;
 
     // Ensure unique name for database
     const uniqueName = `${name}-${timestamp}`;
-    
+
     // Ensure the style object has all required fields for MapLibre
     const finalStyleObject = {
       ...styleObject,
@@ -246,7 +245,7 @@ export default async function handler(req, res) {
     // Try to save to Supabase
     let saveSuccessful = false;
     let savedData = null;
-    
+
     if (supabase) {
       try {
         const { data, error } = await supabase
@@ -261,7 +260,7 @@ export default async function handler(req, res) {
           console.error('Error message:', error.message);
           console.error('Error details:', error.details);
           console.error('Error hint:', error.hint);
-          
+
           // Return error response
           return res.status(500).json({
             success: false,
@@ -278,7 +277,7 @@ export default async function handler(req, res) {
       } catch (dbError) {
         console.error('=== DATABASE EXCEPTION ===');
         console.error('Exception:', dbError);
-        
+
         return res.status(500).json({
           success: false,
           error: 'Database exception occurred',
@@ -289,12 +288,23 @@ export default async function handler(req, res) {
       console.warn('Supabase client not initialized - skipping database save');
     }
 
-    // On Vercel, we can't save files to the filesystem
-    // The style JSON is stored in the database metadata
-    console.log('Style prepared for database storage');
+    // On Vercel, we primarily store in database, but also try to write to public directory if possible
+    try {
+      const path = require('path');
+      const stylesDir = path.join(process.cwd(), 'public', 'styles');
+      if (fs.existsSync(stylesDir)) {
+        const stylePath = path.join(stylesDir, filename);
+        fs.writeFileSync(stylePath, JSON.stringify(finalStyleObject, null, 2));
+        console.log('Style file saved to:', stylePath);
+      }
+    } catch (fileError) {
+      console.log('Could not write to public directory (expected on Vercel):', fileError.message);
+    }
 
     // Clean up temporary file
-    fs.unlinkSync(uploadedFile.filepath);
+    if (uploadedFile.filepath && fs.existsSync(uploadedFile.filepath)) {
+      fs.unlinkSync(uploadedFile.filepath);
+    }
 
     // Return response based on save status
     if (saveSuccessful && savedData) {
@@ -311,7 +321,7 @@ export default async function handler(req, res) {
         recordId: savedData.id
       });
     } else {
-      // Still return success if file was saved but database failed
+      // Still return success if file was prepared but database failed
       return res.status(200).json({
         success: true,
         config: insertData,
@@ -326,11 +336,11 @@ export default async function handler(req, res) {
     console.error('=== UPLOAD HANDLER ERROR ===');
     console.error('Error:', error);
     console.error('Stack:', error.stack);
-    
+
     return res.status(500).json({
       success: false,
       error: 'Internal server error during upload',
       details: error.message
     });
   }
-}
+};
