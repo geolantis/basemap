@@ -460,7 +460,8 @@ const filteredBasemaps = computed(() => {
     if (basemapCountryFilter.value && basemap.country !== basemapCountryFilter.value) {
       return false;
     }
-    return basemap.isActive;
+    // Show basemap if isActive is true, undefined, or doesn't exist (default to showing)
+    return basemap.isActive !== false;
   });
 });
 
@@ -478,7 +479,8 @@ const compatibleOverlays = computed(() => {
     if (overlayCountryFilter.value.length > 0 && !overlayCountryFilter.value.includes(overlay.country)) {
       return false;
     }
-    if (!overlay.isActive) return false;
+    // Show overlay if isActive is not explicitly false (default to showing)
+    if (overlay.isActive === false) return false;
 
     // Check compatibility with basemap
     return isCompatible(localConfig.value.basemap!, overlay);
