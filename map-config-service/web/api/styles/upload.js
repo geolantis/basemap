@@ -1,4 +1,6 @@
 // ES Module wrapper for CommonJS upload handler
-import uploadHandler from './upload.cjs';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const uploadHandler = require('./upload-handler.cjs');
 
 export default uploadHandler;
