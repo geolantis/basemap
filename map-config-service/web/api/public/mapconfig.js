@@ -177,8 +177,9 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
-  // Cache for 1 hour (can be cached by CDN)
-  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+  // Reduced cache time to see updates faster (5 minutes instead of 1 hour)
+  // Change back to 3600 once country fields are confirmed working
+  res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
