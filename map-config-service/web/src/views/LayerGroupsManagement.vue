@@ -644,18 +644,27 @@ const closeConfigurator = () => {
 const handleSaveGroup = async (config: LayerGroupConfig) => {
   try {
     if (editingGroup.value) {
+      // Build update object - only include country fields if they exist
+      const updateData: any = {
+        name: config.name,
+        description: config.description,
+        basemap_id: config.basemap?.id,
+        metadata: config.metadata || {},
+        updated_at: new Date().toISOString()
+      };
+
+      // Only add country fields if they're defined (to avoid errors if columns don't exist)
+      if (config.country !== undefined) {
+        updateData.country = config.country || 'Global';
+      }
+      if (config.countryFlag !== undefined) {
+        updateData.country_flag = config.countryFlag || '🌍';
+      }
+
       // Update existing group in database
       const { data: updatedGroup, error: updateError } = await supabase
         .from('layer_groups')
-        .update({
-          name: config.name,
-          description: config.description,
-          basemap_id: config.basemap?.id,
-          country: config.country || 'Global',
-          country_flag: config.countryFlag || '🌍',
-          metadata: config.metadata || {},
-          updated_at: new Date().toISOString()
-        })
+        .update(updateData)
         .eq('id', editingGroup.value.id)
         .select()
         .single();
@@ -669,14 +678,16 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
         .eq('layer_group_id', editingGroup.value.id);
 
       // Insert new overlay relationships
-      if (config.overlays && config.overlays.length > 0) {
-        const overlayRelations = config.overlays.map((overlay, index) => ({
-          layer_group_id: editingGroup.value!.id,
-          overlay_id: overlay.overlay.id,
-          display_order: index,
-          is_visible_by_default: overlay.isVisibleDefault !== false,
-          opacity: overlay.opacity / 100 // Convert percentage to decimal
-        }));
+      if (config.overlays && config.overlays.length > 0 && editingGroup.value) {
+        const overlayRelations = config.overlays
+          .filter(overlay => overlay && overlay.overlay && overlay.overlay.id) // Filter out any invalid overlays
+          .map((overlay, index) => ({
+            layer_group_id: editingGroup.value!.id,
+            overlay_id: overlay.overlay.id,
+            display_order: index,
+            is_visible_by_default: overlay.isVisibleDefault !== false,
+            opacity: (overlay.opacity || 100) / 100 // Convert percentage to decimal with default
+          }));
 
         const { error: overlayError } = await supabase
           .from('layer_group_overlays')
@@ -702,20 +713,29 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
         life: 3000
       });
     } else {
+      // Build insert object - only include country fields if they exist
+      const insertData: any = {
+        name: config.name,
+        description: config.description || '',
+        basemap_id: config.basemap?.id,
+        is_active: true,
+        is_public: true,
+        metadata: config.metadata || {},
+        display_order: 0
+      };
+
+      // Only add country fields if they're defined (to avoid errors if columns don't exist)
+      if (config.country !== undefined) {
+        insertData.country = config.country || 'Global';
+      }
+      if (config.countryFlag !== undefined) {
+        insertData.country_flag = config.countryFlag || '🌍';
+      }
+
       // Create new group in database
       const { data: newGroup, error: createError } = await supabase
         .from('layer_groups')
-        .insert({
-          name: config.name,
-          description: config.description || '',
-          basemap_id: config.basemap?.id,
-          country: config.country || 'Global',
-          country_flag: config.countryFlag || '🌍',
-          is_active: true,
-          is_public: true,
-          metadata: config.metadata || {},
-          display_order: 0
-        })
+        .insert(insertData)
         .select()
         .single();
 
@@ -723,13 +743,15 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
 
       // Insert overlay relationships if any
       if (config.overlays && config.overlays.length > 0 && newGroup) {
-        const overlayRelations = config.overlays.map((overlay, index) => ({
-          layer_group_id: newGroup.id,
-          overlay_id: overlay.overlay.id,
-          display_order: index,
-          is_visible_by_default: overlay.isVisibleDefault !== false,
-          opacity: overlay.opacity / 100 // Convert percentage to decimal
-        }));
+        const overlayRelations = config.overlays
+          .filter(overlay => overlay && overlay.overlay && overlay.overlay.id) // Filter out any invalid overlays
+          .map((overlay, index) => ({
+            layer_group_id: newGroup.id,
+            overlay_id: overlay.overlay.id,
+            display_order: index,
+            is_visible_by_default: overlay.isVisibleDefault !== false,
+            opacity: (overlay.opacity || 100) / 100 // Convert percentage to decimal with default
+          }));
 
         const { error: overlayError } = await supabase
           .from('layer_group_overlays')
@@ -761,12 +783,28 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
     // Reload layer groups to ensure consistency
     await loadLayerGroups();
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error saving layer group:', error);
+
+    // More detailed error message
+    let errorMessage = 'Failed to save layer group';
+    if (error?.message) {
+      errorMessage = error.message;
+    } else if (error?.error) {
+      errorMessage = error.error;
+    } else if (typeof error === 'string') {
+      errorMessage = error;
+    }
+
+    // Check if it's a database column error
+    if (errorMessage.includes('country') || errorMessage.includes('country_flag')) {
+      errorMessage = 'Database needs migration: Run the 009_add_country_to_layer_groups.sql migration in Supabase';
+    }
+
     toast.add({
       severity: 'error',
       summary: 'Error',
-      detail: `Failed to save layer group: ${error.message}`,
+      detail: errorMessage,
       life: 5000
     });
   }
