@@ -8,6 +8,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import './style.css';
 import 'primeicons/primeicons.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import './styles/layer-groups-fix.css';
 
 import App from './App.vue';
 import router from './router';

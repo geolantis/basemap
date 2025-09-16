@@ -1,0 +1,123 @@
+/* Layer Groups Dialog Transparency Fixes */
+
+/* Fix all PrimeVue dropdowns in dialogs */
+.p-dialog .p-dropdown,
+.p-dialog .p-multiselect,
+.p-dialog .p-dropdown-panel,
+.p-dialog .p-multiselect-panel,
+.p-dialog-content .p-dropdown,
+.p-dialog-content .p-multiselect,
+.p-dialog-content .p-dropdown-panel,
+.p-dialog-content .p-multiselect-panel {
+  background-color: white !important;
+  background: white !important;
+  opacity: 1 !important;
+}
+
+/* Fix dropdown triggers */
+.p-dialog .p-dropdown-trigger,
+.p-dialog .p-multiselect-trigger,
+.p-dialog-content .p-dropdown-trigger,
+.p-dialog-content .p-multiselect-trigger {
+  background-color: white !important;
+  background: white !important;
+  opacity: 1 !important;
+}
+
+/* Fix dropdown items */
+.p-dropdown-item,
+.p-multiselect-item {
+  background-color: white !important;
+  opacity: 1 !important;
+}
+
+.p-dropdown-item:hover,
+.p-multiselect-item:hover {
+  background-color: #f3f4f6 !important;
+  opacity: 1 !important;
+}
+
+/* Fix dropdown panels that appear as overlays */
+.p-dropdown-panel,
+.p-multiselect-panel {
+  background-color: white !important;
+  background: white !important;
+  opacity: 1 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Fix dropdown list containers */
+.p-dropdown-items-wrapper,
+.p-multiselect-items-wrapper {
+  background-color: white !important;
+  background: white !important;
+  opacity: 1 !important;
+}
+
+/* Fix the actual dropdown input/display area */
+.p-dropdown .p-dropdown-label,
+.p-multiselect .p-multiselect-label {
+  background-color: white !important;
+  background: white !important;
+  opacity: 1 !important;
+}
+
+/* Ensure the dialog content itself is not transparent */
+.p-dialog-content {
+  background-color: white !important;
+  opacity: 1 !important;
+}
+
+/* Fix any inputs in dialogs */
+.p-dialog input.p-inputtext,
+.p-dialog-content input.p-inputtext {
+  background-color: white !important;
+  opacity: 1 !important;
+}
+
+/* Layer Group specific fixes */
+.layer-group-configurator .p-dropdown,
+.layer-group-configurator .p-multiselect {
+  background-color: white !important;
+  min-height: 40px;
+}
+
+.layer-group-configurator .p-dropdown-panel,
+.layer-group-configurator .p-multiselect-panel {
+  z-index: 9999 !important;
+  background-color: white !important;
+}
+
+/* Fix button text visibility */
+.p-button {
+  color: inherit !important;
+}
+
+.p-button .p-button-label {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure button text is visible */
+.p-button:not(.p-button-icon-only) .p-button-label {
+  margin-left: 0.5rem;
+}
+
+.p-button.p-button-icon-only .p-button-label {
+  display: none !important;
+}
+
+/* Fix any button text color issues */
+.p-button-primary .p-button-label,
+.p-button-success .p-button-label,
+.p-button-info .p-button-label,
+.p-button-warning .p-button-label,
+.p-button-danger .p-button-label {
+  color: white !important;
+}
+
+.p-button-outlined .p-button-label,
+.p-button-text .p-button-label {
+  color: inherit !important;
+}

@@ -4,6 +4,9 @@
     modal
     :closable="true"
     :draggable="false"
+    :focusOnShow="false"
+    :autoZIndex="true"
+    :baseZIndex="1000"
     class="layer-group-dialog"
     :style="{ width: '95vw', maxWidth: '1400px', height: '90vh' }"
     :contentStyle="{ height: 'calc(90vh - 80px)', padding: 0 }"
@@ -98,7 +101,7 @@
 
               <!-- Basemap Grid -->
               <div class="flex-1 overflow-y-auto" style="height: calc(100% - 120px); max-height: 600px; min-height: 400px;">
-                <div v-if="filteredBasemaps.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div v-if="filteredBasemaps.length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
                   <BasemapCard
                     v-for="basemap in filteredBasemaps"
                     :key="basemap.id"
@@ -168,7 +171,7 @@
 
               <!-- Overlay Grid -->
               <div class="flex-1 overflow-y-auto" style="height: calc(100% - 120px); max-height: 600px; min-height: 400px;">
-                <div v-if="compatibleOverlays.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div v-if="compatibleOverlays.length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
                   <OverlayCard
                     v-for="overlay in compatibleOverlays"
                     :key="overlay.id"
