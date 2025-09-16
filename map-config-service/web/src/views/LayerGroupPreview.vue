@@ -5,20 +5,26 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <Button
-            @click="$router.go(-1)"
+            @click="navigateBack"
             outlined
             size="small"
           >
             <i class="pi pi-arrow-left mr-2"></i>
-            Back
+            Back to Layer Groups
           </Button>
 
           <div v-if="layerGroup">
-            <h1 class="text-2xl font-bold text-gray-900">{{ layerGroup.name }}</h1>
+            <div class="flex items-center">
+              <span v-if="layerGroup.countryFlag" class="text-2xl mr-2">{{ layerGroup.countryFlag }}</span>
+              <h1 class="text-2xl font-bold text-gray-900">{{ layerGroup.name }}</h1>
+            </div>
             <p class="text-sm text-gray-500">
               {{ layerGroup.basemap?.label || 'No basemap' }}
               <span v-if="layerGroup.overlays.length > 0">
                 + {{ layerGroup.overlays.length }} overlay{{ layerGroup.overlays.length > 1 ? 's' : '' }}
+              </span>
+              <span v-if="layerGroup.country && layerGroup.country !== 'Global'" class="ml-1">
+                • {{ layerGroup.country }}
               </span>
             </p>
           </div>
@@ -186,6 +192,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Button from 'primevue/button';
+import { supabase } from '../lib/supabase';
 import type { LayerGroup } from '../types';
 
 const route = useRoute();
@@ -206,62 +213,79 @@ const loadLayerGroup = async () => {
   error.value = null;
 
   try {
-    // Mock data - replace with actual API call
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate loading
+    // Load real layer group from Supabase
+    const { data, error: fetchError } = await supabase
+      .from('layer_groups')
+      .select(`
+        *,
+        basemap:map_configs!basemap_id(
+          id, name, label, type, style, map_category,
+          country, flag, metadata, preview_image_url, is_active
+        )
+      `)
+      .eq('id', groupId.value)
+      .single();
 
-    // Mock layer group data
+    if (fetchError || !data) {
+      console.error('Layer group not found:', fetchError);
+      error.value = 'Layer group not found. It may have been deleted.';
+
+      // Auto-redirect after 3 seconds
+      setTimeout(() => {
+        navigateBack();
+      }, 3000);
+      return;
+    }
+
+    // Load overlay relationships
+    const { data: overlayRelations, error: overlayError } = await supabase
+      .from('layer_group_overlays')
+      .select(`
+        *,
+        overlay:map_configs!overlay_id(
+          id, name, label, type, style, map_category,
+          country, flag, metadata, preview_image_url, is_active
+        )
+      `)
+      .eq('layer_group_id', groupId.value)
+      .order('display_order');
+
+    if (overlayError) {
+      console.error('Error loading overlays:', overlayError);
+    }
+
+    // Transform the data to match our LayerGroup type
     layerGroup.value = {
-      id: groupId.value,
-      name: 'Urban Planning Demo',
-      basemap: {
-        id: 'osm-carto',
-        name: 'openstreetmap-carto',
-        label: 'OpenStreetMap Carto',
-        type: 'xyz',
-        country: 'Global',
-        flag: '🌍',
-        isActive: true,
-        previewUrl: '/api/preview/osm-carto.png',
-        metadata: { provider: 'OpenStreetMap' }
-      },
-      overlays: [
-        {
-          overlay: {
-            id: 'buildings',
-            name: 'building-overlay',
-            label: 'Buildings Layer',
-            type: 'geojson',
-            country: 'Global',
-            flag: '🌍',
-            isActive: true,
-            previewUrl: '/api/preview/buildings.png',
-            metadata: { provider: 'Local GIS' }
-          },
-          opacity: 80,
-          blendMode: 'multiply',
-          order: 0
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      country: data.country || 'Global',
+      countryFlag: data.country_flag || '🌍',
+      basemap: data.basemap ? {
+        ...data.basemap,
+        country: data.basemap.country || 'Global',
+        flag: data.basemap.flag || '🌍',
+        isActive: data.basemap.is_active,
+        previewUrl: data.basemap.preview_image_url
+      } : null,
+      overlays: (overlayRelations || []).map(rel => ({
+        overlay: {
+          ...rel.overlay,
+          country: rel.overlay.country || 'Global',
+          flag: rel.overlay.flag || '🌍',
+          isActive: rel.overlay.is_active,
+          previewUrl: rel.overlay.preview_image_url
         },
-        {
-          overlay: {
-            id: 'roads',
-            name: 'roads-overlay',
-            label: 'Road Network',
-            type: 'vector',
-            country: 'Global',
-            flag: '🌍',
-            isActive: true,
-            previewUrl: '/api/preview/roads.png',
-            metadata: { provider: 'OSM' }
-          },
-          opacity: 60,
-          blendMode: 'normal',
-          order: 1
-        }
-      ],
-      isActive: true,
-      createdAt: new Date('2024-01-15'),
-      updatedAt: new Date('2024-01-20'),
-      createdBy: 'admin'
+        opacity: rel.opacity * 100, // Convert decimal to percentage
+        blendMode: 'normal',
+        order: rel.display_order,
+        isVisibleDefault: rel.is_visible_by_default
+      })),
+      isActive: data.is_active,
+      createdAt: new Date(data.created_at),
+      updatedAt: new Date(data.updated_at),
+      createdBy: data.created_by || 'System',
+      metadata: data.metadata
     };
   } catch (err) {
     console.error('Error loading layer group:', err);
@@ -269,6 +293,15 @@ const loadLayerGroup = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const navigateBack = () => {
+  // Navigate to layer groups list instead of using browser back
+  router.push('/layer-groups').catch(err => {
+    console.error('Navigation error:', err);
+    // Fallback to window location if router fails
+    window.location.href = '/layer-groups';
+  });
 };
 
 const editGroup = () => {

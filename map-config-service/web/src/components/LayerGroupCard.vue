@@ -86,9 +86,14 @@
       <!-- Header -->
       <div class="flex items-start justify-between mb-3">
         <div class="flex-1 min-w-0">
-          <h3 class="text-lg font-semibold text-gray-900 truncate mb-1">
-            {{ layerGroup.name }}
-          </h3>
+          <div class="flex items-center mb-1">
+            <span v-if="layerGroup.country && layerGroup.countryFlag" class="text-lg mr-2">
+              {{ layerGroup.countryFlag }}
+            </span>
+            <h3 class="text-lg font-semibold text-gray-900 truncate">
+              {{ layerGroup.name }}
+            </h3>
+          </div>
           <p class="text-sm text-gray-500">
             {{ layerGroup.basemap?.label || 'No basemap' }}
             <span v-if="layerGroup.overlays.length > 0">
@@ -115,7 +120,7 @@
           <span class="font-medium text-gray-700">{{ layerGroup.basemap.type.toUpperCase() }}</span>
           <span class="text-gray-500">•</span>
           <span class="text-gray-500 flex items-center">
-            {{ layerGroup.basemap.flag }} {{ layerGroup.basemap.country }}
+            {{ layerGroup.country || layerGroup.basemap.country || 'Global' }}
           </span>
         </div>
       </div>

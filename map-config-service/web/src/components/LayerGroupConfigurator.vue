@@ -16,7 +16,7 @@
     <div class="flex flex-col h-full">
       <!-- Header Section -->
       <div class="flex-shrink-0 pb-4 border-b border-gray-200">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Group Name -->
           <div class="col-span-1 md:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -28,6 +28,36 @@
               class="w-full"
               :class="{ 'p-invalid': !localConfig.name.trim() }"
             />
+          </div>
+
+          <!-- Country Selection -->
+          <div class="col-span-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Country/Region
+            </label>
+            <Dropdown
+              v-model="localConfig.country"
+              :options="availableCountries"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select country"
+              class="w-full"
+              showClear
+            >
+              <template #value="slotProps">
+                <div v-if="slotProps.value" class="flex items-center">
+                  <span class="mr-2">{{ getCountryFlag(slotProps.value) }}</span>
+                  <span>{{ slotProps.value }}</span>
+                </div>
+                <span v-else>{{ slotProps.placeholder }}</span>
+              </template>
+              <template #option="slotProps">
+                <div class="flex items-center">
+                  <span class="mr-2">{{ slotProps.option.flag }}</span>
+                  <span>{{ slotProps.option.label }}</span>
+                </div>
+              </template>
+            </Dropdown>
           </div>
 
           <!-- Selected Basemap Info -->
@@ -53,6 +83,18 @@
             </div>
             <p v-else class="text-sm text-gray-500 italic">No basemap selected</p>
           </div>
+        </div>
+
+        <!-- Description (optional) -->
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Description (optional)
+          </label>
+          <InputText
+            v-model="localConfig.description"
+            placeholder="Enter a description for this layer group..."
+            class="w-full"
+          />
         </div>
       </div>
 
@@ -435,7 +477,10 @@ const draggedIndex = ref<number | null>(null);
 const localConfig = ref<LayerGroupConfig>({
   name: '',
   basemap: null,
-  overlays: []
+  overlays: [],
+  country: 'Global',
+  countryFlag: '🌍',
+  description: ''
 });
 
 // Search and filter states
@@ -543,6 +588,13 @@ const compatibleOverlays = computed(() => {
 // Methods
 const selectBasemap = (basemap: BasemapLayer) => {
   localConfig.value.basemap = basemap;
+
+  // If layer group country is not set or is Global, inherit from basemap
+  if ((!localConfig.value.country || localConfig.value.country === 'Global') && basemap.country && basemap.country !== 'Global') {
+    localConfig.value.country = basemap.country;
+    localConfig.value.countryFlag = basemap.flag || getCountryFlag(basemap.country);
+  }
+
   // Clear incompatible overlays when basemap changes
   localConfig.value.overlays = localConfig.value.overlays.filter(config =>
     isCompatible(basemap, config.overlay)
@@ -598,6 +650,39 @@ const getCompatibilityScore = (overlay: OverlayLayer) => {
   return Math.floor(Math.random() * 20) + 80;
 };
 
+// Country data
+const availableCountries = ref([
+  { value: 'Global', label: 'Global', flag: '🌍' },
+  { value: 'Austria', label: 'Austria', flag: '🇦🇹' },
+  { value: 'Germany', label: 'Germany', flag: '🇩🇪' },
+  { value: 'Switzerland', label: 'Switzerland', flag: '🇨🇭' },
+  { value: 'Italy', label: 'Italy', flag: '🇮🇹' },
+  { value: 'France', label: 'France', flag: '🇫🇷' },
+  { value: 'Spain', label: 'Spain', flag: '🇪🇸' },
+  { value: 'United Kingdom', label: 'United Kingdom', flag: '🇬🇧' },
+  { value: 'United States', label: 'United States', flag: '🇺🇸' },
+  { value: 'Canada', label: 'Canada', flag: '🇨🇦' },
+  { value: 'Australia', label: 'Australia', flag: '🇦🇺' },
+  { value: 'Netherlands', label: 'Netherlands', flag: '🇳🇱' },
+  { value: 'Belgium', label: 'Belgium', flag: '🇧🇪' },
+  { value: 'Poland', label: 'Poland', flag: '🇵🇱' },
+  { value: 'Czech Republic', label: 'Czech Republic', flag: '🇨🇿' },
+  { value: 'Slovakia', label: 'Slovakia', flag: '🇸🇰' },
+  { value: 'Hungary', label: 'Hungary', flag: '🇭🇺' },
+  { value: 'Slovenia', label: 'Slovenia', flag: '🇸🇮' },
+  { value: 'Croatia', label: 'Croatia', flag: '🇭🇷' },
+  { value: 'Denmark', label: 'Denmark', flag: '🇩🇰' },
+  { value: 'Sweden', label: 'Sweden', flag: '🇸🇪' },
+  { value: 'Norway', label: 'Norway', flag: '🇳🇴' },
+  { value: 'Finland', label: 'Finland', flag: '🇫🇮' }
+]);
+
+const getCountryFlag = (country: string | undefined): string => {
+  if (!country) return '🌍';
+  const countryData = availableCountries.value.find(c => c.value === country);
+  return countryData?.flag || '🏳️';
+};
+
 const getLayerColor = (type: string) => {
   switch (type.toLowerCase()) {
     case 'vtc': return '#3b82f6';
@@ -648,6 +733,9 @@ const handleSave = async () => {
 
   saving.value = true;
   try {
+    // Set country flag based on selected country
+    localConfig.value.countryFlag = getCountryFlag(localConfig.value.country);
+
     emit('save', { ...localConfig.value });
     handleClose();
   } catch (error) {
@@ -666,7 +754,10 @@ const resetForm = () => {
   localConfig.value = {
     name: '',
     basemap: null,
-    overlays: []
+    overlays: [],
+    country: 'Global',
+    countryFlag: '🌍',
+    description: ''
   };
   activeTabIndex.value = 0;
   basemapSearchQuery.value = '';
@@ -683,7 +774,10 @@ watch(() => props.layerGroup, (newGroup) => {
     localConfig.value = {
       name: newGroup.name,
       basemap: newGroup.basemap,
-      overlays: [...newGroup.overlays]
+      overlays: [...newGroup.overlays],
+      country: newGroup.country || 'Global',
+      countryFlag: newGroup.countryFlag || '🌍',
+      description: newGroup.description || ''
     };
   } else {
     resetForm();

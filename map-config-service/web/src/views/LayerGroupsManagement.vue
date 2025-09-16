@@ -218,6 +218,11 @@
             <Column field="name" header="Name" sortable>
               <template #body="{ data }">
                 <div class="flex items-center space-x-3">
+                  <!-- Country Flag -->
+                  <span v-if="data.country && data.countryFlag" class="text-xl">
+                    {{ data.countryFlag }}
+                  </span>
+
                   <!-- Preview thumbnail -->
                   <div class="w-12 h-8 bg-gray-100 rounded overflow-hidden flex-shrink-0">
                     <img
@@ -235,6 +240,9 @@
                     <div class="font-medium text-gray-900">{{ data.name }}</div>
                     <div class="text-sm text-gray-500 truncate">
                       {{ data.basemap?.label || 'No basemap' }}
+                      <span v-if="data.country && data.country !== 'Global'" class="ml-1">
+                        ({{ data.country }})
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -571,6 +579,8 @@ const loadLayerGroups = async () => {
           isVisibleDefault: rel.is_visible_by_default
         })),
         isActive: group.is_active,
+        country: group.country || 'Global',
+        countryFlag: group.country_flag || '🌍',
         createdAt: new Date(group.created_at),
         updatedAt: new Date(group.updated_at),
         createdBy: group.created_by || 'System'
@@ -641,6 +651,8 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
           name: config.name,
           description: config.description,
           basemap_id: config.basemap?.id,
+          country: config.country || 'Global',
+          country_flag: config.countryFlag || '🌍',
           metadata: config.metadata || {},
           updated_at: new Date().toISOString()
         })
@@ -697,6 +709,8 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
           name: config.name,
           description: config.description || '',
           basemap_id: config.basemap?.id,
+          country: config.country || 'Global',
+          country_flag: config.countryFlag || '🌍',
           is_active: true,
           is_public: true,
           metadata: config.metadata || {},

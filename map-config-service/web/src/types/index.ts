@@ -243,12 +243,16 @@ export interface LayerGroupConfig {
   basemap: BasemapLayer | null;
   overlays: OverlayConfig[];
   description?: string;
+  country?: string;
+  countryFlag?: string;
   tags?: string[];
 }
 
 export interface LayerGroup extends LayerGroupConfig {
   id: string;
   isActive: boolean;
+  country?: string;
+  countryFlag?: string;
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
