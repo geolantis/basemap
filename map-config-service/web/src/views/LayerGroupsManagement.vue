@@ -6,7 +6,7 @@
         <div class="flex items-center space-x-4">
           <!-- Back to Dashboard Button -->
           <Button
-            @click="router.push('/dashboard')"
+            @click="navigateToDashboard"
             outlined
             size="small"
             class="text-gray-600 hover:text-gray-900"
@@ -794,6 +794,20 @@ const duplicateGroup = async (group: LayerGroup) => {
   }
 };
 
+const navigateToDashboard = () => {
+  try {
+    router.push('/dashboard').catch((error) => {
+      console.error('Navigation error:', error);
+      // Fallback to window location if router fails
+      window.location.href = '/dashboard';
+    });
+  } catch (error) {
+    console.error('Navigation error:', error);
+    // Fallback to window location
+    window.location.href = '/dashboard';
+  }
+};
+
 const deleteGroup = (group: LayerGroup) => {
   confirm.require({
     message: `Are you sure you want to delete "${group.name}"? This action cannot be undone.`,
@@ -802,16 +816,34 @@ const deleteGroup = (group: LayerGroup) => {
     acceptClass: 'p-button-danger',
     accept: async () => {
       try {
+        // Delete from database first
+        const { error } = await supabase
+          .from('layer_groups')
+          .delete()
+          .eq('id', group.id);
+
+        if (error) throw error;
+
+        // Remove from local array
         const index = layerGroups.value.findIndex(g => g.id === group.id);
         if (index >= 0) {
           layerGroups.value.splice(index, 1);
         }
+
+        // Force re-render by creating new array
+        layerGroups.value = [...layerGroups.value];
+
         toast.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Layer group deleted successfully',
           life: 3000
         });
+
+        // Clear any selections
+        if (selectedGroups.value.includes(group.id)) {
+          selectedGroups.value = selectedGroups.value.filter(id => id !== group.id);
+        }
       } catch (error) {
         console.error('Error deleting layer group:', error);
         toast.add({
@@ -821,6 +853,9 @@ const deleteGroup = (group: LayerGroup) => {
           life: 3000
         });
       }
+    },
+    reject: () => {
+      // User cancelled - do nothing
     }
   });
 };
@@ -1028,7 +1063,17 @@ const loadMapsData = async () => {
 
 // Lifecycle
 onMounted(async () => {
-  await loadMapsData();
-  await loadLayerGroups();
+  try {
+    await loadMapsData();
+    await loadLayerGroups();
+  } catch (error) {
+    console.error('Error loading data:', error);
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Failed to load data. Please refresh the page.',
+      life: 5000
+    });
+  }
 });
 </script>
