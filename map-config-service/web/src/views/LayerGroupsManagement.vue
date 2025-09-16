@@ -568,7 +568,7 @@ const loadLayerGroups = async () => {
         overlays: groupOverlays.map(rel => ({
           ...rel,
           opacity: rel.opacity * 100, // Convert decimal to percentage for UI
-          isVisibleDefault: rel.is_visible_default
+          isVisibleDefault: rel.is_visible_by_default
         })),
         isActive: group.is_active,
         createdAt: new Date(group.created_at),
@@ -662,7 +662,7 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
           layer_group_id: editingGroup.value!.id,
           overlay_id: overlay.overlay.id,
           display_order: index,
-          is_visible_default: overlay.isVisibleDefault !== false,
+          is_visible_by_default: overlay.isVisibleDefault !== false,
           opacity: overlay.opacity / 100 // Convert percentage to decimal
         }));
 
@@ -713,7 +713,7 @@ const handleSaveGroup = async (config: LayerGroupConfig) => {
           layer_group_id: newGroup.id,
           overlay_id: overlay.overlay.id,
           display_order: index,
-          is_visible_default: overlay.isVisibleDefault !== false,
+          is_visible_by_default: overlay.isVisibleDefault !== false,
           opacity: overlay.opacity / 100 // Convert percentage to decimal
         }));
 

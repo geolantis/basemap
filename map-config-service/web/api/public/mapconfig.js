@@ -242,7 +242,7 @@ export default async function handler(req, res) {
         layer_group_id,
         overlay_id,
         display_order,
-        is_visible_default,
+        is_visible_by_default,
         opacity
       `)
       .order('display_order', { ascending: true });
@@ -268,7 +268,7 @@ export default async function handler(req, res) {
           return {
             overlay_id: overlay.overlay_id,
             display_order: overlay.display_order,
-            is_visible_default: overlay.is_visible_default,
+            is_visible_default: overlay.is_visible_by_default,
             opacity: overlay.opacity,
             overlay: overlayConfig ? {
               id: overlayConfig.id,
