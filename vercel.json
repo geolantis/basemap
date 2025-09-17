@@ -27,6 +27,10 @@
       "destination": "/api/proxy/glyphs/index.js?style=:style&encoded=:encoded&fontstack=:fontstack&range=:range"
     },
     {
+      "source": "/api/proxy/source/:styleId/:encodedUrl",
+      "destination": "/api/proxy/source/[styleId]/[encodedUrl].js?styleId=:styleId&encodedUrl=:encodedUrl"
+    },
+    {
       "source": "/api/proxy/style/:provider",
       "destination": "/api/proxy/style/[provider].js?provider=:provider"
     },
